@@ -2,9 +2,10 @@
 
 namespace UBOS\Shape\Form\Model;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 
-interface FormPageInterface
+interface FormPageInterface extends ContainerInterface
 {
 	public function getType(): string;
 

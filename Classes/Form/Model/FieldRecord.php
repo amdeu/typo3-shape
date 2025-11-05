@@ -83,9 +83,9 @@ class FieldRecord extends Record implements FieldInterface
 		}
 	}
 
-	public function get($key): mixed
+	public function get(string $id): mixed
 	{
-		return $this->runtimeOverrides[$key] ?? parent::get($key);
+		return $this->runtimeOverrides[$id] ?? parent::get($id);
 	}
 	public function isFormControl(): bool
 	{
@@ -131,6 +131,26 @@ class FieldRecord extends Record implements FieldInterface
 	public function runtimeOverride(string $key, mixed $value): void
 	{
 		$this->runtimeOverrides[$key] = $value;
+	}
+
+	public function getOptions(): ?array
+	{
+		if (!$this->has('field_options')) {
+			return null;
+		}
+		return $this->get('field_options');
+	}
+
+	public function getOptionValues(): ?array
+	{
+		if (!$this->has('field_options')) {
+			return null;
+		}
+		$values = [];
+		foreach ($this->get('field_options') as $option) {
+			$values[] = $option->get('value');
+		}
+		return $values;
 	}
 
 	public function getOptionSelection(): ?array

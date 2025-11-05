@@ -101,14 +101,11 @@ final class ValueValidationConfigurator
 	protected function addOptionValidators(ValueValidationEvent $event): void
 	{
 		$field = $event->field;
-		if (!$field->has('field_options') || !$event->value) {
+		$optionValues = $field->getOptionValues();
+		if (!$optionValues || !$event->value) {
 			return;
 		}
 		$type = $field->getType();
-		$optionValues = [];
-		foreach ($field->get('field_options') as $option) {
-			$optionValues[] = $option->get('value');
-		}
 		if (in_array($type, ['select','checkbox','radio'])) {
 			$event->addValidator($this->makeValidator(
 				Validator\InArrayValidator::class,
@@ -183,8 +180,8 @@ final class ValueValidationConfigurator
 				));
 				if ($field->get('accept')) {
 					$fileValidator->addValidator($this->makeValidator(
-						ExtbaseValidator\MimeTypeValidator::class,
-						['allowedMimeTypes' => explode(',', $field->get('accept'))],
+						Validator\HTMLAcceptValidator::class,
+						['accept' => explode(',', $field->get('accept'))],
 					));
 				}
 				if ($field->get('min') || $field->get('max')) {

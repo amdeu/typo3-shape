@@ -42,7 +42,7 @@ class AttributesViewHelper extends AbstractViewHelper
 				$attributes[$attribute] = '1';
 			}
 		}
-		foreach (['pattern', 'maxlength', 'placeholder', 'min', 'max'] as $attribute) {
+		foreach (['pattern', 'maxlength', 'placeholder', 'accept', 'min', 'max'] as $attribute) {
 			if (!$field->has($attribute)) continue;
 			$val = $field->get($attribute);
 			if ($val || $val === 0) {
