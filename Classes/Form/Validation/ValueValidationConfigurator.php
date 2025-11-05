@@ -181,7 +181,7 @@ final class ValueValidationConfigurator
 				if ($field->get('accept')) {
 					$fileValidator->addValidator($this->makeValidator(
 						Validator\HTMLAcceptValidator::class,
-						['accept' => explode(',', $field->get('accept'))],
+						['accept' => $field->get('accept')],
 					));
 				}
 				if ($field->get('min') || $field->get('max')) {
