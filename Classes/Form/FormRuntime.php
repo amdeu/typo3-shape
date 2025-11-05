@@ -30,6 +30,8 @@ class FormRuntime
 	)
 	{
 		$this->setFieldSessionValues();
+		$event = new FormRuntimeCreationEvent($this);
+		$this->eventDispatcher->dispatch($event);
 	}
 
 	public function setFieldSessionValues(): self
