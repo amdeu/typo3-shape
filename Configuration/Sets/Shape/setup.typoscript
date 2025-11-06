@@ -26,6 +26,12 @@ plugin.tx_shape {
                 fieldName = __focus_pass
                 value = human
             }
+            googleRecaptcha {
+                enabled = 0
+                siteKey =
+                secretKey =
+                version = v3
+            }
         }
         finisherDefaults {
             UBOS\Shape\Form\Finisher\EmailConsentFinisher {

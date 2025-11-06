@@ -12,3 +12,33 @@
                           tabindex="-1" style="position:absolute;margin-left:-999em"/>
     </template>
 </f:if>
+
+<f:if condition="{settings.spamProtection.googleRecaptcha.enabled}">
+    <f:switch expression="{settings.spamProtection.googleRecaptcha.version}">
+        <f:case value="v2">
+            <div class="g-recaptcha"
+                 data-sitekey="{settings.spamProtection.googleRecaptcha.siteKey}"
+                 data-theme="{settings.spamProtection.googleRecaptcha.theme}">
+            </div>
+            <f:asset.script
+                    identifier="google-recaptcha"
+                    src="https://www.google.com/recaptcha/api.js"
+                    async="1" />
+        </f:case>
+        <f:case value="v3">
+            <f:comment>v3 is invisible - widget auto-executes</f:comment>
+            <f:asset.script
+                    identifier="google-recaptcha"
+                    src="https://www.google.com/recaptcha/api.js?render={settings.spamProtection.googleRecaptcha.siteKey}" />
+            <script>
+					grecaptcha.ready(function() {
+						grecaptcha.execute('{settings.spamProtection.googleRecaptcha.siteKey}', {action: 'submit'})
+							.then(function(token) {
+								document.querySelector('[name="g-recaptcha-response"]').value = token;
+							});
+					});
+            </script>
+            <f:form.hidden name="g-recaptcha-response" value="" />
+        </f:case>
+    </f:switch>
+</f:if>
