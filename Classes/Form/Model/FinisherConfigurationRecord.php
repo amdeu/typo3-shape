@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Model;
+namespace Amdeu\Shape\Form\Model;
 
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core;

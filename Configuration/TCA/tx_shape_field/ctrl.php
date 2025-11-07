@@ -1,11 +1,11 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\TcaUtility as Util;
 
 return [
 	'label' => 'label',
 	'title' => Util::t('field.ctrl.title'),
-	'formattedLabel_userFunc' => \UBOS\Shape\UserFunctions\Tca::class . '->getFormattedFieldLabel',
+	'formattedLabel_userFunc' => \Amdeu\Shape\UserFunctions\Tca::class . '->getFormattedFieldLabel',
 	'tstamp' => 'tstamp',
 	'crdate' => 'crdate',
 	'origUid' => 't3_origuid',

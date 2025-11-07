@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Serialization;
+namespace Amdeu\Shape\Form\Serialization;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class ValueSerializationEvent
 {

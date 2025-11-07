@@ -1,6 +1,6 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\TcaUtility as Util;
 
 $ctrl = [
 	'label' => 'title',
@@ -28,12 +28,12 @@ $ctrl = [
 	'typeicon_column' => 'type',
 	'typeicon_classes' => [
 		'default' => 'form-finisher',
-		'UBOS\Shape\Form\Finisher\SaveSubmissionFinisher' => 'content-elements-mailform',
-		'UBOS\Shape\Form\Finisher\SaveToDatabaseFinisher' => 'content-database',
-		'UBOS\Shape\Form\Finisher\SendEmailFinisher' => 'content-message',
-		'UBOS\Shape\Form\Finisher\ShowContentElementsFinisher' => 'form-content-element',
-		'UBOS\Shape\Form\Finisher\RedirectFinisher' => 'apps-pagetree-page-shortcut-external',
-		'UBOS\Shape\Form\Finisher\EmailConsentFinisher' => 'overlay-approved',
+		'Amdeu\Shape\Form\Finisher\SaveSubmissionFinisher' => 'content-elements-mailform',
+		'Amdeu\Shape\Form\Finisher\SaveToDatabaseFinisher' => 'content-database',
+		'Amdeu\Shape\Form\Finisher\SendEmailFinisher' => 'content-message',
+		'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher' => 'form-content-element',
+		'Amdeu\Shape\Form\Finisher\RedirectFinisher' => 'apps-pagetree-page-shortcut-external',
+		'Amdeu\Shape\Form\Finisher\EmailConsentFinisher' => 'overlay-approved',
 
 	],
 ];
@@ -72,22 +72,22 @@ $columns = [
 			'items' => [
 				['', ''],
 				[Util::t('finisher.type.item.save_submission'),
-					'UBOS\Shape\Form\Finisher\SaveSubmissionFinisher',
+					'Amdeu\Shape\Form\Finisher\SaveSubmissionFinisher',
 					'content-elements-mailform'],
 				[Util::t('finisher.type.item.send_email'),
-					'UBOS\Shape\Form\Finisher\SendEmailFinisher',
+					'Amdeu\Shape\Form\Finisher\SendEmailFinisher',
 					'content-message'],
 				[Util::t('finisher.type.item.email_consent'),
-					'UBOS\Shape\Form\Finisher\EmailConsentFinisher',
+					'Amdeu\Shape\Form\Finisher\EmailConsentFinisher',
 					'overlay-approved'],
 				[Util::t('finisher.type.item.save_to_database'),
-					'UBOS\Shape\Form\Finisher\SaveToDatabaseFinisher',
+					'Amdeu\Shape\Form\Finisher\SaveToDatabaseFinisher',
 					'content-database'],
 				[Util::t('finisher.type.item.show_content_elements'),
-					'UBOS\Shape\Form\Finisher\ShowContentElementsFinisher',
+					'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher',
 					'form-content-element'],
 				[Util::t('finisher.type.item.redirect'),
-					'UBOS\Shape\Form\Finisher\RedirectFinisher',
+					'Amdeu\Shape\Form\Finisher\RedirectFinisher',
 					'apps-pagetree-page-shortcut-external'],
 			],
 		],
@@ -129,12 +129,12 @@ $columns = [
 			'type' => 'flex',
 			'ds' => [
 				'default' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/Default.xml',
-				'UBOS\Shape\Form\Finisher\SaveSubmissionFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SaveSubmissionFinisher.xml',
-				'UBOS\Shape\Form\Finisher\SaveToDatabaseFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SaveToDatabaseFinisher.xml',
-				'UBOS\Shape\Form\Finisher\SendEmailFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SendEmailFinisher.xml',
-				'UBOS\Shape\Form\Finisher\RedirectFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/RedirectFinisher.xml',
-				'UBOS\Shape\Form\Finisher\ShowContentElementsFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/ShowContentElementsFinisher.xml',
-				'UBOS\Shape\Form\Finisher\EmailConsentFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/EmailConsentFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\SaveSubmissionFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SaveSubmissionFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\SaveToDatabaseFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SaveToDatabaseFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\SendEmailFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/SendEmailFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\RedirectFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/RedirectFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/ShowContentElementsFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\EmailConsentFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/EmailConsentFinisher.xml',
 			],
 			'ds_pointerField' => 'type',
 		],
@@ -170,7 +170,7 @@ return [
 		'0' => [
 			'showitem' => $showItem,
 		],
-		'UBOS\Shape\Form\Finisher\SaveSubmissionFinisher' => [
+		'Amdeu\Shape\Form\Finisher\SaveSubmissionFinisher' => [
 			'showitem' => $showItem,
 			'columnsOverrides' => [
 				'settings' => [
@@ -182,7 +182,7 @@ return [
 				]
 			]
 		],
-		'UBOS\Shape\Form\Finisher\SaveToDatabaseFinisher' => [
+		'Amdeu\Shape\Form\Finisher\SaveToDatabaseFinisher' => [
 			'showitem' => $showItem,
 			'columnsOverrides' => [
 				'settings' => [

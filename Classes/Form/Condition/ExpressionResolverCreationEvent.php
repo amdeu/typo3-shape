@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Condition;
+namespace Amdeu\Shape\Form\Condition;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class ExpressionResolverCreationEvent
 {

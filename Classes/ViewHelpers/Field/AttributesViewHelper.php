@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\ViewHelpers\Field;
+namespace Amdeu\Shape\ViewHelpers\Field;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use UBOS\Shape\Form\Model\FieldInterface;
+use Amdeu\Shape\Form\Model\FieldInterface;
 
 class AttributesViewHelper extends AbstractViewHelper
 {

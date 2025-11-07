@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Repository;
+namespace Amdeu\Shape\Repository;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
 class ShowContentElementsFinisher extends AbstractFinisher
 {

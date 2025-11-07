@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\SpamProtection;
+namespace Amdeu\Shape\Form\SpamProtection;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 

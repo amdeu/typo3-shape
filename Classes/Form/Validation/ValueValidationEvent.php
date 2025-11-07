@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Validation;
+namespace Amdeu\Shape\Form\Validation;
 
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator as ExtbaseValidator;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class ValueValidationEvent
 {

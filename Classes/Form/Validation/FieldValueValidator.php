@@ -1,11 +1,11 @@
 <?php
 
-namespace UBOS\Shape\Form\Validation;
+namespace Amdeu\Shape\Form\Validation;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 class FieldValueValidator
 {

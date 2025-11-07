@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Model;
+namespace Amdeu\Shape\Form\Model;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Collection\LazyRecordCollection;

@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\Form\Processing;
+namespace Amdeu\Shape\Form\Processing;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 class FieldValueProcessor
 {

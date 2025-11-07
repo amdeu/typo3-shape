@@ -1,12 +1,12 @@
 <?php
 
-namespace UBOS\Shape\Form\Validation;
+namespace Amdeu\Shape\Form\Validation;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase\Validation\Validator as ExtbaseValidator;
-use UBOS\Shape\Form;
-use UBOS\Shape\Form\Validator;
+use Amdeu\Shape\Form;
+use Amdeu\Shape\Form\Validator;
 
 final class ValueValidationConfigurator
 {

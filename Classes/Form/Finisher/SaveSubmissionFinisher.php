@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
 use TYPO3\CMS\Core;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Repository;
 
 class SaveSubmissionFinisher extends AbstractFinisher
 {

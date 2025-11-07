@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -9,8 +9,8 @@ use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Validation\Error;
-use UBOS\Shape\Form;
-use UBOS\Shape\Utility;
+use Amdeu\Shape\Form;
+use Amdeu\Shape\Utility;
 
 #[Autoconfigure(public: true, shared: false)]
 abstract class AbstractFinisher implements FinisherInterface, LoggerAwareInterface

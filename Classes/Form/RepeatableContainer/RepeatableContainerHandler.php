@@ -1,11 +1,11 @@
 <?php
 
-namespace UBOS\Shape\Form\RepeatableContainer;
+namespace Amdeu\Shape\Form\RepeatableContainer;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Domain\Event\RecordCreationEvent;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class RepeatableContainerHandler
 {
@@ -17,7 +17,7 @@ final class RepeatableContainerHandler
 		protected readonly Form\Condition\FieldConditionResolver   $fieldConditionResolver,
 	) {}
 
-	#[AsEventListener(before: 'UBOS\Shape\EventListener\RecordCreator')]
+	#[AsEventListener(before: 'Amdeu\Shape\EventListener\RecordCreator')]
 	public function createRecord(RecordCreationEvent $event): void
 	{
 		if ($event->isPropagationStopped()) {
@@ -55,7 +55,7 @@ final class RepeatableContainerHandler
 		}
 	}
 
-	#[AsEventListener(after: 'UBOS\Shape\EventListener\ValueValidationConfigurator')]
+	#[AsEventListener(after: 'Amdeu\Shape\EventListener\ValueValidationConfigurator')]
 	public function validateValue(Form\Validation\ValueValidationEvent $event): void
 	{
 		$field = $event->field;
@@ -79,7 +79,7 @@ final class RepeatableContainerHandler
 		$event->result = $result;
 	}
 
-	#[AsEventListener(before: 'UBOS\Shape\EventListener\ValueSerializationHandler')]
+	#[AsEventListener(before: 'Amdeu\Shape\EventListener\ValueSerializationHandler')]
 	public function serializeValue(Form\Serialization\ValueSerializationEvent $event): void
 	{
 		$field = $event->field;
@@ -107,7 +107,7 @@ final class RepeatableContainerHandler
 		$event->serializedValue = $serializedValue;
 	}
 
-	#[AsEventListener(before: 'UBOS\Shape\EventListener\ValueProcessingHandler')]
+	#[AsEventListener(before: 'Amdeu\Shape\EventListener\ValueProcessingHandler')]
 	public function processValue(Form\Processing\ValueProcessingEvent $event): void
 	{
 		$field = $event->field;

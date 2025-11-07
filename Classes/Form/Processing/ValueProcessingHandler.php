@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Processing;
+namespace Amdeu\Shape\Form\Processing;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core;

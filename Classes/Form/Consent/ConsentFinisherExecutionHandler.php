@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\Form\Consent;
+namespace Amdeu\Shape\Form\Consent;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class ConsentFinisherExecutionHandler
 {

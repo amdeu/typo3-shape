@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Controller;
+namespace Amdeu\Shape\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 // todo: FormReflection with things like fieldNames, finisher types, other field information
 // todo: FormBuilder to build virtual forms, createFromYaml method

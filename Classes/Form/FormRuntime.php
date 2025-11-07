@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form;
+namespace Amdeu\Shape\Form;
 
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
@@ -246,7 +246,7 @@ class FormRuntime
 		$this->eventDispatcher->dispatch($event);
 		$finisher = Core\Utility\GeneralUtility::makeInstance($event->finisherClassName);
 		if (!($finisher instanceof Finisher\FinisherInterface)) {
-			throw new \InvalidArgumentException('Argument "finisherClassName" must the name of a class that implements UBOS\Shape\Form\Finisher\FinisherInterface.', 1741369249);
+			throw new \InvalidArgumentException('Argument "finisherClassName" must the name of a class that implements Amdeu\Shape\Form\Finisher\FinisherInterface.', 1741369249);
 		}
 		$finisher->setSettings($event->settings);
 		return $finisher;

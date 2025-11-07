@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Controller;
+namespace Amdeu\Shape\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use UBOS\Shape\Form;
-use UBOS\Shape\Enum;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Form;
+use Amdeu\Shape\Enum;
+use Amdeu\Shape\Repository;
 
 class ConsentController extends ActionController
 {

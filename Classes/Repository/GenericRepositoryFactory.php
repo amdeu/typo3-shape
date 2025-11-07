@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Repository;
+namespace Amdeu\Shape\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;

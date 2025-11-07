@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Enum;
+namespace Amdeu\Shape\Enum;
 
 enum ConsentStatus: int
 {

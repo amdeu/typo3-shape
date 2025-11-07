@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form;
+namespace Amdeu\Shape\Form;
 
 use TYPO3\CMS\Core;
 

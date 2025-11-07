@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form;
+namespace Amdeu\Shape\Form;
 
 final class FormRuntimeCreationEvent
 {

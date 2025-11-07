@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Validator;
+namespace Amdeu\Shape\Form\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Repository;
 
 final class UniqueInTableValidator extends AbstractValidator
 {

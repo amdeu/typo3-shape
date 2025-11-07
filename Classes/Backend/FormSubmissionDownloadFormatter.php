@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Backend;
+namespace Amdeu\Shape\Backend;
 
 use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadIsExecutedEvent;
 use TYPO3\CMS\Core\Attribute\AsEventListener;

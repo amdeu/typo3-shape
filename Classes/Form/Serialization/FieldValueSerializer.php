@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\Form\Serialization;
+namespace Amdeu\Shape\Form\Serialization;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 class FieldValueSerializer
 {

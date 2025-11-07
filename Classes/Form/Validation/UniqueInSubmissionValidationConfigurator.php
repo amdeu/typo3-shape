@@ -1,10 +1,10 @@
 <?php
 
-namespace UBOS\Shape\Form\Validation;
+namespace Amdeu\Shape\Form\Validation;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class UniqueInSubmissionValidationConfigurator
 {

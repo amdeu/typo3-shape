@@ -1,10 +1,10 @@
 <?php
 
-namespace UBOS\Shape\Form\Condition;
+namespace Amdeu\Shape\Form\Condition;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 class FieldConditionResolver
 {

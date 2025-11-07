@@ -1,10 +1,10 @@
 <?php
 
-namespace UBOS\Shape\Command;
+namespace Amdeu\Shape\Command;
 
 use Symfony\Component\Console;
 use Symfony\Component\Console\Command\Command;
-use UBOS\Shape\Utility;
+use Amdeu\Shape\Utility;
 
 #[Console\Attribute\AsCommand(
 	name: 'shape:mirror-form-finisher-relations',

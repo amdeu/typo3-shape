@@ -1,6 +1,6 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\TcaUtility as Util;
 
 $ctrl = [
 	'label' => 'title',
@@ -46,7 +46,7 @@ $columns = [
 				'replacements' => [ '/' => '' ],
 			],
 			'appearance' => [
-				'prefix' => \UBOS\Shape\UserFunctions\Tca::class . '->getEmptySlugPrefix',
+				'prefix' => \Amdeu\Shape\UserFunctions\Tca::class . '->getEmptySlugPrefix',
 			],
 			'fallbackCharacter' => '-',
 			'eval' => 'uniqueInSite',

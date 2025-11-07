@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Condition;
+namespace Amdeu\Shape\Form\Condition;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use UBOS\Shape\Enum;
+use Amdeu\Shape\Enum;
 
 class ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 {

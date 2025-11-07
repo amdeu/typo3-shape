@@ -1,11 +1,11 @@
 <?php
 
-namespace UBOS\Shape\Form;
+namespace Amdeu\Shape\Form;
 
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Repository;
 
 class FormRuntimeFactory implements FormRuntimeFactoryInterface
 {

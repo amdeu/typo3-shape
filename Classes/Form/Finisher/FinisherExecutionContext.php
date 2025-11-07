@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
 use Psr\Http\Message\ResponseInterface;
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 class FinisherExecutionContext
 {

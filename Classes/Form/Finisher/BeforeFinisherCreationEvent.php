@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class BeforeFinisherCreationEvent
 {

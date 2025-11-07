@@ -1,7 +1,7 @@
 <?php
 
-use UBOS\Shape\Controller;
-use UBOS\Shape\Utility\PluginUtility;
+use Amdeu\Shape\Controller;
+use Amdeu\Shape\Utility\PluginUtility;
 
 defined('TYPO3') or die();
 
@@ -17,7 +17,7 @@ PluginUtility::configure(
 	[Controller\ConsentController::class => 'consentVerification'],
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['shape'] = ['UBOS\Shape\ViewHelpers'];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['shape'] = ['Amdeu\Shape\ViewHelpers'];
 $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['tx_shape_input_field'] = 'EXT:shape/Configuration/RTE/InputField.yaml';
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape'] = [
@@ -40,7 +40,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
 }
 
 // Configure logging for ALL environments
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['UBOS']['Shape']['writerConfiguration'] = [
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['writerConfiguration'] = [
 	// Log everything from DEBUG level up
 	\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
 		// Write to database for Log module
@@ -53,7 +53,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['UBOS']['Shape']['writerConfiguration'] = [
 ];
 
 // Ensure the threshold doesn't filter out our logs
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['UBOS']['Shape']['processorConfiguration'] = [
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['processorConfiguration'] = [
 	\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
 		\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class => [],
 	],

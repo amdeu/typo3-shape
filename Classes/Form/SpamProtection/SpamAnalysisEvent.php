@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\SpamProtection;
+namespace Amdeu\Shape\Form\SpamProtection;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class SpamAnalysisEvent
 {

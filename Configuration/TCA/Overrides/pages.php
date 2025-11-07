@@ -1,6 +1,6 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\TcaUtility as Util;
 
 $GLOBALS['TCA']['pages']['columns']['module']['config']['items'][] = [
 	'label' =>  Util::t('page.shape-folder'),

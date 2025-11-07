@@ -28,7 +28,7 @@ plugin.tx_shape {
             }
         }
         finisherDefaults {
-            UBOS\Shape\Form\Finisher\EmailConsentFinisher {
+            Amdeu\Shape\Form\Finisher\EmailConsentFinisher {
                 consentPage = 0
                 splitFinisherExecution = 1
                 deleteAfterConfirmation = 1

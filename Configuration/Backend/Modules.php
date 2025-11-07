@@ -1,6 +1,6 @@
 <?php
 
-use UBOS\Shape\Controller;
+use Amdeu\Shape\Controller;
 
 return [
 ];

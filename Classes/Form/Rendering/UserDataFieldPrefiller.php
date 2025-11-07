@@ -1,9 +1,9 @@
 <?php
 
-namespace UBOS\Shape\Form\Rendering;
+namespace Amdeu\Shape\Form\Rendering;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Repository;
 
 final class UserDataFieldPrefiller
 {

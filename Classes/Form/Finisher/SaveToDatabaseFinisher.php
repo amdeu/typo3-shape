@@ -1,8 +1,8 @@
 <?php
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Repository;
 
 class SaveToDatabaseFinisher extends AbstractFinisher
 {

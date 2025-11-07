@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace UBOS\Shape\Utility;
+namespace Amdeu\Shape\Utility;
 
 /**
  * Parser for interpolating variables in templates.

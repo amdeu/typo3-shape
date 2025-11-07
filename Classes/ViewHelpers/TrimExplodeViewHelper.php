@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\ViewHelpers;
+namespace Amdeu\Shape\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 

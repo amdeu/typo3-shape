@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Repository;
+namespace Amdeu\Shape\Repository;
 
 class EmailConsentRepository extends AbstractRecordRepository
 {

@@ -16,7 +16,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"UBOS\\Shape\\": "Classes/"
+			"Amdeu\\Shape\\": "Classes/"
 		}
 	},
 	"extra": {

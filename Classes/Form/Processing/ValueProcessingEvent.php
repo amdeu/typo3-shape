@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Processing;
+namespace Amdeu\Shape\Form\Processing;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class ValueProcessingEvent
 {

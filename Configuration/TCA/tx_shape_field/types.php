@@ -1,6 +1,6 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\TcaUtility as Util;
 
 $showItemBase = '
     --div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.extended,

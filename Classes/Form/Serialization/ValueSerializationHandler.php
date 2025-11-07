@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Form\Serialization;
+namespace Amdeu\Shape\Form\Serialization;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core;

@@ -1,13 +1,13 @@
 <?php
 
-namespace UBOS\Shape\Form\Finisher;
+namespace Amdeu\Shape\Form\Finisher;
 
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
-use UBOS\Shape\Form;
-use UBOS\Shape\Enum;
-use UBOS\Shape\Repository;
+use Amdeu\Shape\Form;
+use Amdeu\Shape\Enum;
+use Amdeu\Shape\Repository;
 
 class EmailConsentFinisher extends AbstractFinisher
 {

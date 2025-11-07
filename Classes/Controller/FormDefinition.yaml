@@ -1,10 +1,10 @@
 name: signup
 title: Signup
 finishers:
-  - type: UBOS\Shape\Form\Finisher\RedirectFinisher
+  - type: Amdeu\Shape\Form\Finisher\RedirectFinisher
     settings:
-      uri: 'https://www.ubos.net/thank-you'
-  - type: UBOS\Shape\Form\Finisher\EmailConsentFinisher
+      uri: 'https://www.amdeu.net/thank-you'
+  - type: Amdeu\Shape\Form\Finisher\EmailConsentFinisher
     settings:
       storagePage: 187
       consentPage: 188

@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\UserFunctions;
+namespace Amdeu\Shape\UserFunctions;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug;
 use TYPO3\CMS\Core\Utility\DebugUtility;

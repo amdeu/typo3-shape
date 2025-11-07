@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Backend;
+namespace Amdeu\Shape\Backend;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
@@ -16,7 +16,7 @@ final readonly class FlexformConfigurationModifier
 		if (
 			$identifier['type'] === 'tca'
 			&& $identifier['tableName'] === 'tx_shape_finisher'
-			&& $identifier['dataStructureKey'] === 'UBOS\Shape\Form\Finisher\SendEmailFinisher'
+			&& $identifier['dataStructureKey'] === 'Amdeu\Shape\Form\Finisher\SendEmailFinisher'
 		) {
 			$dataStructure = $event->getDataStructure();
 			$dataStructure['sheets']['mail']['ROOT']['el']['template']['config']['items'] = [];

@@ -1,7 +1,7 @@
 <?php
 
-use UBOS\Shape\Utility\TcaUtility as Util;
-use UBOS\Shape\Utility\PluginUtility;
+use Amdeu\Shape\Utility\TcaUtility as Util;
+use Amdeu\Shape\Utility\PluginUtility;
 
 
 defined('TYPO3') or die();

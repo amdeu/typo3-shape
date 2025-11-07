@@ -1,6 +1,6 @@
 <?php
 
-namespace UBOS\Shape\Utility;
+namespace Amdeu\Shape\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;

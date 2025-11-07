@@ -1,4 +1,4 @@
-name: ubos/shape
+name: amdeu/shape
 label: Shape
 dependencies:
   - typo3/fluid-styled-content

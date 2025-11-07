@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\Form\Rendering;
+namespace Amdeu\Shape\Form\Rendering;
 
-use UBOS\Shape\Form;
+use Amdeu\Shape\Form;
 
 final class BeforeFormRenderEvent
 {
