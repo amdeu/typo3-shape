@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UBOS\Shape\SpamProtection\EventListener;
+namespace UBOS\Shape\Form\SpamProtection;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Http\RequestFactory;
