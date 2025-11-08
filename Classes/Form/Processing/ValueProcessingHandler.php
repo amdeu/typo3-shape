@@ -5,6 +5,10 @@ namespace Amdeu\Shape\Form\Processing;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core;
 
+/**
+ * Listener for @see ValueProcessingEvent
+ * Implementation of default value processing for form fields.
+ */
 final class ValueProcessingHandler
 {
 	#[AsEventListener]

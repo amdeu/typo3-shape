@@ -34,6 +34,9 @@ class FormRuntime
 		$this->eventDispatcher->dispatch($event);
 	}
 
+	/**
+	 * Sets the session values of all form fields from the form session
+	 */
 	public function setFieldSessionValues(): self
 	{
 		foreach ($this->form->getPages() as $page) {
@@ -46,6 +49,9 @@ class FormRuntime
 		return $this;
 	}
 
+	/**
+	 * Analyzes the form submission for spam indicators by dispatching a SpamAnalysisEvent
+	 */
 	public function findSpamReasons(): array
 	{
 		$event = new SpamProtection\SpamAnalysisEvent($this);
@@ -54,6 +60,9 @@ class FormRuntime
 		return $this->spamReasons;
 	}
 
+	/**
+	 * Checks if the current request is intended for this plugin instance; necessary in case of multiple plugins on one page
+	 */
 	public function isRequestedPlugin(): bool
 	{
 		if (!isset($this->request->getArguments()['pluginUid'])) {
@@ -63,16 +72,26 @@ class FormRuntime
 		return $this->request->getArguments()['pluginUid'] == $uid;
 	}
 
+	/**
+	 * Checks if the current request is a form POST request for this form
+	 */
 	public function isFormPostRequest(): bool
 	{
 		return $this->request->getMethod() === 'POST' && array_key_exists($this->parsedBodyKey, $this->request->getParsedBody());
 	}
 
+	/**
+	 * Adds messages to be displayed on the form page
+	 */
 	public function addMessages(array $messages): void
 	{
 		$this->messages = array_merge($this->messages, $messages);
 	}
 
+	/**
+	 * Renders the form page for the given page index
+	 * Resolves field display conditions before rendering
+	 */
 	public function renderPage(int $pageIndex = 1): string
 	{
 		$pages = $this->form->getPages();
@@ -114,6 +133,9 @@ class FormRuntime
 		return $this->view->render('Form');
 	}
 
+	/**
+	 * Validates all fields on the given page index
+	 */
 	public function validatePage(int $pageIndex): void
 	{
 		$page = $this->form->getPages()[$pageIndex - 1] ?? null;
@@ -132,6 +154,9 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Serializes all field values on the given page index
+	 */
 	public function serializePage(int $pageIndex): void
 	{
 		$page = $this->form->getPages()[$pageIndex - 1] ?? null;
@@ -147,6 +172,10 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Validates all pages and their fields in the form
+	 * Stops at the first page with validation errors
+	 */
 	public function validateForm(): void
 	{
 		foreach ($this->form->getPages() as $index => $page) {
@@ -159,6 +188,9 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Serializes all pages and their fields in the form
+	 */
 	public function serializeForm(): void
 	{
 		foreach ($this->form->getPages() as $index => $page) {
@@ -166,6 +198,9 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Processes all field values in the form
+	 */
 	public function processForm(): void
 	{
 		foreach ($this->form->getPages() as $page) {
@@ -179,6 +214,12 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Executes finishers configured for the form
+	 * Finishers are executed in the order they are defined
+	 * Considers finisher conditions and calls finisher validation which can prevent execution if errors occur
+	 * Finishers can also cancel further execution of subsequent finishers
+	 */
 	public function finishForm(array $conditionVariables = []): Finisher\FinisherExecutionContext
 	{
 		$context = new Finisher\FinisherExecutionContext($this);
@@ -234,6 +275,9 @@ class FormRuntime
 		return $context;
 	}
 
+	/**
+	 * Creates an instance of a finisher based on the given configuration
+	 */
 	public function createFinisherInstance(Model\FinisherConfigurationInterface $configuration): Finisher\FinisherInterface
 	{
 		// todo: maybe add "finisherDefaults". Problem is there's no good way to merge. ArrayUtility::mergeRecursiveWithOverrule either overwrites everything or discards empty values ('' and '0'), but we want to keep '0', otherwise checkboxes can't overwrite with false. Extbase has "ignoreFlexFormSettingsIfEmpty" but that doesn't really solve the problem either. To have booleans with default values, we'd need to render them as selects with values '', '0', '1' and then only ignore ''.
@@ -252,6 +296,9 @@ class FormRuntime
 		return $finisher;
 	}
 
+	/**
+	 * Creates an expression resolver with the given additional variables
+	 */
 	public function createExpressionResolver(array $variables): Core\ExpressionLanguage\Resolver
 	{
 		$variables = array_merge([
@@ -269,11 +316,17 @@ class FormRuntime
 		);
 	}
 
+	/**
+	 * Gets the value of a field from the form session
+	 */
 	public function getFieldValue(Model\FieldInterface $field): mixed
 	{
 		return $this->session->values[$field->getName()] ?? null;
 	}
 
+	/**
+	 * Sets the value of a field in the form session
+	 */
 	public function setFieldValue(Model\FieldInterface $field, mixed $value): void
 	{
 		$field->setSessionValue($value);
@@ -284,11 +337,17 @@ class FormRuntime
 		}
 	}
 
+	/**
+	 * Returns whether the form runtime has validation errors
+	 */
 	public function getHasErrors(): bool
 	{
 		return $this->hasErrors;
 	}
 
+	/**
+	 * Returns the upload folder path for the current session
+	 */
 	public function getSessionUploadFolder(): string
 	{
 		return explode(':', $this->settings['uploadFolder'])[1] . $this->session->getId() . '/';

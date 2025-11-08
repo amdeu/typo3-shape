@@ -13,6 +13,14 @@ class FieldValueProcessor
 	{
 	}
 
+	/**
+	 * Processes a field value by dispatching a @see ValueProcessingEvent
+	 *
+	 * @param Form\FormRuntime $runtime The form runtime context.
+	 * @param Form\Model\FieldInterface $field The field being processed.
+	 * @param mixed $value The original value of the field.
+	 * @return mixed The processed value, or the original value if not modified.
+	 */
 	public function process(
 		Form\FormRuntime $runtime,
 		Form\Model\FieldInterface $field,

@@ -6,6 +6,9 @@ namespace Amdeu\Shape\Form\Processing;
 
 use Amdeu\Shape\Form;
 
+/**
+ * Event dispatched by @see FieldValueProcessor to allow listeners to process field values.
+ */
 final class ValueProcessingEvent
 {
 	public function __construct(

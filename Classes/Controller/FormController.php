@@ -30,6 +30,9 @@ class FormController extends ActionController
 	protected Form\FormRuntime $runtime;
 	protected int $fragmentPageTypeNum = 1761312405;
 
+	/**
+	 * Renders the static initial form page or the lazy loader
+	 */
 	public function renderAction(): ResponseInterface
 	{
 		$pageType = (int)($this->request->getQueryParams()['type'] ?? 0);
@@ -41,6 +44,9 @@ class FormController extends ActionController
 		return $this->formPage();
 	}
 
+	/**
+	 * Handles the dynamic form process; page navigation, validation, processing and executing finishers
+	 */
 	public function runAction(int $pageIndex = 0): ResponseInterface
 	{
 		$this->initializeRuntime();
@@ -81,6 +87,9 @@ class FormController extends ActionController
 		return $finishResult->response ?? $this->redirect('finished', arguments: $finishResult->finishedActionArguments);
 	}
 
+	/**
+	 * Renders view after form is finished
+	 */
 	public function finishedAction(): ResponseInterface
 	{
 		$this->initializeRuntime();

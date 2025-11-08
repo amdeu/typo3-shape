@@ -1,7 +1,7 @@
 {
-	"name": "oliveoilexpert/typo3-shape",
+	"name": "amdeu/typo3-shape",
 	"type": "typo3-cms-extension",
-	"description": "Flexible form extension",
+	"description": "Extensible and editor-friendly TYPO3 Form Extension",
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": "^8.2",
