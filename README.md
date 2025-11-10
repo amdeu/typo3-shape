@@ -54,25 +54,25 @@ Update database schema via **Admin Tools → Maintenance → Analyze Database St
 vendor/bin/typo3 database:updateschema
 ```
 
-See [Getting Started](GettingStarted.md) for details.
+See [Getting Started](Documentation/GettingStarted.md) for details.
 
 ## Documentation
 
 ### Getting Started
-- **[Getting Started](GettingStarted.md)** - Installation and first form
-- **[Editor Guide](EditorGuide.md)** - Building forms in the backend
+- **[Getting Started](Documentation/GettingStarted.md)** - Installation and first form
+- **[Editor Guide](Documentation/EditorGuide.md)** - Building forms in the backend
 
 ### Reference
-- **[Field Reference](FieldReference.md)** - Field types, properties, and validation
-- **[Finishers Reference](Finishers.md)** - All finishers and their settings
+- **[Field Reference](Documentation/FieldReference.md)** - Field types, properties, and validation
+- **[Finishers Reference](Documentation/Finishers.md)** - All finishers and their settings
 
 ### Feature Guides
-- **[Repeatable Field Groups](RepeatableContainer.md)** - Dynamic fieldsets
-- **[Display Conditions](Conditions.md)** - Show/hide fields based on values
+- **[Repeatable Field Groups](Documentation/RepeatableContainer.md)** - Dynamic fieldsets
+- **[Display Conditions](Documentation/Conditions.md)** - Show/hide fields based on values
 
 ### Advanced
-- **[Customization Guide](CustomizationGuide.md)** - TypoScript, templates, events, and custom finishers
+- **[Customization Guide](Documentation/CustomizationGuide.md)** - TypoScript, templates, events, and custom finishers
 
 ## License
 
-MIT License - see [LICENSE](../LICENSE)
+MIT License - see [LICENSE](LICENSE)
