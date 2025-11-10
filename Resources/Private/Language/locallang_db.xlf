@@ -112,7 +112,7 @@
 			<trans-unit id="field.readonly"><source>Readonly</source></trans-unit>
 			<trans-unit id="field.multiple"><source>Multiple</source></trans-unit>
 			<trans-unit id="field.pattern"><source>Regular Expression Pattern</source></trans-unit>
-			<trans-unit id="field.accept"><source>Accepted MIME Types</source></trans-unit>
+			<trans-unit id="field.accept"><source>Accepted File Types</source></trans-unit>
 			<trans-unit id="field.maxlength"><source>Maximum length</source></trans-unit>
 			<trans-unit id="field.min"><source>Minimum</source></trans-unit>
 			<trans-unit id="field.max"><source>Maximum</source></trans-unit>
