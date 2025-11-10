@@ -28,15 +28,72 @@ All finishers have:
 
 ### Template Variables
 
-Many finisher settings support `{{field-name}}` syntax to insert form values:
+Many finisher settings support `{{ variable }}` syntax to dynamically insert form values. The template variable parser provides several powerful features for accessing and formatting data.
+> **📌 Note:** While the included finishers provide only the form values to the TemplateVariableParser, custom finishers could expose other variables to its settings.
 
+#### Basic Syntax
+
+**Simple variable replacement:**
 ```
 Subject: New Contact from {{first-name}} {{last-name}}
 Recipient: {{email-address}}
 URL: https://example.com/thanks?ref={{reference-code}}
 ```
 
-> **📌 Note:** Use actual field names in kebab-case.
+**Object property access:**
+```
+{{objectVariable.property}}
+```
+The parser tries getter methods first (e.g., `getProperty()`), then falls back to property access.
+
+#### Array Operations
+
+**Array to comma-separated list:**
+```
+Selected options: {{selected-items[]}}
+```
+Converts array `['Option A', 'Option B', 'Option C']` to `"Option A, Option B, Option C"`
+
+**Array property extraction:**
+```
+Email addresses: {{contacts[].email}}
+Names: {{family-members[].name}}
+```
+Extracts a specific property from each array element and joins with commas.
+
+**Nested array access:**
+```
+{{user.addresses[].city}}
+```
+
+#### Examples
+
+**Contact form email subject:**
+```
+New inquiry from {{first-name}} {{last-name}} about {{inquiry-topics[]}}
+```
+
+**Email recipient with multiple contacts:**
+```
+{{primary-contact}}, {{additional-contacts[].email}}
+```
+Result: `admin@example.com, user1@example.com, user2@example.com`
+
+**Redirect URL with multiple parameters:**
+```
+https://example.com/thanks?name={{name}}&interests={{interests[]}}
+```
+
+#### Behavior Notes
+
+- **Whitespace:** Spaces around variable names are ignored: `{{ field-name }}` = `{{field-name}}`
+- **Missing values:** If variable doesn't exist, the placeholder remains unchanged: `{{missing-field}}`
+- **Arrays without []:** Arrays without the `[]` operator remain as placeholder: `{{array-field}}`
+- **Null values:** Null values are skipped in array operations
+- **Nested arrays:** Nested arrays are skipped in array operations
+- **Empty results:** Empty arrays produce empty string: `{{empty-array[]}}` → `""`
+
+> **📌 Note:** Use actual field names as defined in the field records.
 
 ### Finisher Conditions
 
@@ -49,7 +106,7 @@ isConsentDismissed()
 isBeforeConsent()
 ```
 
-See [Conditions Guide](Conditions.md) for full syntax.
+See [Conditions Guide](Conditions.md) for server-side condition details.
 
 ---
 
@@ -59,44 +116,30 @@ Sends an email with form values.
 
 ### Settings
 
-#### Mail Tab
+#### Mail
 
-**Template** ✱
-Email template selection (configurable via ext_localconf.php)
+| Setting            | Description                                                       |
+|--------------------|-------------------------------------------------------------------|
+| **Template** ✱     | Email template selection (configurable via ext_localconf.php)     |
+| **Subject** ✱      | Email subject line. **Supports template variables.**              |
+| **Body** ✱         | Email body content (RTE-enabled). **Supports template variables.** |
+| **Attach Uploads** | Checkbox to attach uploaded files to email                        |
 
-**Subject** ✱
-Email subject line. Supports `{{field-name}}` variables.
+#### Recipients
 
-**Body** ✱
-Email body content (RTE-enabled). Supports `{{field-name}}` variables.
+| Setting                          | Description                                                                                                                                      |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Recipient Email Addresses** ✱  | Comma-separated list of recipient emails. **Supports template variables.** Example: `admin@example.com, {{contact-email}}, {{members[].email}}` |
+| **CC Recipient Email Addresses** | CC recipients. **Supports template variables.**                                                                                                  |
+| **BCC Recipient Email Addresses** | BCC recipients. **Supports template variables.**                                                                                                 |
+| **Reply-to Email Addresses**     | Reply-to address. **Supports template variables.**                                                                                               |
 
-**Attach Uploads**
-Checkbox to attach uploaded files to email
+#### Sender
 
-#### Recipients Tab
-
-**Recipient Email Addresses** ✱
-Comma-separated list of recipient emails. Supports `{{field-name}}` variables.
-Example: `admin@example.com, {{contact-email}}`
-
-**CC Recipient Email Addresses**
-CC recipients (optional)
-
-**BCC Recipient Email Addresses**
-BCC recipients (optional)
-
-**Reply-to Email Addresses**
-Reply-to address (optional). Supports `{{field-name}}`.
-
-#### Sender Tab
-
-**Sender Email Address**
-Sender email. Falls back to `$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']`
-
-**Sender Name**
-Sender name. Falls back to `$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']`
-
-> **⚠️ Security:** Don't use user-submitted email as sender address. Use `noreply@yourdomain.com` and set Reply-to to `{{user-email}}` if needed.
+| Setting                  | Description                                                                  |
+|--------------------------|------------------------------------------------------------------------------|
+| **Sender Email Address** | Sender email. Falls back to `$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']` |
+| **Sender Name**          | Sender name. Falls back to `$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']` |
 
 ### Example: Contact Form Email
 
@@ -121,17 +164,12 @@ Saves form submission to `tx_shape_form_submission` table.
 
 ### Settings
 
-**Submission Storage Page** ✱
-Page where submission records are stored
-
-**Exclude fields from saved data**
-Comma-separated field names to exclude (e.g., `password,credit-card`)
-
-**Save User Agent and IP-Address**
-Checkbox to save user's IP and browser info
-
-**Connect to original language form**
-For multi-language sites: connect submissions to original language form record instead of translated version
+| Setting                                 | Description                                                                                              |
+|-----------------------------------------|----------------------------------------------------------------------------------------------------------|
+| **Submission Storage Page** ✱           | Page where submission records are stored                                                                 |
+| **Exclude fields from saved data**      | Comma-separated field names to exclude (e.g., `password,credit-card`)                                    |
+| **Save User Agent and IP-Address**      | Checkbox to save user's IP and browser info                                                              |
+| **Connect to original language form**   | For multi-language sites: connect submissions to original language form record instead of translated version |
 
 ### Submission Record
 
@@ -157,26 +195,17 @@ Save User Agent and IP-Address: Yes
 
 ## 💿 Save to Database
 
-Saves form values to a custom database table.
+Saves form values to a custom database table. In most cases, a custom finisher and validation logic should be implemented instead.
 
 ### Settings
 
-**Table Name** ✱
-Target database table (e.g., `tx_myext_contact`, `fe_users`)
-
-**Record Storage Page**
-PID where record is stored
-
-**Update Row where Column ...**
-Column name for UPDATE queries (optional, for updating existing records)
-
-**... equals Value**
-Value to match for UPDATE queries. Supports `{{field-name}}`.
-
-**Columns**
-Repeatable section for field mapping:
-- **Name** - Database column name
-- **Value** - Form field name or static value. Supports `{{field-name}}`.
+| Setting                        | Description                                                                        |
+|--------------------------------|------------------------------------------------------------------------------------|
+| **Table Name** ✱               | Target database table (e.g., `tx_myext_contact`, `fe_users`)                      |
+| **Record Storage Page**        | PID where record is stored                                                         |
+| **Update Row where Column ...** | Column name for UPDATE queries (optional, for updating existing records)           |
+| **... equals Value**           | Value to match for UPDATE queries. **Supports template variables.**                |
+| **Columns**                    | Repeatable section for field mapping:<br>• **Name** - Database column name<br>• **Value** - Form field name or static value. **Supports template variables.** |
 
 ### Insert vs Update
 
@@ -186,24 +215,8 @@ Table Name: tx_myext_newsletter
 Columns:
   email → {{email-address}}
   first_name → {{first-name}}
-  optin_date → {{__TIMESTAMP__}}
 ```
 
-**Update existing record:**
-```
-Table Name: fe_users
-Update Row where Column: uid
-... equals Value: {{fe_user_uid}}
-Columns:
-  address → {{street-address}}
-  zip → {{postal-code}}
-```
-
-### Special Values
-
-- `{{__TIMESTAMP__}}` - Current Unix timestamp
-- `{{field-name}}` - Form field value
-- Static values - Direct input (e.g., `1`, `active`, `pending`)
 
 ### Example: Newsletter Subscription
 
@@ -214,8 +227,6 @@ Record Storage Page: Newsletter Data (ID: 456)
 Columns:
   email → {{email-address}}
   name → {{first-name}} {{last-name}}
-  consent_date → {{__TIMESTAMP__}}
-  status → active
 ```
 
 ---
@@ -226,45 +237,31 @@ Sends verification email with approval link. Subsequent finishers can be re-exec
 
 ### Settings
 
-#### Consent Tab
+#### Consent
 
-**Consent Storage Page** ✱
-Page where consent records are stored
+| Setting                                      | Description                                                                                                                                                                                                                                                                          |
+|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Consent Storage Page** ✱                   | Page where consent records are stored                                                                                                                                                                                                                                                |
+| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Email Consent Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                       |
+| **Expiration Time in Seconds**               | How long the verification link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                                  |
+| **Split Finisher Execution**                 | **Recommended**<br>When enabled: finishers before this run immediately, finishers after run only after approval<br>When disabled: all finishers run immediately AND after approval, fine-tune finisher execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
+| **Delete Consent Record after Confirmation** | Remove consent record from database after approval/dismissal                                                                                                                                                                                                                         |
 
-**Consent Validation Plugin Page** ✱
-Page containing the "Shape Email Consent Validation" plugin (handles approval/dismissal links)
+#### Mail
 
-**Expiration Time in Seconds**
-How long the verification link is valid (default: 86400 = 24 hours)
+| Setting                        | Description                                                        |
+|--------------------------------|--------------------------------------------------------------------|
+| **Recipient Email Address** ✱  | User's email address. **Supports template variables.**             |
+| **Subject** ✱                  | Verification email subject. **Supports template variables.**       |
+| **Body** ✱                     | Verification email body (RTE). Approval link is appended. **Supports template variables.** |
+| **Reply-to Email Address**     | Optional reply-to address. **Supports template variables.**        |
 
-**Split Finisher Execution**
-When enabled: finishers before this run immediately, finishers after run only after approval
-When disabled: all finishers run immediately, those with `isConsentApproved()` condition run again after approval
+#### Sender
 
-**Delete Consent Record after Confirmation**
-Remove consent record from database after approval/dismissal
-
-#### Mail Tab
-
-**Recipient Email Address** ✱
-User's email address. Use `{{email-field-name}}`.
-
-**Subject** ✱
-Verification email subject
-
-**Body** ✱
-Verification email body (RTE). Must include approval link. Use template or custom HTML with `{{approvalUrl}}` variable.
-
-**Reply-to Email Address**
-Optional reply-to address
-
-#### Sender Tab
-
-**Sender Email Address**
-Falls back to system default
-
-**Sender Name**
-Falls back to system default
+| Setting                  | Description                    |
+|--------------------------|--------------------------------|
+| **Sender Email Address** | Falls back to system default   |
+| **Sender Name**          | Falls back to system default   |
 
 ### Workflow
 
@@ -290,7 +287,7 @@ Use these conditions in other finishers:
 Type: Email Consent
 Recipient Email Address: {{email-address}}
 Subject: Please confirm your newsletter subscription
-Body: [Use default template or custom with {{approvalUrl}}]
+Body: ...
 Expiration Time in Seconds: 172800  (48 hours)
 Split Finisher Execution: Yes
 ```
@@ -313,13 +310,6 @@ Subject: Welcome to our newsletter!
 Recipient Email Addresses: {{email-address}}
 ```
 
-**Finisher 4: Log Dismissal** (Optional)
-```
-Type: Save to Database
-Condition: isConsentDismissed()
-Table Name: tx_myext_newsletter_dismissed
-```
-
 ---
 
 ## 🔀 Redirect
@@ -328,13 +318,9 @@ Redirects user to a page or URL after form submission.
 
 ### Settings
 
-**Redirect URL** ✱
-Target page or URL. Supports `{{field-name}}` in URL parameters.
-
-Link browser allows selection of:
-- Internal pages
-- External URLs
-- Parameters
+| Setting            | Description                                                                                                |
+|--------------------|------------------------------------------------------------------------------------------------------------|
+| **Redirect URL** ✱ | Target page or URL.<br>Link browser allows selection of:<br>• Internal pages<br>• External URLs<br>• Parameters |
 
 ### Examples
 
@@ -364,14 +350,14 @@ Displays content elements instead of redirect after submission.
 
 ### Settings
 
-**Content Elements** ✱
-Select one or more content elements to display
+| Setting                 | Description                                      |
+|-------------------------|--------------------------------------------------|
+| **Content Elements** ✱  | Select one or more content elements to display   |
 
 ### Behavior
 
 - Selected content elements rendered in place of form
-- No redirect occurs
-- User stays on same page
+- User is still redirected after form submission to respect Post/Redirect/Get pattern 
 - Content elements can contain thank-you message, related information, etc.
 
 ### Example
@@ -414,11 +400,12 @@ Form Submission
   ↓
 2. Email Consent (Split disabled)
   ↓
-3. Send Thank You Email (with condition: isConsentApproved())
+3. Send Thank You Email (with condition: isConsentApproved(), not executed yet)
+  ↓
 
 User Clicks Approval Link
   ↓
-3. Send Thank You Email (executed again)
+3. Send Thank You Email (executed)
 ```
 
 ---

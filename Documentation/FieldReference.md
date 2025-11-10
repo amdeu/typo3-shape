@@ -2,11 +2,9 @@
 
 Complete reference for all field types, properties, and validation.
 
-> **📌 Note:** Field names are auto-generated as kebab-case from labels and must be unique per PID.
-
 ## Table of Contents
 
-- [Common Properties](#-common-properties)
+- [Field Properties](#-field-properties)
 - [Text Input Fields](#-text-input-fields)
   - [Text](#text) | [Textarea](#textarea) | [Email](#email) | [Telephone](#telephone) | [Password](#password) | [URL](#url) | [Number](#number) | [Search](#search)
 - [Selection Fields](#-selection-fields)
@@ -25,59 +23,61 @@ Complete reference for all field types, properties, and validation.
 
 ---
 
-## 📋 Common Properties
+## 📋 Field Properties
 
-Properties available on most or all field types.
+All properties available in the field editor.
+
+✱ = required field,
+✓ = enables validation
 
 ### General
 
-| Property | Type | Description | Validation |
-|----------|------|-------------|------------|
-| **Label** | Text | Field title shown to user | |
-| **Name** | Slug | Field identifier (auto-generated kebab-case, unique per PID) | |
-| **Type** | Select | Field type (see types below) | |
-| **Default Value** | Text | Pre-filled value | |
-| **Required** ✓ | Checkbox | Field must be filled | [Not Empty](#notemptyvalidator) |
-| **Description** | Text | Help text below field | |
-| **Placeholder** | Text | Placeholder text (text inputs only) | |
+| Property          | Description                                                   | Validation                      |
+|-------------------|---------------------------------------------------------------|---------------------------------|
+| **Label** ✱       | Field title shown to user                                     |                                 |
+| **Name** ✱        | Field identifier (auto-generated kebab-case, unique per PID)  |                                 |
+| **Type** ✱        | Field type (see types below)                                  |                                 |
+| **Default Value** | Pre-filled value                                              |                                 |
+| **Required** ✓    | Field must be filled                                          | [Not Empty](#notemptyvalidator) |
+| **Description**   | Help text below field                                         |                                 |
+| **Placeholder**   | Placeholder text (text inputs only)                           |                                 |
 
-### Options (Advanced Tab)
+### Advanced
 
-| Property | Type | Description | Validation |
-|----------|------|-------------|------------|
-| **Disabled** | Checkbox | Field not editable, value not submitted | |
-| **Readonly** | Checkbox | Field not editable, value submitted | |
-| **Multiple** | Checkbox | Allow multiple values (select, file) | |
-| **Regular Expression Pattern** ✓ | Text | Regex validation | [Pattern](#htmlpatternvalidator) |
-| **Maximum length** ✓ | Number | Maximum characters | [String Length](#stringlengthvalidator) |
-| **Minimum** ✓ | Number/Text | Min value (number/range), min date (datetime), min file size in kB (file), min selections (multi-select) | [Range](#multipleofinrangevalidator) / [DateTime Range](#datetimerangevalidator) / [File Size](#filesizevalidator) / [Count](#countvalidator) |
-| **Maximum** ✓ | Number/Text | Max value (number/range), max date (datetime), max file size in kB (file), max selections (multi-select) | [Range](#multipleofinrangevalidator) / [DateTime Range](#datetimerangevalidator) / [File Size](#filesizevalidator) / [Count](#countvalidator) |
-| **Increment Step** ✓ | Number | Value increments (number, range, time) | [Step](#multipleofinrangevalidator) |
-| **Accepted File Types** ✓ | Text | Allowed file types (`.pdf`, `image/*`, MIME types) | [Accept](#htmlacceptvalidator) |
-| **Datalist** | Textarea | Suggestions (one per line) | |
-| **Autocomplete** | Select | Browser autocomplete type (`email`, `tel`, `name`, etc.) | |
-| **Autocomplete Modifier** | Select | Autocomplete prefix (`shipping`, `billing`) | |
-| **Confirmation input** ✓ | Checkbox | Create confirmation field (suffix: `__CONFIRM`) | [Equal](#equalvalidator) |
+| Property                         | Description                                                                                               | Validation                                                                                                                                       |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Disabled**                     | Field not editable, value not submitted                                                                   |                                                                                                                                                  |
+| **Readonly**                     | Field not editable, value submitted                                                                       |                                                                                                                                                  |
+| **Multiple**                     | Allow multiple values (select, file)                                                                      |                                                                                                                                                  |
+| **Regular Expression Pattern** ✓ | Regex validation                                                                                          | [Pattern](#htmlpatternvalidator)                                                                                                                 |
+| **Maximum length** ✓             | Maximum characters                                                                                        | [String Length](#stringlengthvalidator)                                                                                                          |
+| **Minimum** ✓                    | Min value (number/range), min date (datetime), min file size in kB (file), min selections (multi-select) | [Range](#multipleofinrangevalidator) / [DateTime Range](#datetimerangevalidator) / [File Size](#filesizevalidator) / [Count](#countvalidator)   |
+| **Maximum** ✓                    | Max value (number/range), max date (datetime), max file size in kB (file), max selections (multi-select) | [Range](#multipleofinrangevalidator) / [DateTime Range](#datetimerangevalidator) / [File Size](#filesizevalidator) / [Count](#countvalidator)   |
+| **Increment Step** ✓             | Value increments (number, range, time)                                                                    | [Step](#multipleofinrangevalidator)                                                                                                              |
+| **Accepted File Types** ✓        | Allowed file types (`.pdf`, `image/*`, MIME types)                                                        | [Accept](#htmlacceptvalidator)                                                                                                                   |
+| **Datalist**                     | Suggestions (one per line)                                                                                |                                                                                                                                                  |
+| **Autocomplete**                 | Browser autocomplete type (`email`, `tel`, `name`, etc.)                                                  |                                                                                                                                                  |
+| **Autocomplete Modifier**        | Autocomplete prefix (`shipping`, `billing`)                                                               |                                                                                                                                                  |
+| **Confirmation input** ✓         | Create confirmation field                                                                                 | [Equal](#equalvalidator)                                                                                                                         |
 
 ### Appearance
 
-| Property | Type | Description |
-|----------|------|-------------|
-| **Layout** | Select | Field layout (default: "Default") |
-| **Label Layout** | Select | "Default" or "Hidden" |
-| **Width** | Number | Percentage (20-100, e.g., 50 for half width) |
-| **CSS Class** | Text | Custom CSS classes (space-separated) |
-| **Custom Validation Message** | Text | Override default error message |
-| **Rich-Text Label** | RTE | RTE label override |
+| Property                      | Description                                  |
+|-------------------------------|----------------------------------------------|
+| **Layout**                    | Field layout (default: "Default")            |
+| **Label Layout**              | "Default" or "Hidden"                        |
+| **Width**                     | Percentage (20-100, e.g., 50 for half width) |
+| **CSS Class**                 | Custom CSS classes (space-separated)         |
+| **Custom Validation Message** | Override default error message               |
+| **Rich-Text Label**           | RTE label override                           |
 
 ### Condition
 
-| Property | Type | Description |
-|----------|------|-------------|
-| **Server-side Display Condition** | Text | Expression Language condition ([Conditions Guide](Conditions.md)) |
-| **Client-side Display Condition** | Text | Subscript condition ([Conditions Guide](Conditions.md)) |
+| Property                          | Description                                                     |
+|-----------------------------------|-----------------------------------------------------------------|
+| **Server-side Display Condition** | Expression Language condition ([Conditions Guide](Conditions.md)) |
+| **Client-side Display Condition** | Subscript condition ([Conditions Guide](Conditions.md))         |
 
-> **💡 Best Practice:** Set both server and client conditions for security and UX. See [Conditions Guide](Conditions.md).
 
 ---
 
@@ -87,8 +87,17 @@ Properties available on most or all field types.
 
 Single-line text input.
 
-**Additional Properties:** Placeholder
-**Validation:** Required, Pattern, Maximum length
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator)
 
 ---
 
@@ -96,8 +105,17 @@ Single-line text input.
 
 Multi-line text input.
 
-**Additional Properties:** Placeholder
-**Validation:** Required, Pattern, Maximum length
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator)
 
 ---
 
@@ -105,8 +123,18 @@ Multi-line text input.
 
 Email input with automatic validation.
 
-**Additional Properties:** Placeholder, Multiple (comma-separated emails), Confirmation input
-**Validation:** ✓ Required, Pattern, Maximum length, [Email format](#emailaddressvalidator)
+**Additional Properties:**
+- Placeholder
+- Multiple (comma-separated emails)
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete (defaults to `email`)
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator), [Email format](#emailaddressvalidator)
 
 ---
 
@@ -114,8 +142,17 @@ Email input with automatic validation.
 
 Phone number input.
 
-**Additional Properties:** Placeholder
-**Validation:** Required, Pattern, Maximum length
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete (defaults to `tel`)
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator)
 
 ---
 
@@ -123,9 +160,20 @@ Phone number input.
 
 Masked password input.
 
-**Additional Properties:** Placeholder, Confirmation input
-**Processing:** Values hashed with `password_hash()` before storage
-**Validation:** Required, Pattern, Maximum length
+**Additional Properties:**
+- Placeholder
+- Confirmation input ✓
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete (defaults to `new-password`)
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator), [Confirmation match](#equalvalidator)
+
+**Processing:** Value encrypted with TYPO3 password hashing
 
 ---
 
@@ -133,8 +181,17 @@ Masked password input.
 
 URL input with automatic validation.
 
-**Additional Properties:** Placeholder
-**Validation:** ✓ Required, Pattern, Maximum length, [URL format](#urlvalidator)
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete (defaults to `url`)
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator), [URL format](#urlvalidator)
 
 ---
 
@@ -142,9 +199,18 @@ URL input with automatic validation.
 
 Numeric input with step validation.
 
-**Additional Properties:** Minimum, Maximum, Increment Step, Datalist
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Increment Step ✓
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range, step offset](#multipleofinrangevalidator)
+
 **Processing:** Converted to int/float
-**Validation:** ✓ Required, [Min/max range, step offset](#multipleofinrangevalidator)
 
 ---
 
@@ -152,8 +218,17 @@ Numeric input with step validation.
 
 Search input field.
 
-**Additional Properties:** Placeholder
-**Validation:** Required, Pattern, Maximum length
+**Additional Properties:**
+- Placeholder
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓
+- Maximum length ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator)
 
 ---
 
@@ -165,8 +240,12 @@ All selection fields (except Country Select) require **Field Options** ([Editor 
 
 Dropdown selection.
 
-**Additional Properties:** None (uses Field Options)
-**Validation:** ✓ Required, [Value in options](#inarrayvalidator)
+**Additional Properties:**
+- Field Options ✓
+- Disabled
+- Readonly
+
+**Validations:** [Required](#notemptyvalidator), [Value in options](#inarrayvalidator)
 
 ---
 
@@ -174,8 +253,12 @@ Dropdown selection.
 
 Radio button group.
 
-**Additional Properties:** None (uses Field Options)
-**Validation:** ✓ Required, [Value in options](#inarrayvalidator)
+**Additional Properties:**
+- Field Options ✓
+- Disabled
+- Readonly
+
+**Validations:** [Required](#notemptyvalidator), [Value in options](#inarrayvalidator)
 
 ---
 
@@ -183,8 +266,12 @@ Radio button group.
 
 Single checkbox.
 
-**Additional Properties:** Default Value (checked state: `1` or `0`)
-**Validation:** Required
+**Additional Properties:**
+- Default Value (checked state: `1` or `0`)
+- Disabled
+- Readonly
+
+**Validations:** [Required](#notemptyvalidator)
 
 ---
 
@@ -192,8 +279,14 @@ Single checkbox.
 
 Multiple selection dropdown.
 
-**Additional Properties:** Minimum (selections), Maximum (selections)
-**Validation:** ✓ Required, [Min/max count](#countvalidator), [Values in options](#subsetarrayvalidator)
+**Additional Properties:**
+- Field Options ✓
+- Disabled
+- Readonly
+- Minimum (number of selections) ✓
+- Maximum (number of selections) ✓
+
+**Validations:** [Required](#notemptyvalidator), [Min/max count](#countvalidator), [Values in options](#subsetarrayvalidator)
 
 ---
 
@@ -201,8 +294,14 @@ Multiple selection dropdown.
 
 Checkbox group.
 
-**Additional Properties:** Minimum (selections), Maximum (selections)
-**Validation:** ✓ Required, [Min/max count](#countvalidator), [Values in options](#subsetarrayvalidator)
+**Additional Properties:**
+- Field Options ✓
+- Disabled
+- Readonly
+- Minimum (number of selections) ✓
+- Maximum (number of selections) ✓
+
+**Validations:** [Required](#notemptyvalidator), [Min/max count](#countvalidator), [Values in options](#subsetarrayvalidator)
 
 ---
 
@@ -210,8 +309,12 @@ Checkbox group.
 
 Pre-populated country dropdown.
 
-**Additional Properties:** Datalist (filter to specific ISO 3166-1 alpha-2 codes, one per line)
-**Validation:** Required
+**Additional Properties:**
+- Disabled
+- Readonly
+- Datalist (filter to specific ISO 3166-1 alpha-2 codes, one per line)
+
+**Validations:** [Required](#notemptyvalidator)
 
 ---
 
@@ -221,8 +324,16 @@ Pre-populated country dropdown.
 
 Date picker.
 
-**Additional Properties:** Minimum (date), Maximum (date), Autocomplete, Autocomplete Modifier, Datalist
-**Validation:** ✓ Required, [Min/max range](#datetimerangevalidator)
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range](#datetimerangevalidator)
 
 ---
 
@@ -230,8 +341,16 @@ Date picker.
 
 Date and time picker.
 
-**Additional Properties:** Minimum (datetime), Maximum (datetime), Autocomplete, Autocomplete Modifier, Datalist
-**Validation:** ✓ Required, [Min/max range](#datetimerangevalidator)
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range](#datetimerangevalidator)
 
 ---
 
@@ -239,8 +358,16 @@ Date and time picker.
 
 Time picker.
 
-**Additional Properties:** Minimum (time), Maximum (time), Increment Step, Autocomplete, Autocomplete Modifier, Datalist
-**Validation:** ✓ Required, [Min/max range](#datetimerangevalidator)
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range](#datetimerangevalidator)
 
 ---
 
@@ -248,8 +375,16 @@ Time picker.
 
 Month/year picker.
 
-**Additional Properties:** Minimum, Maximum, Autocomplete, Autocomplete Modifier, Datalist
-**Validation:** ✓ Required, [Min/max range](#datetimerangevalidator)
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range](#datetimerangevalidator)
 
 ---
 
@@ -257,8 +392,16 @@ Month/year picker.
 
 Week picker.
 
-**Additional Properties:** Minimum, Maximum, Autocomplete, Autocomplete Modifier, Datalist
-**Validation:** ✓ Required, [Min/max range](#datetimerangevalidator)
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Autocomplete Modifier
+- Autocomplete
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range](#datetimerangevalidator)
 
 ---
 
@@ -269,13 +412,16 @@ Week picker.
 File upload with validation.
 
 **Additional Properties:**
-- **Accepted File Types** ✓ - File types (`.pdf`, `image/*`, MIME types)
-- **Multiple** - Allow multiple files
-- **Minimum** ✓ - Min file size in kilobytes
-- **Maximum** ✓ - Max file size in kilobytes
+- Disabled
+- Readonly
+- Multiple
+- Accepted File Types ✓ (`.pdf`, `image/*`, MIME types)
+- Minimum ✓ (file size in kilobytes)
+- Maximum ✓ (file size in kilobytes)
+
+**Validations:** [Required](#notemptyvalidator), [Upload errors](#fileuploadvalidator), [Accept types (MIME + extension)](#htmlacceptvalidator), [File size](#filesizevalidator)
 
 **Processing:** Files saved to session-specific folder
-**Validation:** ✓ Required, [Upload errors](#fileuploadvalidator), [Accept types (MIME + extension)](#htmlacceptvalidator), [File size](#filesizevalidator)
 
 ---
 
@@ -283,9 +429,17 @@ File upload with validation.
 
 Slider input.
 
-**Additional Properties:** Minimum, Maximum, Increment Step, Datalist
+**Additional Properties:**
+- Disabled
+- Readonly
+- Minimum ✓
+- Maximum ✓
+- Increment Step ✓
+- Datalist
+
+**Validations:** [Required](#notemptyvalidator), [Min/max range, step offset](#multipleofinrangevalidator)
+
 **Processing:** Converted to int/float
-**Validation:** ✓ Required, [Min/max range, step offset](#multipleofinrangevalidator)
 
 ---
 
@@ -293,8 +447,12 @@ Slider input.
 
 Color picker.
 
-**Additional Properties:** Default Value (hex color)
-**Validation:** Required
+**Additional Properties:**
+- Default Value (hex color)
+- Disabled
+- Readonly
+
+**Validations:** [Required](#notemptyvalidator)
 
 ---
 
@@ -302,17 +460,11 @@ Color picker.
 
 Hidden field (not visible to user).
 
-**Additional Properties:** Default Value
-**Validation:** None
-
 ---
 
 ### Reset
 
 Reset button (clears form).
-
-**Additional Properties:** None
-**Validation:** None
 
 ---
 
@@ -322,9 +474,14 @@ Reset button (clears form).
 
 Select with "Other" text input option.
 
-**Additional Properties:** Regular Expression Pattern, Maximum length (for text input), Minimum/Maximum (for multi-select variant)
-**Requires:** Field Options
-**Validation:** ✓ Required, [Pattern/maxlength on text input](#htmlpatternvalidator), [Values in options](#inarrayvalidator)
+**Additional Properties:**
+- Field Options ✓
+- Disabled
+- Readonly
+- Regular Expression Pattern ✓ (for text input)
+- Maximum length ✓ (for text input)
+
+**Validations:** [Required](#notemptyvalidator), [Pattern](#htmlpatternvalidator), [Maximum length](#stringlengthvalidator), [Values in options](#inarrayvalidator)
 
 ---
 
@@ -333,12 +490,13 @@ Select with "Other" text input option.
 Container for dynamic fieldsets. See [Repeatable Container Guide](RepeatableContainer.md).
 
 **Additional Properties:**
-- **Minimum** - Min number of fieldsets
-- **Maximum** - Max number of fieldsets
-- **Fields** - Nested fields (inline relation)
+- Minimum ✓ (number of fieldsets)
+- Maximum ✓ (number of fieldsets)
+- Fields (nested fields via inline relation)
 
-**Validation:** ✓ Each fieldset validated independently
-**Display Conditions:** Use `[__INDEX]` placeholder for nested field conditions ([Repeatable Container Guide](RepeatableContainer.md))
+**Validations:** Nested fields validated like normal fields, plus [Min/max count](#countvalidator) for fieldsets.
+
+**Processing:** Nested fields are processed like normal fields
 
 ---
 
@@ -350,15 +508,14 @@ Not form inputs - used for layout and content.
 
 Horizontal line separator.
 
-**Additional Properties:** None
-
 ---
 
 ### Header
 
 Heading element.
 
-**Additional Properties:** Label (heading text)
+**Additional Properties:**
+- Label (heading text)
 
 ---
 
@@ -366,7 +523,8 @@ Heading element.
 
 Rich text content block.
 
-**Additional Properties:** Label, Description (RTE content)
+**Additional Properties:**
+- Description (RTE content)
 
 ---
 
@@ -374,7 +532,8 @@ Rich text content block.
 
 TYPO3 content element reference.
 
-**Additional Properties:** Default Value (element selector)
+**Additional Properties:**
+- Default Value (element selector)
 
 ---
 
@@ -384,24 +543,23 @@ Shape automatically adds validators based on field properties and types.
 
 ### Validation Overview
 
-| Property/Type | Validator | Description | Class |
-|---------------|-----------|-------------|-------|
-| **Required** | NotEmptyValidator | Field must have value | [NotEmptyValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Pattern** | HTMLPatternValidator | Regex pattern matching | [HTMLPatternValidator](../Classes/Form/Validation/Validator/HTMLPatternValidator.php) |
-| **Maximum length** | StringLengthValidator | Max characters | [StringLengthValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Min/Max/Step** (Number, Range) | MultipleOfInRangeValidator | Range and step validation | [MultipleOfInRangeValidator](../Classes/Form/Validation/Validator/MultipleOfInRangeValidator.php) |
-| **Min/Max** (DateTime) | DateTimeRangeValidator | Date/time range | [DateTimeRangeValidator](../Classes/Form/Validation/Validator/DateTimeRangeValidator.php) |
-| **Min/Max** (Multi-select) | CountValidator | Selection count | [CountValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Accepted File Types** | HTMLAcceptValidator | File type (MIME + ext) | [HTMLAcceptValidator](../Classes/Form/Validation/Validator/HTMLAcceptValidator.php) |
-| **Min/Max** (File) | FileSizeValidator | File size in kB | [FileSizeValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Type: Email** | EmailAddressValidator | Email format | [EmailAddressValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Type: URL** | UrlValidator | URL format | [UrlValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Confirmation input** | EqualValidator | Fields match | [EqualValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Field Options** (Select, Radio) | InArrayValidator | Value in options | [InArrayValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **Field Options** (Multi) | SubsetArrayValidator | Values in options | [SubsetArrayValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
-| **File Upload** | FileUploadValidator | Upload errors | [FileUploadValidator](../Classes/Form/Validation/ValueValidationConfigurator.php) |
+| Property/Type                       | Description               | Client-side      | Server-side                                                                            |
+|-------------------------------------|---------------------------|------------------|----------------------------------------------------------------------------------------|
+| **Required**                        | Field must have value     | HTML5 validation | [NotEmptyValidator](../Classes/Form/Validation/ValueValidationConfigurator.php)        |
+| **Pattern**                         | Regex pattern matching    | HTML5 validation | [HTMLPatternValidator](../Classes/Form/Validator/HTMLPatternValidator.php)             |
+| **Maximum length**                  | Max characters            | HTML5 validation | [StringLengthValidator](../Classes/Form/Validation/ValueValidationConfigurator.php)    |
+| **Min/Max/Step** (Number, Range)    | Range and step validation | HTML5 validation | [MultipleOfInRangeValidator](../Classes/Form/Validator/MultipleOfInRangeValidator.php) |
+| **Min/Max** (DateTime)              | Date/time range           | HTML5 validation | [DateTimeRangeValidator](../Classes/Form/Validator/DateTimeRangeValidator.php)         |
+| **Min/Max** (Multi-select/checkbox) | Selection count           |                  | [CountValidator](../Classes/Form/Validator/CountValidator.php)                         |
+| **Accepted File Types**             | File type (MIME + ext)    | HTML5 validation | [HTMLAcceptValidator](../Classes/Form/Validator/HTMLAcceptValidator.php)               |
+| **Min/Max** (File)                  | File size in kB           | HTML5 validation | [FileSizeValidator](../Classes/Form/Validation/ValueValidationConfigurator.php)        |
+| **Type: Email**                     | Email format              | HTML5 validation | [EmailAddressValidator](../Classes/Form/Validation/ValueValidationConfigurator.php)    |
+| **Type: URL**                       | URL format                | HTML5 validation | [UrlValidator](../Classes/Form/Validation/ValueValidationConfigurator.php)             |
+| **Confirmation input**              | Fields match              |                  | [EqualValidator](../Classes/Form/Validator/EqualValidator.php)                         |
+| **Field Options** (Select, Radio)   | Value in options          | Restricted       | [InArrayValidator](../Classes/Form/Validator/InArrayValidator.php)                     |
+| **Field Options** (Multi)           | Values in options         | Restricted       | [SubsetArrayValidator](../Classes/Form/Validator/SubsetArrayValidator.php)             |
+| **Type: File Upload**               | Upload errors             |                  | [FileUploadValidator](../Classes/Form/Validator/FileUploadValidator.php)               |
 
-All validators follow HTML5 constraint validation behavior.
 
 ---
 
@@ -414,8 +572,6 @@ Applied when **Required** is checked.
 - Strings trimmed before check
 - Checkboxes must be checked
 - Arrays must have at least one element
-
-**Custom Message:** Use "Custom Validation Message" property
 
 ---
 
@@ -463,8 +619,6 @@ Applied when **Maximum length** is set.
 
 **Validation:**
 - Checks string length doesn't exceed maximum
-- Counts characters (not bytes)
-- Applied to: Text, Textarea, Email, Tel, Password, URL, Search
 
 ---
 
@@ -581,8 +735,6 @@ Applied automatically to **URL** field type.
 
 **Validation:**
 - Validates URL format
-- Requires scheme (`http://`, `https://`, etc.)
-- Validates domain structure
 
 ---
 
@@ -594,14 +746,6 @@ Applied when **Confirmation input** is checked.
 - Creates second field with `__CONFIRM` suffix
 - Validates both fields have identical values
 - Case-sensitive comparison
-
-**Example:**
-```
-Field: email-address
-Confirmation Field: email-address__CONFIRM
-```
-
-**Applied to:** Text, Email, Password
 
 ---
 

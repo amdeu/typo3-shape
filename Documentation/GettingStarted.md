@@ -33,7 +33,7 @@ vendor/bin/typo3 database:updateschema
 
 1. **List** module → Navigate to a sysfolder (or create a new one)
 2. **Create new record → Shape: Form**
-3. Fill in **Label** (e.g., "Contact Form")
+3. Fill in **Title** (e.g., "Contact Form")
 4. The **Name** is auto-generated from the label (like page slugs) but can be manually edited
 
 > **📌 Note:** Form names must be unique across the Site (like page slugs). They use kebab-case (e.g., `contact-form`).
@@ -105,7 +105,7 @@ Sender Email Address: (falls back to system default)
 3. **Create new content element → Form elements → Shape Form**
 4. In the Plugin Options, select your form in the **Form** record selector
 
-Your form is now live!
+Your form is now ready to use!
 
 ## 🔗 Next Steps
 

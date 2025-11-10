@@ -18,16 +18,14 @@ Show or hide fields and pages based on user input or context.
 **Server-Side (`display_condition`):**
 - Evaluated before rendering page
 - Symfony Expression Language syntax ([docs](https://symfony.com/doc/current/components/expression_language.html))
-- Access to full context (request, frontend user, etc.)
-- Use for security-sensitive conditions and multi-page forms
+- Access to context (request, frontend user, site)
+- Use for and multi-page forms or forms loaded uncached via lazy loading with different variants
 
 **Client-Side (`js_display_condition`):**
-- Real-time in browser
+- Interpreted in browser with JavaScript
 - Subscript syntax ([docs](https://github.com/dy/subscript))
 - Access only to form values
-- Use for instant user feedback on same page
-
-> **💡 Best Practice:** Set both for optimal UX - client-side provides instant feedback, server-side ensures security.
+- Use for conditions based on fields on the same page for instant feedback
 
 ## Basic Syntax
 
@@ -67,15 +65,15 @@ Server-side conditions have access to additional context:
 
 ### Variables Available
 
-| Variable | Type | Description |
-|----------|------|-------------|
-| `value("field-name")` | Function | Get field value |
-| `request` | `RequestWrapper` | Current request |
-| `site` | `SiteInterface` | Current site |
-| `frontendUser` | `FrontendUserAuthentication` | Logged-in user |
-| `formRuntime` | `FormRuntime` | Shape runtime |
-| `formValues` | `array` | All form values |
-
+| Variable              | Type                         | Description                      |
+|-----------------------|------------------------------|----------------------------------|
+| `value("field-name")` | Function                     | Get field value                  |
+| `request`             | `RequestWrapper`             | Current request                  |
+| `site`                | `SiteInterface`              | Current site                     |
+| `frontendUser`        | `FrontendUserAuthentication` | Logged-in user                   |
+| `formRuntime`         | `FormRuntime`                | Shape runtime                    |
+| `formValues`          | `array`                      | All form values                  |
+| `stepType`            | `string`                     | Type of current form page record |
 ### Request Parameters
 ```
 traverse(request.getQueryParams(), "utm_source") == "newsletter"
@@ -95,8 +93,6 @@ frontendUser.user.usergroup in [1, 2, 3]
 
 ### Page Context
 ```
-// Available for page conditions
-currentPageIndex == 1
 stepType == "form"  // Not on summary page
 ```
 
@@ -132,21 +128,6 @@ value("family-members")[4]  // True if 5 or more fieldsets
 ```
 
 See [Repeatable Container Guide](RepeatableContainer.md) for more details.
-
-## Conditional Pages
-
-Apply conditions to pages for dynamic multi-step forms:
-
-**Page Condition:**
-```
-value("user-type") == "business"
-value("different-shipping-address") == "yes"
-```
-
-If page condition is false:
-- Page is skipped
-- Fields not validated
-- Navigation adjusts automatically
 
 ## Common Examples
 

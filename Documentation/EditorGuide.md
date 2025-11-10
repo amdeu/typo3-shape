@@ -177,5 +177,7 @@ See [Finishers Reference](Finishers.md) for complete documentation of all finish
 ## 🔗 Next Steps
 
 - [Field Reference](FieldReference.md) - Complete field documentation
-- [Integrator Guide](IntegratorGuide.md) - Customize templates
-- [Developer Guide](DeveloperGuide.md) - Extend functionality
+- [Finishers Reference](Finishers.md) - Post-submission actions
+- [Conditions Guide](Conditions.md) - Display condition syntax
+- [Repeatable Container Guide](RepeatableContainer.md) - Dynamic fieldsets
+

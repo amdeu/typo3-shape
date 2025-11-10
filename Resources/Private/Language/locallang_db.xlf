@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="tab.general"><source>General</source></trans-unit>
-			<trans-unit id="tab.advanced"><source>Options</source></trans-unit>
+			<trans-unit id="tab.advanced"><source>Advanced</source></trans-unit>
 			<trans-unit id="tab.extended"><source>Extended</source></trans-unit>
 			<trans-unit id="tab.condition"><source>Condition</source></trans-unit>
 			<trans-unit id="tab.finishers"><source>Finishers</source></trans-unit>

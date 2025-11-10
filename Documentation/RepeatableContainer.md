@@ -43,9 +43,8 @@ Field 4:
 ## Frontend Behavior
 
 Users see:
-- Initial fieldset(s) based on minimum setting
-- **Add** button to create more fieldsets
-- **Remove** button on each fieldset (if more than minimum exist)
+- **Add** button to create fieldsets
+- **Remove** button on each fieldset after adding
 
 ## Field Naming
 
@@ -87,9 +86,9 @@ Each fieldset is validated independently:
 
 Use `[__INDEX]` placeholder for conditions on nested fields:
 
-**Show field based on value in same fieldset:**
+**Client-side conditional display based on value in same fieldset:**
 ```
-Client-side: formData("[family-members][__INDEX][age]") < 18
+formData("[family-members][__INDEX][age]") < 18
 ```
 
 The `[__INDEX]` is replaced with the actual index (0, 1, 2, etc.) for each fieldset.
