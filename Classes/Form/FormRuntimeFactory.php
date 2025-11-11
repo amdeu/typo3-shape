@@ -33,7 +33,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 	): FormRuntime
 	{
 		$plugin = $this->getPluginRecord($request, $settings);
-		$form = $this->getForm($plugin);
+		$form = $this->getForm($request, $settings, $plugin);
 
 		$uploadStorage = $this->storageRepository->findByCombinedIdentifier($settings['uploadFolder']);
 		$parsedBodyKey = 'tx_shape_form';
@@ -171,7 +171,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		$viewClone->getRenderingContext()->getTemplatePaths()->setPartialRootPaths($formPluginConfiguration['view']['partialRootPaths']);
 		$viewClone->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths($formPluginConfiguration['view']['layoutRootPaths']);
 
-		$form = $this->getForm($plugin);
+		$form = $this->getForm($request, $settings, $plugin);
 
 		$uploadStorage = $this->storageRepository->findByCombinedIdentifier($settings['uploadFolder']);
 		$parsedBodyKey = 'tx_shape_form';
@@ -219,12 +219,21 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		return $record;
 	}
 
-	protected function getForm(
-		Core\Domain\Record $plugin
+	public function getForm(
+		Extbase\Mvc\RequestInterface $request,
+		array $settings,
+		Core\Domain\Record $pluginRecord
 	): Model\FormInterface
 	{
+		$event = new FormCreationEvent(
+			$request, $settings, $pluginRecord
+		);
+		$this->eventDispatcher->dispatch($event);
+		if ($event->isPropagationStopped()) {
+			return $event->form;
+		}
 		// typo3 13.4.x version dependant
-		$flexFormValues = $plugin->get('pi_flexform');
+		$flexFormValues = $pluginRecord->get('pi_flexform');
 		if (property_exists($flexFormValues, 'sheets')) {
 			$formValue = $flexFormValues->get('general/settings')['form'] ?? null;
 		} else {
@@ -232,9 +241,8 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		}
 		$form = $formValue[0] ?? $formValue;
 		if (!$form instanceof Model\FormInterface) {
-			throw new Exception\InvalidFormPluginRecordException('Plugin record (uid: '. $plugin->getUid() .')  does not contain a valid FormInterface.', 1741369825);
+			throw new Exception\InvalidFormPluginRecordException('Plugin record (uid: '. $pluginRecord->getUid() .')  does not contain a valid FormInterface.', 1741369825);
 		}
 		return $form;
 	}
-
 }

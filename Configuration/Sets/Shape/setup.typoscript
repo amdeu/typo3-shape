@@ -32,8 +32,8 @@ plugin.tx_shape {
                 consentPage = 0
                 splitFinisherExecution = 1
                 deleteAfterConfirmation = 1
+            }
         }
-    }
     ignoreFlexFormSettingsIfEmpty = uploadFolder
     }
 }
