@@ -110,5 +110,6 @@ Your form is now ready to use!
 ## 🔗 Next Steps
 
 - [Editor Guide](EditorGuide.md) - Learn all field types and features
+- [Customization Guide](CustomizationGuide.md) - Extend and customize Shape
 - [Field Reference](FieldReference.md) - Complete field property reference
-- [Integrator Guide](IntegratorGuide.md) - Customize templates
+- [Finishers Reference](Finishers.md) - All finishers and their settings

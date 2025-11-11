@@ -20,7 +20,6 @@ final class UserDataFieldPrefiller
 		if (!$feAuth->getUserId()) {
 			return;
 		}
-
 		$repository = $this->genericRepositoryFactory
 			->forTable('fe_users')
 			->reset()

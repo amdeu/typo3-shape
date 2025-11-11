@@ -26,7 +26,7 @@ All finishers have:
 - **Condition** - Optional condition expression ([Conditions Guide](Conditions.md))
 - **Settings** - Type-specific configuration
 
-### Template Variables
+### {{ }} Template Variables
 
 Many finisher settings support `{{ variable }}` syntax to dynamically insert form values. The template variable parser provides several powerful features for accessing and formatting data.
 > **📌 Note:** While the included finishers provide only the form values to the TemplateVariableParser, custom finishers could expose other variables to its settings.

@@ -2,7 +2,7 @@
 
 Guide for building forms in the TYPO3 backend.
 
-## 📊 Form Structure
+## 🏗️ Form Structure
 
 Every form consists of:
 - **Form** - Container with name and settings
@@ -10,7 +10,7 @@ Every form consists of:
 - **Fields** - Form inputs
 - **Finishers** - Actions after submission
 
-## 🎯 Creating Forms
+## ✏️ Creating Forms
 
 ### Form Record
 
@@ -79,7 +79,7 @@ Properties:
 - **Selected** - Pre-selected by default
 - **Starts Group** - For option groups
 
-## 🎨 Field Types
+## 📝 Field Types
 
 ### Text Inputs
 - **Text** - Single-line text
@@ -129,7 +129,7 @@ See [Field Reference](FieldReference.md) for complete property documentation.
 
 Validation is based on field types and type-specific options. See [Field Reference](FieldReference.md#-field-validation) for complete validation documentation.
 
-## 🎭 Display Conditions
+## 👁️ Display Conditions
 
 Show/hide fields and pages based on values or context.
 
@@ -155,7 +155,7 @@ See [Repeatable Container Guide](RepeatableContainer.md) for complete documentat
 2. Set **Minimum/Maximum** (optional limits)
 3. Add nested fields in **Fields** tab
 
-## 📤 Finishers
+## 🏁 Finishers
 
 Actions executed after form submission: save data, send emails, redirect users.
 
@@ -168,11 +168,6 @@ See [Finishers Reference](Finishers.md) for complete documentation of all finish
 - **Save to Database** - Custom table storage
 - **Redirect** - Redirect to page/URL
 - **Show Content Elements** - Display content
-
-**Template Variables:**
-```
-{{field-name}}  // Use actual field name in kebab-case
-```
 
 ## 🔗 Next Steps
 
