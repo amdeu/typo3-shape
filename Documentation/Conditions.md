@@ -167,10 +167,10 @@ Server: frontendUser.isLoggedIn()
 
 ## Custom Variables
 
-Developers can add custom variables via events. See [Developer Guide](DeveloperGuide.md#display-conditions).
+Developers can add custom variables via events. See [Customization Guide](CustomizationGuide.md#event-overview).
 
 ## 🔗 Related
 
 - [Repeatable Container](RepeatableContainer.md) - Using `[__INDEX]` placeholder
 - [Editor Guide](EditorGuide.md) - Building forms with conditions
-- [Developer Guide](DeveloperGuide.md) - Custom condition variables
+- [Customization Guide](CustomizationGuide.md#event-overview) - Custom condition variables

@@ -412,7 +412,7 @@ User Clicks Approval Link
 
 ## Custom Finishers
 
-Developers can create custom finishers by extending `AbstractFinisher`. See [Developer Guide](DeveloperGuide.md#custom-finishers).
+Developers can create custom finishers by extending [`AbstractFinisher`](../Classes/Form/Finisher/AbstractFinisher.php).
 
 ---
 
@@ -420,4 +420,4 @@ Developers can create custom finishers by extending `AbstractFinisher`. See [Dev
 
 - [Conditions](Conditions.md) - Finisher condition syntax
 - [Editor Guide](EditorGuide.md) - Building forms
-- [Developer Guide](DeveloperGuide.md) - Custom finishers
+- [Customization Guide](CustomizationGuide.md)

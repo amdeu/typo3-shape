@@ -286,7 +286,7 @@ Field (1:n) Fields (nested, for repeatable-container)
 | [`FinisherConditionResolutionEvent`](../Classes/Form/Condition/FinisherConditionResolutionEvent.php)                       | Evaluating finisher conditions              | Override condition result                   |
 | [`BeforeFinisherCreationEvent`](../Classes/Form/Finisher/BeforeFinisherCreationEvent.php)                                  | Before finisher instantiation               | Modify finisher class and settings          |
 | [`SpamAnalysisEvent`](../Classes/Form/SpamProtection/SpamAnalysisEvent.php)                                                | Before validation                           | Add spam detection                          |
-| [`ExpressionResolverCreationEvent`](../Classes/Form/Condition/ExpressionResolverCreationEvent.php)                         | Expression engine setup                     | Customize expression engine                 |
+| [`ExpressionResolverCreationEvent`](../Classes/Form/Condition/ExpressionResolverCreationEvent.php)                         | Expression engine setup                     | Customize expresssion resolver variables    |
 
 [Listening to events](https://docs.typo3.org/permalink/t3coreapi:extension-development-event-listener)
 

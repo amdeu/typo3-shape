@@ -801,7 +801,7 @@ Applied automatically to **File Upload** field.
 
 ### Custom Validators
 
-Developers can add custom validators via events. See [Developer Guide](DeveloperGuide.md#custom-validators).
+Developers can add custom validators via events. See [Customization Guide](CustomizationGuide.md#event-overview).
 
 ---
 
@@ -810,4 +810,4 @@ Developers can add custom validators via events. See [Developer Guide](Developer
 - [Editor Guide](EditorGuide.md) - Using fields in forms
 - [Repeatable Container](RepeatableContainer.md) - Dynamic fieldsets
 - [Conditions](Conditions.md) - Display conditions
-- [Developer Guide](DeveloperGuide.md) - Custom validators
+- [Customization Guide](CustomizationGuide.md)
