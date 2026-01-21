@@ -15,6 +15,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		protected readonly Core\Service\FlexFormService                        $flexFormService,
 		protected readonly Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
 		protected readonly ContentObjectRenderer                               $contentObject,
+		protected readonly Module\ModuleInvoker                                $moduleInvoker,
 		protected readonly Condition\FieldConditionResolver                    $fieldConditionResolver,
 		protected readonly Processing\FieldValueProcessor                      $fieldValueProcessor,
 		protected readonly Serialization\FieldValueSerializer                  $fieldValueSerializer,
@@ -101,6 +102,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		return new FormRuntime(
 			$this->eventDispatcher,
 			$this->flexFormService,
+			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,
 			$this->fieldValueSerializer,
@@ -180,6 +182,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		return new FormRuntime(
 			$this->eventDispatcher,
 			$this->flexFormService,
+			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,
 			$this->fieldValueSerializer,

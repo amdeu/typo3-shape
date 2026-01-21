@@ -32,4 +32,12 @@ class FormRecord extends Record implements FormInterface
 	{
 		return $this->get('finishers');
 	}
+
+	/**
+	 * @return LazyRecordCollection<ModuleConfigurationInterface>|array<ModuleConfigurationInterface>
+	 */
+	public function getModuleConfigurations(): LazyRecordCollection|array
+	{
+		return $this->get('modules');
+	}
 }

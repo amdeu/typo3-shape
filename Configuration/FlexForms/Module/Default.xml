@@ -1,0 +1,19 @@
+<T3DataStructure>
+    <sheets>
+        <general>
+            <ROOT>
+                <sheetTitle>General</sheetTitle>
+                <type>array</type>
+                <el>
+                    <unused>
+                        <label></label>
+                        <config>
+                            <type>input</type>
+                            <readOnly>1</readOnly>
+                        </config>
+                    </unused>
+                </el>
+            </ROOT>
+        </general>
+    </sheets>
+</T3DataStructure>

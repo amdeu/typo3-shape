@@ -20,4 +20,9 @@ interface FormInterface extends ContainerInterface
 	 * @return LazyRecordCollection<FinisherConfigurationInterface>|array<FinisherConfigurationInterface>
 	 */
 	public function getFinisherConfigurations(): LazyRecordCollection|array;
+
+	/**
+	 * @return LazyRecordCollection<ModuleConfigurationInterface>|array<ModuleConfigurationInterface>
+	 */
+	public function getModuleConfigurations(): LazyRecordCollection|array;
 }

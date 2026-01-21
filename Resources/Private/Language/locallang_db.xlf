@@ -8,6 +8,7 @@
 			<trans-unit id="tab.extended"><source>Extended</source></trans-unit>
 			<trans-unit id="tab.condition"><source>Condition</source></trans-unit>
 			<trans-unit id="tab.finishers"><source>Finishers</source></trans-unit>
+			<trans-unit id="tab.modules"><source>Modules</source></trans-unit>
 			<trans-unit id="tab.lazyLoad"><source>Lazy Load</source></trans-unit>
 			<trans-unit id="tab.mail"><source>Mail</source></trans-unit>
 			<trans-unit id="tab.consent"><source>Consent</source></trans-unit>
@@ -162,6 +163,24 @@
 			<trans-unit id="finisher.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
 			<trans-unit id="finisher.settings"><source>Settings</source></trans-unit>
 
+
+			<trans-unit id="module.ctrl.title"><source>Form Module</source></trans-unit>
+			<trans-unit id="module.form_parents"><source>Used on</source></trans-unit>
+			<trans-unit id="module.title"><source>Title</source></trans-unit>
+			<trans-unit id="module.type"><source>Type</source></trans-unit>
+			<trans-unit id="module.type.item.save_submission"><source>Save Submission</source></trans-unit>
+			<trans-unit id="module.type.item.consent"><source>Mail Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.save_to_database"><source>Save to Database</source></trans-unit>
+			<trans-unit id="module.type.item.send_email"><source>Send Email</source></trans-unit>
+			<trans-unit id="module.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
+			<trans-unit id="module.type.item.redirect"><source>Redirect</source></trans-unit>
+			<trans-unit id="module.type.item.email_consent"><source>Email Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.show_text"><source>Show Text</source></trans-unit>
+			<trans-unit id="module.condition"><source>Condition</source></trans-unit>
+			<trans-unit id="module.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
+			<trans-unit id="module.settings"><source>Settings</source></trans-unit>
+			
+			
 			<trans-unit id="form_submission.ctrl.title"><source>Form Submission</source></trans-unit>
 			<trans-unit id="form_submission.tstamp"><source>Timestamp</source></trans-unit>
 			<trans-unit id="form_submission.form"><source>Form</source></trans-unit>

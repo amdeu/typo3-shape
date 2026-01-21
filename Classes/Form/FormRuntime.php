@@ -10,6 +10,7 @@ class FormRuntime
 	public function __construct(
 		readonly protected Core\EventDispatcher\EventDispatcher $eventDispatcher,
 		readonly protected Core\Service\FlexFormService         $flexFormService,
+		readonly protected Module\ModuleInvoker                	$moduleInvoker,
 		readonly protected Condition\FieldConditionResolver     $fieldConditionResolver,
 		readonly protected Processing\FieldValueProcessor       $fieldValueProcessor,
 		readonly protected Serialization\FieldValueSerializer   $fieldValueSerializer,
@@ -29,6 +30,7 @@ class FormRuntime
 		protected bool                                          $hasErrors = false,
 	)
 	{
+		$this->moduleInvoker->initializeModules($this);
 		$this->setFieldSessionValues();
 		$event = new FormRuntimeCreationEvent($this);
 		$this->eventDispatcher->dispatch($event);
@@ -272,6 +274,8 @@ class FormRuntime
 		}
 
 		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
+		$finishEvent = new FormFinishEvent($this);
+		$this->eventDispatcher->dispatch($finishEvent);
 		return $context;
 	}
 

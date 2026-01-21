@@ -1,0 +1,21 @@
+<T3DataStructure>
+    <sheets>
+        <general>
+            <ROOT>
+                <sheetTitle>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.general</sheetTitle>
+                <type>array</type>
+                <el>
+                    <contentElements>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.showContentElements.contentElements</label>
+                        <config>
+                            <type>group</type>
+                            <internal_type>db</internal_type>
+                            <allowed>tt_content</allowed>
+                            <maxitems>50</maxitems>
+                        </config>
+                    </contentElements>
+                </el>
+            </ROOT>
+        </general>
+    </sheets>
+</T3DataStructure>

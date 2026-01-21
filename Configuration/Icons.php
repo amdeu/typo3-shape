@@ -19,24 +19,8 @@ return [
 		'provider' => SvgIconProvider::class,
 		'source' => 'EXT:shape/Resources/Public/Icons/form-option.svg',
 	],
-	'shape-form-finisher-redirect' => [
+	'shape-module-default' => [
 		'provider' => SvgIconProvider::class,
-		'source' => 'EXT:shape/Resources/Public/Icons/form-finisher-redirect.svg',
-	],
-	'shape-form-finisher-save-submission' => [
-		'provider' => SvgIconProvider::class,
-		'source' => 'EXT:shape/Resources/Public/Icons/form-finisher-save-submission.svg',
-	],
-	'shape-form-finisher-save-to-database' => [
-		'provider' => SvgIconProvider::class,
-		'source' => 'EXT:shape/Resources/Public/Icons/form-finisher-save-to-database.svg',
-	],
-	'shape-form-finisher-send-email' => [
-		'provider' => SvgIconProvider::class,
-		'source' => 'EXT:shape/Resources/Public/Icons/form-finisher-send-email.svg',
-	],
-	'shape-form-finisher-show-content-elements' => [
-		'provider' => SvgIconProvider::class,
-		'source' => 'EXT:shape/Resources/Public/Icons/form-finisher-show-content-elements.svg',
+		'source' => 'EXT:shape/Resources/Public/Icons/module-default.svg',
 	],
 ];
