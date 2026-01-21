@@ -8,6 +8,10 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Amdeu\Shape\Form;
 
+// idea: replace finishers with "augments" or "enhancers", that can modify the form data at different stages: after validation, after processing, before finishing etc. Finishers would just be a type of enhancer that listens to a finish event
+// would need an EnhancerManager that instantiates the attached enhancer classes and then calls their methods on the appropriate events
+// todo: add labels for default browser validation messages, e.g. valueMissing, typeMismatch, etc.
+// todo: extract validators into own extension, sth like html5_validators
 // todo: FormReflection with things like fieldNames, finisher types, other field information
 // todo: FormBuilder to build virtual forms, createFromYaml method
 // todo: option to choose yaml instead of form record in plugin

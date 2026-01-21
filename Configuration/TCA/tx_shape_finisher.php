@@ -34,6 +34,7 @@ $ctrl = [
 		'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher' => 'form-content-element',
 		'Amdeu\Shape\Form\Finisher\RedirectFinisher' => 'apps-pagetree-page-shortcut-external',
 		'Amdeu\Shape\Form\Finisher\EmailConsentFinisher' => 'overlay-approved',
+		'Amdeu\Shape\Form\Finisher\ShowTextFinisher' => 'form-textarea',
 
 	],
 ];
@@ -86,6 +87,9 @@ $columns = [
 				[Util::t('finisher.type.item.show_content_elements'),
 					'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher',
 					'form-content-element'],
+				[Util::t('finisher.type.item.show_text'),
+					'Amdeu\Shape\Form\Finisher\ShowTextFinisher',
+					'form-textarea'],
 				[Util::t('finisher.type.item.redirect'),
 					'Amdeu\Shape\Form\Finisher\RedirectFinisher',
 					'apps-pagetree-page-shortcut-external'],
@@ -135,6 +139,7 @@ $columns = [
 				'Amdeu\Shape\Form\Finisher\RedirectFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/RedirectFinisher.xml',
 				'Amdeu\Shape\Form\Finisher\ShowContentElementsFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/ShowContentElementsFinisher.xml',
 				'Amdeu\Shape\Form\Finisher\EmailConsentFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/EmailConsentFinisher.xml',
+				'Amdeu\Shape\Form\Finisher\ShowTextFinisher' => 'FILE:EXT:shape/Configuration/FlexForms/Finisher/ShowTextFinisher.xml',
 			],
 			'ds_pointerField' => 'type',
 		],

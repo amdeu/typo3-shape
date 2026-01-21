@@ -19,7 +19,7 @@ final class UniqueInSubmissionValidationConfigurator
 		$validator->setOptions([
 			'fieldName' => $field->getName(),
 			'pluginUid' => $event->runtime->plugin->getUid(),
-			'formUid' => $event->runtime->form->getUid(),
+			'formUid' => $event->runtime->form->getIdentifier(),
 		]);
 		$event->addValidator($validator);
 	}

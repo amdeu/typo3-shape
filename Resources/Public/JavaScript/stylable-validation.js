@@ -8,7 +8,6 @@
 
 			form.addEventListener('invalid', e => {
 				if (!e.target.matches('[data-shape-control]')) return
-
 				const control = e.target
 				const error = control.closest('[data-shape-field]')?.querySelector('[data-shape-error]')
 				if (!error) return
@@ -16,6 +15,7 @@
 				e.preventDefault()
 				form.querySelector('[data-shape-control]:invalid')?.focus()
 				error.classList.remove('--hidden')
+				const errorType = Object.keys(control.validity).find(key => control.validity[key])
 				error.innerHTML = `<div>${control.dataset.shapeValidationMessage || control.validationMessage}</div>`
 			}, true)
 

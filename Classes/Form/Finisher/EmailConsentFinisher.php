@@ -63,7 +63,7 @@ class EmailConsentFinisher extends AbstractFinisher
 			'pid' => $storagePage,
 			'status' => Enum\ConsentStatus::Pending->value,
 			'email' => $recipientAddress,
-			'form' => $this->getForm()->getUid(),
+			'form' => $this->getForm()->getIdentifier(),
 			'plugin' => $this->getPlugin()->getUid(),
 			'session' => $serializedSession,
 			'finisher_settings' => json_encode($this->settings),

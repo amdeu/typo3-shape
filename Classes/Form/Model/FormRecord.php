@@ -7,6 +7,11 @@ use TYPO3\CMS\Core\Domain\Record;
 
 class FormRecord extends Record implements FormInterface
 {
+	public function getIdentifier(): int|string
+	{
+		return $this->getUid();
+	}
+
 	public function getName(): string
 	{
 		return $this->properties['name'] ?? '';

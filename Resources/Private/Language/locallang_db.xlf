@@ -157,6 +157,7 @@
 			<trans-unit id="finisher.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
 			<trans-unit id="finisher.type.item.redirect"><source>Redirect</source></trans-unit>
 			<trans-unit id="finisher.type.item.email_consent"><source>Email Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="finisher.type.item.show_text"><source>Show Text</source></trans-unit>
 			<trans-unit id="finisher.condition"><source>Condition</source></trans-unit>
 			<trans-unit id="finisher.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
 			<trans-unit id="finisher.settings"><source>Settings</source></trans-unit>
@@ -211,6 +212,8 @@
 			<trans-unit id="flexform.finisher.saveToDatabase.columnValue"><source>Value</source></trans-unit>
 
 			<trans-unit id="flexform.finisher.showContentElements.contentElements"><source>Content Elements</source></trans-unit>
+
+			<trans-unit id="flexform.finisher.showText.bodytext"><source>Bodytext</source></trans-unit>
 
 			<trans-unit id="flexform.finisher.sendEmail.subject"><source>Subject</source></trans-unit>
 			<trans-unit id="flexform.finisher.sendEmail.title"><source>Title</source></trans-unit>

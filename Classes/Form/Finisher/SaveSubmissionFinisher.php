@@ -44,10 +44,10 @@ class SaveSubmissionFinisher extends AbstractFinisher
 		}
 
 		if ($this->settings['connectToLanguageParentForm']) {
-			$values['form'] = $this->getForm()->getRawRecord()->get('l10n_parent') ?: $this->getForm()->getUid();
+			$values['form'] = $this->getForm()->getRawRecord()->get('l10n_parent') ?: $this->getForm()->getIdentifier();
 			$values['plugin'] = $this->getPlugin()->getRawRecord()->get('l18n_parent') ?: $this->getPlugin()->getUid();
 		} else {
-			$values['form'] = $this->getForm()->getUid();
+			$values['form'] = $this->getForm()->getIdentifier();
 			$values['plugin'] = $this->getPlugin()->getUid();
 		}
 

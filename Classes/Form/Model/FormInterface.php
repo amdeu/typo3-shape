@@ -7,7 +7,7 @@ use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 
 interface FormInterface extends ContainerInterface
 {
-	public function getUid(): int;
+	public function getIdentifier(): int|string;
 
 	public function getName(): string;
 

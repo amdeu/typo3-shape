@@ -1,0 +1,19 @@
+<T3DataStructure>
+    <sheets>
+        <general>
+            <ROOT>
+                <sheetTitle>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.general</sheetTitle>
+                <type>array</type>
+                <el>
+                    <bodytext>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.showText.bodytext</label>
+                        <config>
+                            <type>text</type>
+                            <enableRichtext>1</enableRichtext>
+                        </config>
+                    </bodytext>
+                </el>
+            </ROOT>
+        </general>
+    </sheets>
+</T3DataStructure>
