@@ -101,6 +101,12 @@ $columns = [
 			'readOnly' => true,
 		],
 	],
+	'module_settings' => [
+		'config' => [
+			'type' => 'json',
+			'readOnly' => true,
+		],
+	],
 	'validation_hash' => [
 		'config' => [
 			'type' => 'input',
@@ -129,7 +135,7 @@ $palettes = [
 		--linebreak--,
 		validation_hash, session,
 		--linebreak--,
-		finisher_settings, approve_link',
+		module_settings, approve_link',
 	],
 ];
 $showItem = '

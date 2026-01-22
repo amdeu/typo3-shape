@@ -14,13 +14,9 @@ class ShowTextModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		$this->getView()->assignMultiple([
-			'parsedText' => $this->parseWithValues($this->settings['bodytext']),
-			'settings' => $this->settings,
-			'plugin' => $this->getPlugin(),
-			'form' => $this->getForm(),
-		]);
-		$html = $this->getView()->render('Module/ShowText');
-		$event->response = new Core\Http\HtmlResponse($html);
+		$event->finishedActionArguments = [
+			'template' => 'Module/ShowText',
+			'configUid' => $this->configuration?->getIdentifier()
+		];
 	}
 }

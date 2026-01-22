@@ -10,6 +10,11 @@ class ModuleConfigurationRecord extends Record implements ModuleConfigurationInt
 
 	protected ?array $settings = null;
 
+	public function getIdentifier(): int|string
+	{
+		return $this->getUid();
+	}
+
 	public function getModuleClassName(): string
 	{
 		return $this->properties['type'] ?? '';

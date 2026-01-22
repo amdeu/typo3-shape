@@ -4,6 +4,7 @@ namespace Amdeu\Shape\Form\Module;
 
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core;
+use Amdeu\Shape\Form;
 
 class SendEmailModule extends AbstractModule
 {
@@ -44,15 +45,15 @@ class SendEmailModule extends AbstractModule
 			$this->settings['senderAddress'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'],
 			$this->settings['senderName'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
 		);
-		$template = $this->settings['template'] ?: 'Finisher/SendEmail/Default';
-		$templateConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['finishers']['sendEmail']['templates'][$template] ?? [];
+		$template = $this->settings['template'] ?: 'Module/SendEmail/Default';
+		$templateConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'][$template] ?? [];
 		$format = $templateConfig['format'] ?? Core\Mail\FluidEmail::FORMAT_BOTH;
 
 		$formValues = $this->getFormValues();
 		$variables = [
 			'formValues' => $formValues,
 			'settings' => $this->settings,
-			'runtime' => $this->getRuntime(),
+			'runtime' => $this->runtime,
 			'parsed' => [
 				'body' => $this->parseWithValues($this->settings['body'])
 			]

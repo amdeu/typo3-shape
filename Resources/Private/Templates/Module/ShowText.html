@@ -1,0 +1,9 @@
+<f:variable name="blockClass" value="shape"/>
+<f:variable name="configuration"
+			value="{shape:getRecord(uid:arguments.configUid, table:'tx_shape_module_configuration')}"/>
+
+
+<section id="c{plugin.uid}"
+		 class="{blockClass}__section {blockClass}__show-text-finisher -layout-{form.layout} {form.css_class}">
+	{configuration.settings.bodytext -> f:format.html()}
+</section>

@@ -1,0 +1,15 @@
+
+<div>
+	{parsed.body -> f:format.html()}
+</div>
+<div>
+	<a href="{approveLink}">
+		{f:translate(key: 'label.approve_consent')}
+	</a>
+	<f:if condition="{settings.showDismissLink}">
+		<br>
+		<a href="{dismissLink}">
+			{f:translate(key: 'label.dismiss_consent')}
+		</a>
+	</f:if>
+</div>

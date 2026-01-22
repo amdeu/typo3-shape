@@ -31,6 +31,7 @@
 			<trans-unit id="form.name"><source>Name</source></trans-unit>
 			<trans-unit id="form.pages"><source>Pages</source></trans-unit>
 			<trans-unit id="form.finishers"><source>Finishers</source></trans-unit>
+			<trans-unit id="form.modules"><source>Modules</source></trans-unit>
 			<trans-unit id="form.layout"><source>Layout</source></trans-unit>
 			<trans-unit id="form.header_layout"><source>Header Layout</source></trans-unit>
 			<trans-unit id="form.css_class"><source>CSS Class</source></trans-unit>
@@ -39,7 +40,7 @@
 			<trans-unit id="form_page.title"><source>Header</source></trans-unit>
 			<trans-unit id="form_page.type"><source>Type</source></trans-unit>
 			<trans-unit id="form_page.fields"><source>Fields</source></trans-unit>
-			<trans-unit id="form_page.form_parent"><source>Form Parent</source></trans-unit>
+			<trans-unit id="form_page.form_parent"><source>Form</source></trans-unit>
 			<trans-unit id="form_page.display_condition"><source>Display Condition</source></trans-unit>
 			<trans-unit id="form_page.prev_label"><source>Back-Button Label</source></trans-unit>
 			<trans-unit id="form_page.next_label"><source>Next-Button Label</source></trans-unit>
@@ -98,7 +99,7 @@
 			<trans-unit id="field.type.item.content-element"><source>Content Element</source></trans-unit>
 
 			<trans-unit id="field.default_value"><source>Default Value</source></trans-unit>
-			<trans-unit id="field.page_parents"><source>Used on</source></trans-unit>
+			<trans-unit id="field.page_parents"><source>Form Page</source></trans-unit>
 			<trans-unit id="field.field_parent"><source>Field Parent</source></trans-unit>
 			<trans-unit id="field.fields"><source>Fields</source></trans-unit>
 			<trans-unit id="field.required"><source>Required</source></trans-unit>
@@ -148,7 +149,7 @@
 			<trans-unit id="field_option.field_parent"><source>Field Parent</source></trans-unit>
 
 			<trans-unit id="finisher.ctrl.title"><source>Form Finisher</source></trans-unit>
-			<trans-unit id="finisher.form_parents"><source>Used on</source></trans-unit>
+			<trans-unit id="finisher.form_parents"><source>Form</source></trans-unit>
 			<trans-unit id="finisher.title"><source>Title</source></trans-unit>
 			<trans-unit id="finisher.type"><source>Type</source></trans-unit>
 			<trans-unit id="finisher.type.item.save_submission"><source>Save Submission</source></trans-unit>
@@ -164,8 +165,8 @@
 			<trans-unit id="finisher.settings"><source>Settings</source></trans-unit>
 
 
-			<trans-unit id="module.ctrl.title"><source>Form Module</source></trans-unit>
-			<trans-unit id="module.form_parents"><source>Used on</source></trans-unit>
+			<trans-unit id="module.ctrl.title"><source>Form Configuration Module</source></trans-unit>
+			<trans-unit id="module.form_parents"><source>Form</source></trans-unit>
 			<trans-unit id="module.title"><source>Title</source></trans-unit>
 			<trans-unit id="module.type"><source>Type</source></trans-unit>
 			<trans-unit id="module.type.item.save_submission"><source>Save Submission</source></trans-unit>
@@ -256,8 +257,8 @@
 			<trans-unit id="flexform.finisher.emailConsent.replyToAddress"><source>Reply-to Email Address</source></trans-unit>
 			<trans-unit id="flexform.finisher.emailConsent.expirationPeriod"><source>Expiration Time in Seconds</source></trans-unit>
 			<trans-unit id="flexform.finisher.emailConsent.deleteAfterConfirmation"><source>Delete Consent Record after Confirmation</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution"><source>Split Finisher Execution</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution.description"><source>Finishers are re-run when Consent is confirmed. When enabled, Finishers before this are executed only on the initial Form Submission, Finishers after this are executed only on Consent Confirmation.
+			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution"><source>Split Module Finishers</source></trans-unit>
+			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution.description"><source>Modules that trigger on Form Finish are re-run when Consent is confirmed. When enabled, Modules before this are finished only on the initial Form Submission, Modules after this are finished only on Consent Confirmation.
 			</source></trans-unit>
 			<trans-unit id="flexform.finisher.emailConsent.showDismissLink"><source>Show Consent Dismissal Link in Email</source></trans-unit>
 			<trans-unit id="flexform.finisher.emailConsent.showDismissLink.description"><source>By default, all Finishers that are executed after Consent Approval are also executed after Dismissal. Use Finisher Conditions to differentiate between the two.</source></trans-unit>

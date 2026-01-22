@@ -56,8 +56,7 @@ class ModuleInvoker
 			}
 
 			/** @var ModuleInterface $module */
-			$module->setRuntime($runtime);
-			$module->setSettings($configuration->getSettings());
+			$module->configure($runtime, $configuration);
 			$formModules[] = [
 				'configuration' => $configuration,
 				'instance' => $module,
@@ -111,9 +110,13 @@ class ModuleInvoker
 		$modules = $this->formModules[$runtime->form->getIdentifier()] ?? [];
 		$className = get_class($event);
 		foreach ($modules as $moduleData) {
+			if (method_exists($event, 'isCancelled') && $event->isCancelled()) {
+				break;
+			}
 			$module = $moduleData['instance'];
 			$map = $moduleData['methodEventMap'];
 			if (isset($map[$className])) {
+
 				foreach ($map[$className] as $methodName) {
 					$module->$methodName($event);
 				}

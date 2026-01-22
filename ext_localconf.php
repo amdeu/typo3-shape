@@ -30,6 +30,16 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape'] = [
 				],
 			],
 		]
+	],
+	'modules' => [
+		'sendEmail' => [
+			'templates' => [
+				'Module/SendEmail/Default' => [
+					'label' => 'Default',
+					'format' => \TYPO3\CMS\Core\Mail\FluidEmail::FORMAT_BOTH,
+				],
+			],
+		]
 	]
 ];
 

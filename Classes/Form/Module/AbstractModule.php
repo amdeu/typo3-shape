@@ -19,13 +19,21 @@ abstract class AbstractModule implements ModuleInterface, LoggerAwareInterface
 
 	protected array $settings = [];
 	protected Form\FormRuntime $runtime;
+	protected ?Form\Model\ModuleConfigurationInterface $configuration = null;
 
-	public function setRuntime(Form\FormRuntime $runtime): void
+	public function configure(
+		Form\FormRuntime $runtime,
+		?Form\Model\ModuleConfigurationInterface $configuration
+	): void
 	{
 		$this->runtime = $runtime;
+		if ($configuration) {
+			$this->configuration = $configuration;
+			$this->overrideSettings($configuration->getSettings());
+		}
 	}
 
-	public function setSettings(array $settings): void
+	public function overrideSettings(array $settings): void
 	{
 		Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings, $settings);
 	}

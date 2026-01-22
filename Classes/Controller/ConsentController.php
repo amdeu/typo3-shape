@@ -60,7 +60,8 @@ class ConsentController extends ActionController
 		}
 
 		// Otherwise, re-finish the form
-		$consentSettings = json_decode($consent['finisher_settings'], true);
+//		$consentSettings = json_decode($consent['finisher_settings'], true);
+		$consentSettings = json_decode($consent['module_settings'], true);
 
 		$request = $this->request->withArgument(
 			'splitFinisherExecution',

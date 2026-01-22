@@ -1,0 +1,4 @@
+{parsed.body -> f:format.stripTags()}
+
+
+<a href="{approveLink}">{approveLink}</a>

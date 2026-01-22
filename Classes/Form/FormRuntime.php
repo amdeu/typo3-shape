@@ -222,7 +222,7 @@ class FormRuntime
 	 * Considers finisher conditions and calls finisher validation which can prevent execution if errors occur
 	 * Finishers can also cancel further execution of subsequent finishers
 	 */
-	public function finishForm(array $conditionVariables = []): Finisher\FinisherExecutionContext
+	public function finishForm(array $conditionVariables = []): Finisher\FinisherExecutionContext|FormFinishEvent
 	{
 		$context = new Finisher\FinisherExecutionContext($this);
 		$expressionResolver = $this->createExpressionResolver($conditionVariables);
@@ -276,6 +276,7 @@ class FormRuntime
 		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
 		$finishEvent = new FormFinishEvent($this);
 		$this->eventDispatcher->dispatch($finishEvent);
+		return $finishEvent;
 		return $context;
 	}
 

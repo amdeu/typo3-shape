@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Amdeu\Shape\Form;
 
+// typo3 ext idea: new alternative renderType for inline and potentially file fields as a carousel. in many cases a slider is better to work with than a list of collapsed items
+
 // idea: replace finishers with "augments" or "enhancers", that can modify the form data at different stages: after validation, after processing, before finishing etc. Finishers would just be a type of enhancer that listens to a finish event
 // would need an EnhancerManager that instantiates the attached enhancer classes and then calls their methods on the appropriate events
 // todo: add labels for default browser validation messages, e.g. valueMissing, typeMismatch, etc.
