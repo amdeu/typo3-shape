@@ -10,10 +10,10 @@ use Amdeu\Shape\Form;
 
 // typo3 ext idea: new alternative renderType for inline and potentially file fields as a carousel. in many cases a slider is better to work with than a list of collapsed items
 
-// idea: replace finishers with "augments" or "enhancers", that can modify the form data at different stages: after validation, after processing, before finishing etc. Finishers would just be a type of enhancer that listens to a finish event
-// would need an EnhancerManager that instantiates the attached enhancer classes and then calls their methods on the appropriate events
+// todo: use CorePasswordValidator, passwordPolicy field for password fields
 // todo: add labels for default browser validation messages, e.g. valueMissing, typeMismatch, etc.
 // todo: extract validators into own extension, sth like html5_validators
+
 // todo: FormReflection with things like fieldNames, finisher types, other field information
 // todo: FormBuilder to build virtual forms, createFromYaml method
 // todo: option to choose yaml instead of form record in plugin
@@ -22,7 +22,6 @@ use Amdeu\Shape\Form;
 // todo: extract into extensions: repeatable containers, fe_user prefill, unique validation, rate limiter, google recaptcha
 // todo: delete/move uploads finisher?
 // todo: rate limiter finisher?
-// todo: all settings for plugin: disable server validation?,
 // note: upload and radio fields will not be in POST values if no value is set
 
 class FormController extends ActionController

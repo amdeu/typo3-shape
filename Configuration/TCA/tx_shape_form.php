@@ -61,8 +61,11 @@ $columns = [
 			'foreign_sortby' => 'sorting',
 			'appearance' => [
 				'expandSingle' => true,
-				'useSortable' => true
+				'useSortable' => true,
+				//'useCarousel' => true,  // This enables carousel
 			],
+			'showArrows' => true,      // Show navigation arrows
+			'showPagination' => true,  // Show pagination dots
 		],
 	],
 	'finishers' => [
@@ -198,8 +201,6 @@ $showItem = '
     	--palette--;;appearance,
     --div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.modules, 
     	modules,
-    --div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.finishers, 
-    	finishers,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, 
         sys_language_uid, 
         l10n_parent, 

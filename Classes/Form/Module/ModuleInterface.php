@@ -12,5 +12,4 @@ interface ModuleInterface
 		?Form\Model\ModuleConfigurationInterface $configuration
 	): void;
 
-	public function validate(): Extbase\Error\Result;
 }

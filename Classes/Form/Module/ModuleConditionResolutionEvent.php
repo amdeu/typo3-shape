@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Amdeu\Shape\Form\Condition;
+namespace Amdeu\Shape\Form\Module;
 
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use Amdeu\Shape\Form;

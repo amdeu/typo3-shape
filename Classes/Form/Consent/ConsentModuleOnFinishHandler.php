@@ -3,12 +3,12 @@
 namespace Amdeu\Shape\Form\Consent;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use Amdeu\Shape\Form;
+use Amdeu\Shape\Form\Module;
 
 final class ConsentModuleOnFinishHandler
 {
 	#[AsEventListener]
-	public function __invoke(Form\Condition\ModuleConditionResolutionEvent $event): void
+	public function __invoke(Module\ModuleConditionResolutionEvent $event): void
 	{
 		if ($event->isPropagationStopped()) {
 			return;
@@ -20,7 +20,7 @@ final class ConsentModuleOnFinishHandler
 			return;
 		}
 		// Never execute EmailConsentFinisher in Consent execution flow
-		if ($event->moduleConfiguration->getModuleClassName() === Form\Module\EmailConsentModule::class) {
+		if ($event->moduleConfiguration->getModuleClassName() === Module\EmailConsentModule::class) {
 			$event->result = false;
 			return;
 		}
@@ -30,7 +30,7 @@ final class ConsentModuleOnFinishHandler
 		}
 		// Check if there is an EmailConsentModule before this module, if not, skip this module
 		foreach ($event->runtime->form->getModuleConfigurations() as $configuration) {
-			if ($configuration->getModuleClassName() === Form\Module\EmailConsentModule::class) {
+			if ($configuration->getModuleClassName() === Module\EmailConsentModule::class) {
 				return;
 			}
 			if ($configuration === $event->moduleConfiguration) {

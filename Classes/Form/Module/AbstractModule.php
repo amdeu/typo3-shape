@@ -38,11 +38,6 @@ abstract class AbstractModule implements ModuleInterface, LoggerAwareInterface
 		Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings, $settings);
 	}
 
-	public function validate(): Result
-	{
-		return new Result();
-	}
-
 	protected function getRequest(): RequestInterface
 	{
 		return $this->runtime->request;
@@ -71,24 +66,6 @@ abstract class AbstractModule implements ModuleInterface, LoggerAwareInterface
 	protected function getView(): Core\View\ViewInterface
 	{
 		return $this->runtime->view;
-	}
-
-	protected function addValidationError(
-		string $message,
-		int $code,
-		string $propertyPath = ''
-	): Result {
-		$result = new Result();
-
-		if ($propertyPath) {
-			$result->forProperty($propertyPath)->addError(
-				new Error($message, $code)
-			);
-		} else {
-			$result->addError(new Error($message, $code));
-		}
-
-		return $result;
 	}
 
 	protected function parseWithValues(string $string): string

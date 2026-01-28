@@ -222,89 +222,89 @@ class FormRuntime
 	 * Considers finisher conditions and calls finisher validation which can prevent execution if errors occur
 	 * Finishers can also cancel further execution of subsequent finishers
 	 */
-	public function finishForm(array $conditionVariables = []): Finisher\FinisherExecutionContext|FormFinishEvent
+	public function finishForm(array $conditionVariables = []): FormFinishEvent
 	{
-		$context = new Finisher\FinisherExecutionContext($this);
-		$expressionResolver = $this->createExpressionResolver($conditionVariables);
+//		$context = new Finisher\FinisherExecutionContext($this);
+//		$expressionResolver = $this->createExpressionResolver($conditionVariables);
+//
+//		$executableFinishers = [];
+//		foreach ($this->form->getFinisherConfigurations() as $configuration) {
+//
+//			$conditionEvent = new Condition\FinisherConditionResolutionEvent(
+//				$this,
+//				$configuration,
+//				$expressionResolver
+//			);
+//			$this->eventDispatcher->dispatch($conditionEvent);
+//			if ($conditionEvent->isPropagationStopped()) {
+//				if ($conditionEvent->result === false) {
+//					continue;
+//				}
+//			} else if ($configuration->getCondition() && !$expressionResolver->evaluate($configuration->getCondition())) {
+//				continue;
+//			}
+//
+//			$finisher = $this->createFinisherInstance($configuration);
+//
+//			// todo: add finisher validation event?
+//			$validationResult = $finisher->validate();
+//
+//			if ($validationResult->hasErrors()) {
+//				$this->hasErrors = true;
+//
+//				// todo: rework messages to use message objects instead of arrays
+//				$this->addMessages(
+//					array_map(
+//						function (Extbase\Validation\Error $error) {
+//							return ['message' => $error->getMessage(), 'type' => 'error'];
+//						},
+//						$validationResult->getErrors()
+//					)
+//				);
+//				return $context;
+//			}
+//			$executableFinishers[] = $finisher;
+//		}
+//
+//		foreach ($executableFinishers as $finisher) {
+//			$finisher->execute($context);
+//			if ($context->isCancelled()) {
+//				break;
+//			}
+//		}
 
-		$executableFinishers = [];
-		foreach ($this->form->getFinisherConfigurations() as $configuration) {
-
-			$conditionEvent = new Condition\FinisherConditionResolutionEvent(
-				$this,
-				$configuration,
-				$expressionResolver
-			);
-			$this->eventDispatcher->dispatch($conditionEvent);
-			if ($conditionEvent->isPropagationStopped()) {
-				if ($conditionEvent->result === false) {
-					continue;
-				}
-			} else if ($configuration->getCondition() && !$expressionResolver->evaluate($configuration->getCondition())) {
-				continue;
-			}
-
-			$finisher = $this->createFinisherInstance($configuration);
-
-			// todo: add finisher validation event?
-			$validationResult = $finisher->validate();
-
-			if ($validationResult->hasErrors()) {
-				$this->hasErrors = true;
-
-				// todo: rework messages to use message objects instead of arrays
-				$this->addMessages(
-					array_map(
-						function (Extbase\Validation\Error $error) {
-							return ['message' => $error->getMessage(), 'type' => 'error'];
-						},
-						$validationResult->getErrors()
-					)
-				);
-				return $context;
-			}
-			$executableFinishers[] = $finisher;
-		}
-
-		foreach ($executableFinishers as $finisher) {
-			$finisher->execute($context);
-			if ($context->isCancelled()) {
-				break;
-			}
-		}
-
-		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
+//		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
 		$finishEvent = new FormFinishEvent($this);
 		$this->eventDispatcher->dispatch($finishEvent);
 		return $finishEvent;
-		return $context;
+//		return $context;
 	}
 
-	/**
-	 * Creates an instance of a finisher based on the given configuration
-	 */
-	public function createFinisherInstance(Model\FinisherConfigurationInterface $configuration): Finisher\FinisherInterface
-	{
-		// todo: maybe add "finisherDefaults". Problem is there's no good way to merge. ArrayUtility::mergeRecursiveWithOverrule either overwrites everything or discards empty values ('' and '0'), but we want to keep '0', otherwise checkboxes can't overwrite with false. Extbase has "ignoreFlexFormSettingsIfEmpty" but that doesn't really solve the problem either. To have booleans with default values, we'd need to render them as selects with values '', '0', '1' and then only ignore ''.
-		$event = new Finisher\BeforeFinisherCreationEvent(
-			$this,
-			$configuration,
-			$configuration->getFinisherClassName(),
-			$configuration->getSettings()
-		);
-		$this->eventDispatcher->dispatch($event);
-		$finisher = Core\Utility\GeneralUtility::makeInstance($event->finisherClassName);
-		if (!($finisher instanceof Finisher\FinisherInterface)) {
-			throw new \InvalidArgumentException('Argument "finisherClassName" must the name of a class that implements Amdeu\Shape\Form\Finisher\FinisherInterface.', 1741369249);
-		}
-		$finisher->setSettings($event->settings);
-		return $finisher;
-	}
+//	/**
+//	 * Creates an instance of a finisher based on the given configuration
+//	 */
+//	public function createFinisherInstance(Model\FinisherConfigurationInterface $configuration): Finisher\FinisherInterface
+//	{
+//		// todo: maybe add "finisherDefaults". Problem is there's no good way to merge. ArrayUtility::mergeRecursiveWithOverrule either overwrites everything or discards empty values ('' and '0'), but we want to keep '0', otherwise checkboxes can't overwrite with false. Extbase has "ignoreFlexFormSettingsIfEmpty" but that doesn't really solve the problem either. To have booleans with default values, we'd need to render them as selects with values '', '0', '1' and then only ignore ''.
+//		$event = new Finisher\BeforeFinisherCreationEvent(
+//			$this,
+//			$configuration,
+//			$configuration->getFinisherClassName(),
+//			$configuration->getSettings()
+//		);
+//		$this->eventDispatcher->dispatch($event);
+//		$finisher = Core\Utility\GeneralUtility::makeInstance($event->finisherClassName);
+//		if (!($finisher instanceof Finisher\FinisherInterface)) {
+//			throw new \InvalidArgumentException('Argument "finisherClassName" must the name of a class that implements Amdeu\Shape\Form\Finisher\FinisherInterface.', 1741369249);
+//		}
+//		$finisher->setSettings($event->settings);
+//		return $finisher;
+//	}
 
 	/**
 	 * Creates an expression resolver with the given additional variables
 	 */
-	public function createExpressionResolver(array $variables): Core\ExpressionLanguage\Resolver
+	public function createExpressionResolver(array $variables = []): Core\ExpressionLanguage\Resolver
 	{
 		$variables = array_merge([
 			'formRuntime' => $this,

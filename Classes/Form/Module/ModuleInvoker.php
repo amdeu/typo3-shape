@@ -5,7 +5,6 @@ namespace Amdeu\Shape\Form\Module;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Amdeu\Shape\Form;
 use Amdeu\Shape\Form\Model;
 
@@ -26,12 +25,12 @@ class ModuleInvoker
 	public function initializeModules(Form\FormRuntime $runtime): void
 	{
 		$configurations = $runtime->form->getModuleConfigurations();
-		$expressionResolver = $runtime->createExpressionResolver([]);
+		$expressionResolver = $runtime->createExpressionResolver();
 		$formModules = [];
 		foreach ($configurations as $configuration) {
 
 			// Evaluate module condition
-			$conditionEvent = new Form\Condition\ModuleConditionResolutionEvent(
+			$conditionEvent = new ModuleConditionResolutionEvent(
 				$runtime,
 				$configuration,
 				$expressionResolver
@@ -50,7 +49,7 @@ class ModuleInvoker
 			}
 
 			/** @var Model\ModuleConfigurationInterface $configuration */
-			$module = GeneralUtility::makeInstance($configuration->getModuleClassName());
+			$module = Core\Utility\GeneralUtility::makeInstance($configuration->getModuleClassName());
 			if (!$module instanceof ModuleInterface) {
 				throw new \RuntimeException("Module class " . $configuration->getModuleClassName() . " must implement ModuleInterface");
 			}
@@ -143,6 +142,12 @@ class ModuleInvoker
 	}
 
 	#[AsEventListener]
+	public function onModuleConditionResolution(Form\Condition\ModuleConditionResolutionEvent $event): void
+	{
+		$this->handleEvent($event);
+	}
+
+	#[AsEventListener]
 	public function onBeforeFormRender(Form\Rendering\BeforeFormRenderEvent $event): void
 	{
 		$this->handleEvent($event);
@@ -150,12 +155,6 @@ class ModuleInvoker
 
 	#[AsEventListener]
 	public function onFieldConditionResolution(Form\Condition\FieldConditionResolutionEvent $event): void
-	{
-		$this->handleEvent($event);
-	}
-
-	#[AsEventListener]
-	public function onModuleConditionResolution(Form\Condition\ModuleConditionResolutionEvent $event): void
 	{
 		$this->handleEvent($event);
 	}

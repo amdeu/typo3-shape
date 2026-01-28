@@ -2,7 +2,6 @@
 
 namespace Amdeu\Shape\Form\Module;
 
-use Amdeu\Shape\Form\Module\AsModuleEventListener;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
