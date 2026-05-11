@@ -1,4 +1,4 @@
-<f:for each="{fields}" as="field">
+<f:for each="{fields}" as="field" iteration="fieldIteration">
 	<f:if condition="{field.conditionResult}">
 		<f:render partial="Field/{field.type -> shape:camelCase()}" arguments="{_all}"/>
 	</f:if>
