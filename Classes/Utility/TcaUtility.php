@@ -103,4 +103,36 @@ class TcaUtility
 			$GLOBALS['TCA']['tx_shape_finisher']['columns']['settings']['config']['ds'][$value] = $flexForm;
 		}
 	}
+
+
+	protected static ?Core\Information\Typo3Version $typo3Version = null;
+	public static function getTypo3Version(): Core\Information\Typo3Version
+	{
+		if (static::$typo3Version === null) {
+			static::$typo3Version = Core\Utility\GeneralUtility::makeInstance(Core\Information\Typo3Version::class);
+		}
+		return static::$typo3Version;
+	}
+
+	public static function setFlexForm(
+		string $table,
+		string $field,
+		string $type,
+		string $flexForm,
+	): void
+	{
+		if (!$type) {
+			if (static::getTypo3Version()->getMajorVersion() < 14) {
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][0] = $flexForm;
+			} else {
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'] = $flexForm;
+			}
+			return;
+		}
+		if (static::getTypo3Version()->getMajorVersion() < 14) {
+			$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$type] = $flexForm;
+		} else {
+			$GLOBALS['TCA'][$table]['types'][$type]['columnsOverrides'][$field]['config']['ds'] = $flexForm;
+		}
+	}
 }

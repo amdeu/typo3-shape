@@ -208,7 +208,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		array $settings
 	): Core\Domain\Record
 	{
-		$uid = $settings['pluginUid'];
+		$uid = $settings['pluginUid'] ?? 0;
 		if (!$uid) {
 			if ($request->getAttribute('currentContentObject')?->data['CType']) {
 				return Core\Utility\GeneralUtility::makeInstance(Core\Domain\RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $request->getAttribute('currentContentObject')?->data);

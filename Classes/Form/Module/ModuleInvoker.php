@@ -107,16 +107,16 @@ class ModuleInvoker
 			return;
 		}
 		$modules = $this->formModules[$runtime->form->getIdentifier()] ?? [];
-		$className = get_class($event);
+		$eventClassName = get_class($event);
 		foreach ($modules as $moduleData) {
 			if (method_exists($event, 'isCancelled') && $event->isCancelled()) {
 				break;
 			}
 			$module = $moduleData['instance'];
 			$map = $moduleData['methodEventMap'];
-			if (isset($map[$className])) {
+			if (isset($map[$eventClassName])) {
 
-				foreach ($map[$className] as $methodName) {
+				foreach ($map[$eventClassName] as $methodName) {
 					$module->$methodName($event);
 				}
 			}
