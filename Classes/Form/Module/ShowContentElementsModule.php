@@ -13,9 +13,9 @@ class ShowContentElementsModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		$event->finishedActionArguments = [
-			'template' => 'Module/ShowContentElements',
-			'contentElements' => explode(',', $this->settings['contentElements'])
-		];
+		$event->finishedTemplate = 'Module/ShowContentElements';
+		$event->addFinishedVariables([
+			'contentElements' => explode(',', $this->settings['contentElements']),
+		]);
 	}
 }

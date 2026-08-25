@@ -21,6 +21,7 @@ class ModuleInvoker
 
 	/**
 	 * Initialize modules based on form configuration and conditions.
+	 * Keyed by plugin UID so the same form record on multiple plugins on one page works correctly.
 	 */
 	public function initializeModules(Form\FormRuntime $runtime): void
 	{
@@ -62,16 +63,23 @@ class ModuleInvoker
 				'methodEventMap' => $this->buildMethodEventMap($module)
 			];
 		}
-		$this->formModules[$runtime->form->getIdentifier()] = $formModules;
+		$this->formModules[(string)$runtime->plugin->getUid()] = $formModules;
 	}
 
 
 	/**
-	 * Build a map of event class names to module method names for the given module
-	 * based on the AsModuleEventListener attributes and method parameter types.
+	 * Build a map of event class names to module method names.
+	 * Cached per class since the map depends only on the class definition, not the instance.
 	 */
+	private static array $methodEventMapCache = [];
+
 	protected function buildMethodEventMap(ModuleInterface $module): array
 	{
+		$className = get_class($module);
+		if (isset(self::$methodEventMapCache[$className])) {
+			return self::$methodEventMapCache[$className];
+		}
+
 		$map = [];
 		$reflection = new \ReflectionClass($module);
 		foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
@@ -87,35 +95,36 @@ class ModuleInvoker
 			if (!class_exists($paramType)) {
 				throw new \RuntimeException("Module event listener method parameter type must be an event class, got: " . $paramType);
 			}
-			if (!isset($map[$paramType])) {
-				$map[$paramType] = [];
-			}
 			$map[$paramType][] = $method->getName();
 		}
-		return $map;
+
+		return self::$methodEventMapCache[$className] = $map;
 	}
 
 	/**
-	 * Handle an event by invoking the appropriate methods on all modules
-	 * that have registered listeners for the event's class.
+	 * Routes a form event to all module methods that declared #[AsModuleEventListener] for it.
+	 *
+	 * Every PSR-14 form event that modules should be able to react to must have a corresponding
+	 * #[AsEventListener] method below that calls this method. There is no automatic discovery —
+	 * new form events must be wired up explicitly.
+	 *
+	 * Supported events: FormRuntimeCreationEvent, ExpressionResolverCreationEvent,
+	 * ModuleConditionResolutionEvent, BeforeFormRenderEvent, FieldConditionResolutionEvent,
+	 * ValueValidationEvent, ValueSerializationEvent, ValueProcessingEvent,
+	 * SpamAnalysisEvent, FormFinishEvent
 	 */
-	protected function handleEvent(object $event): void
+	protected function handleEvent(Form\FormEventInterface $event): void
 	{
-		// check if event has runtime property
-		$runtime = $event->runtime ?? null;
-		if (!$runtime instanceof Form\FormRuntime) {
-			return;
-		}
-		$modules = $this->formModules[$runtime->form->getIdentifier()] ?? [];
+		$runtime = $event->getRuntime();
+		$modules = $this->formModules[(string)$runtime->plugin->getUid()] ?? [];
 		$eventClassName = get_class($event);
 		foreach ($modules as $moduleData) {
-			if (method_exists($event, 'isCancelled') && $event->isCancelled()) {
+			if ($event instanceof Form\FormFinishEvent && $event->isPropagationStopped()) {
 				break;
 			}
 			$module = $moduleData['instance'];
 			$map = $moduleData['methodEventMap'];
 			if (isset($map[$eventClassName])) {
-
 				foreach ($map[$eventClassName] as $methodName) {
 					$module->$methodName($event);
 				}
@@ -142,7 +151,7 @@ class ModuleInvoker
 	}
 
 	#[AsEventListener]
-	public function onModuleConditionResolution(Form\Condition\ModuleConditionResolutionEvent $event): void
+	public function onModuleConditionResolution(ModuleConditionResolutionEvent $event): void
 	{
 		$this->handleEvent($event);
 	}

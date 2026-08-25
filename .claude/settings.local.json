@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E '\\\\.\\(md|rst|txt\\)$')",
+      "Bash(xargs ls -la)"
+    ]
+  }
+}

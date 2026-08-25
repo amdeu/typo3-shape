@@ -89,29 +89,46 @@ class FormController extends ActionController
 			$firstPageWithErrors = $this->runtime->session->returnPageIndex;
 			return $this->formPage($firstPageWithErrors);
 		}
-		return $finishResult->response ?? $this->redirect('finished', arguments: $finishResult->finishedActionArguments);
+		if ($finishResult->response) {
+			return $finishResult->response;
+		}
+		$nonce = bin2hex(random_bytes(16));
+		$feAuth = $this->request->getAttribute('frontend.user');
+		$feAuth->setAndSaveSessionData('tx_shape_finish_' . $nonce, [
+			'template' => $finishResult->finishedTemplate,
+			'variables' => $finishResult->finishedVariables,
+			'formValues' => $this->runtime->session->values,
+		]);
+		return $this->redirect('finished', arguments: ['finishToken' => $nonce]);
 	}
 
 	/**
 	 * Renders view after form is finished
 	 */
-	public function finishedAction(): ResponseInterface
+	public function finishedAction(string $finishToken = ''): ResponseInterface
 	{
 		$this->initializeRuntime();
 		if (!$this->runtime->isRequestedPlugin()) {
 			return $this->formPage();
 		}
-		$arguments = $this->request->getArguments();
 		$variables = [
 			'plugin' => $this->runtime->plugin,
 			'form' => $this->runtime->form,
 			'settings' => $this->settings,
-			'arguments' => $arguments,
 		];
+		$template = '';
+		if ($finishToken) {
+			$feAuth = $this->request->getAttribute('frontend.user');
+			$sessionKey = 'tx_shape_finish_' . $finishToken;
+			$finishContext = $feAuth->getSessionData($sessionKey);
+			if ($finishContext) {
+				$template = $finishContext['template'] ?? '';
+				$variables = array_merge($variables, $finishContext['variables'] ?? []);
+				$variables['formValues'] = $finishContext['formValues'] ?? [];
+			}
+		}
 		$this->view->assignMultiple($variables);
-		return $this->htmlResponse(
-			$this->view->render($arguments['template'] ?? '')
-		);
+		return $this->htmlResponse($this->view->render($template));
 	}
 
 	protected function initializeRuntime(): void

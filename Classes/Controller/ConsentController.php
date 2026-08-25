@@ -87,6 +87,13 @@ class ConsentController extends ActionController
 		if ($finishResult->response) {
 			return $finishResult->response;
 		}
+		$nonce = bin2hex(random_bytes(16));
+		$feAuth = $this->request->getAttribute('frontend.user');
+		$feAuth->setAndSaveSessionData('tx_shape_finish_' . $nonce, [
+			'template' => $finishResult->finishedTemplate,
+			'variables' => $finishResult->finishedVariables,
+			'formValues' => $runtime->session->values,
+		]);
 		$redirectUri = $this->uriBuilder
 			->reset()
 			->setCreateAbsoluteUri(true)
@@ -94,7 +101,7 @@ class ConsentController extends ActionController
 			->setTargetPageUid($runtime->plugin->getPid())
 			->uriFor(
 				'finished',
-				$finishResult->finishedActionArguments,
+				['finishToken' => $nonce],
 				'Form',
 				'Shape',
 				'Form'

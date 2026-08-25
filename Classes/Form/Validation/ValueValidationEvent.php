@@ -8,7 +8,7 @@ use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Validation\Validator as ExtbaseValidator;
 use Amdeu\Shape\Form;
 
-final class ValueValidationEvent
+final class ValueValidationEvent implements Form\FormEventInterface
 {
 	public function __construct(
 		public readonly Form\FormRuntime                      $runtime,
@@ -18,6 +18,11 @@ final class ValueValidationEvent
 		public ?Result                                        $result = null,
 	)
 	{
+	}
+
+	public function getRuntime(): Form\FormRuntime
+	{
+		return $this->runtime;
 	}
 
 	public function isPropagationStopped(): bool

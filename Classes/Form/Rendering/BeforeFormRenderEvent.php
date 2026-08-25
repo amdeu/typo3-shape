@@ -6,13 +6,18 @@ namespace Amdeu\Shape\Form\Rendering;
 
 use Amdeu\Shape\Form;
 
-final class BeforeFormRenderEvent
+final class BeforeFormRenderEvent implements Form\FormEventInterface
 {
 	public function __construct(
 		public readonly Form\FormRuntime $runtime,
 		protected array $variables,
 	)
 	{
+	}
+
+	public function getRuntime(): Form\FormRuntime
+	{
+		return $this->runtime;
 	}
 
 	public function getVariables(): array

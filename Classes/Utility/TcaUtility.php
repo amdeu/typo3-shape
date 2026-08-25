@@ -84,6 +84,40 @@ class TcaUtility
 	}
 
 	/**
+	 * Registers a module type: adds it to the TCA select, registers the alias in ModuleRegistry,
+	 * and optionally wires up a FlexForm and columnsOverrides for its settings.
+	 * Call this from a TCA/Overrides file.
+	 *
+	 * @param string $columnsOverrides  Optional TCA columnsOverrides for this type (e.g. to enable language sync on settings)
+	 */
+	public static function addModuleType(
+		string $label,
+		string $identifier,
+		string $className,
+		string $icon = 'shape-module-default',
+		string $flexForm = '',
+		array $columnsOverrides = []
+	): void {
+		\Amdeu\Shape\Form\Module\ModuleRegistry::register($identifier, $className);
+		$GLOBALS['TCA']['tx_shape_module_configuration']['columns']['type']['config']['items'][] = [
+			'label' => $label,
+			'value' => $identifier,
+			'icon'  => $icon,
+		];
+		$GLOBALS['TCA']['tx_shape_module_configuration']['ctrl']['typeicon_classes'][$identifier] = $icon;
+		if ($flexForm) {
+			static::setFlexForm('tx_shape_module_configuration', 'settings', $identifier, $flexForm);
+		}
+		if ($columnsOverrides) {
+			$baseShowItem = $GLOBALS['TCA']['tx_shape_module_configuration']['types']['0']['showitem'] ?? '';
+			$GLOBALS['TCA']['tx_shape_module_configuration']['types'][$identifier] = [
+				'showitem' => $baseShowItem,
+				'columnsOverrides' => $columnsOverrides,
+			];
+		}
+	}
+
+	/**
 	 * Adds a new type to tx_shape_finisher
 	 * @param string $label
 	 * @param string $value

@@ -6,23 +6,36 @@ namespace Amdeu\Shape\Form;
 
 use Psr\Http\Message\ResponseInterface;
 
-final class FormFinishEvent
+final class FormFinishEvent implements FormEventInterface
 {
+	public string $finishedTemplate = '';
+	public array $finishedVariables = [];
+
 	public function __construct(
 		public readonly FormRuntime	$runtime,
 		public ?ResponseInterface 	$response = null,
-		public array				$finishedActionArguments = [],
-		protected bool              $cancelled = false,
+		protected bool              $propagationStopped = false,
 	)
 	{
 	}
 
-	public function cancel(): void
+	public function addFinishedVariables(array $variables): void
 	{
-		$this->cancelled = true;
+		$this->finishedVariables = array_merge($this->finishedVariables, $variables);
 	}
-	public function isCancelled(): bool
+
+	public function getRuntime(): FormRuntime
 	{
-		return $this->cancelled;
+		return $this->runtime;
+	}
+
+	public function stopPropagation(): void
+	{
+		$this->propagationStopped = true;
+	}
+
+	public function isPropagationStopped(): bool
+	{
+		return $this->propagationStopped;
 	}
 }

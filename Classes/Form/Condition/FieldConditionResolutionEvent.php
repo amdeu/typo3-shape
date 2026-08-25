@@ -7,7 +7,7 @@ namespace Amdeu\Shape\Form\Condition;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use Amdeu\Shape\Form;
 
-final class FieldConditionResolutionEvent
+final class FieldConditionResolutionEvent implements Form\FormEventInterface
 {
 	public function __construct(
 		public readonly Form\FormRuntime          $runtime,
@@ -15,6 +15,12 @@ final class FieldConditionResolutionEvent
 		public readonly Resolver                  $resolver,
 		public ?bool                              $result = null,
 	) {}
+
+	public function getRuntime(): Form\FormRuntime
+	{
+		return $this->runtime;
+	}
+
 	public function isPropagationStopped(): bool
 	{
 		return $this->result !== null;

@@ -4,6 +4,7 @@ namespace Amdeu\Shape\Form\Model;
 
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core;
+use Amdeu\Shape\Form\Module\ModuleRegistry;
 
 class ModuleConfigurationRecord extends Record implements ModuleConfigurationInterface
 {
@@ -17,7 +18,7 @@ class ModuleConfigurationRecord extends Record implements ModuleConfigurationInt
 
 	public function getModuleClassName(): string
 	{
-		return $this->properties['type'] ?? '';
+		return ModuleRegistry::resolve($this->properties['type'] ?? '');
 	}
 
 	public function getSettings(): array

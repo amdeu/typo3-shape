@@ -14,9 +14,9 @@ class ShowTextModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		$event->finishedActionArguments = [
-			'template' => 'Module/ShowText',
-			'configUid' => $this->configuration?->getIdentifier()
-		];
+		$event->finishedTemplate = 'Module/ShowText';
+		$event->addFinishedVariables([
+			'bodytext' => $this->parseWithValues($this->settings['bodytext'])
+		]);
 	}
 }

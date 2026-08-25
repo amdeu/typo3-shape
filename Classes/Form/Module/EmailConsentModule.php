@@ -160,7 +160,7 @@ class EmailConsentModule extends AbstractModule
 		}
 
 		if ($this->settings['splitFinisherExecution']) {
-			$event->cancel();
+			$event->stopPropagation();
 		}
 	}
 }

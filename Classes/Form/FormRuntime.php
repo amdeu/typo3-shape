@@ -217,10 +217,8 @@ class FormRuntime
 	}
 
 	/**
-	 * Executes finishers configured for the form
-	 * Finishers are executed in the order they are defined
-	 * Considers finisher conditions and calls finisher validation which can prevent execution if errors occur
-	 * Finishers can also cancel further execution of subsequent finishers
+	 * Dispatches a FormFinishEvent to invoke all configured modules listening on form finish.
+	 * Modules can call stopPropagation() on the event to prevent subsequent modules from executing.
 	 */
 	public function finishForm(array $conditionVariables = []): FormFinishEvent
 	{
@@ -273,7 +271,6 @@ class FormRuntime
 //			}
 //		}
 
-//		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
 		$finishEvent = new FormFinishEvent($this);
 		$this->eventDispatcher->dispatch($finishEvent);
 		return $finishEvent;
