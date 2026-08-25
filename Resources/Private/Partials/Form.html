@@ -1,21 +1,26 @@
-<f:form class="{blockClass}__form"
-		id="c{plugin.uid}-form-{form.name}"
-		name="{namespace}"
-		action="{action}"
-		pageUid="{plugin.pid}"
-		arguments="{pluginUid:plugin.uid, pageIndex:forwardStepPageIndex}"
-		section="c{plugin.uid}"
-		data-shape-form="{namespace}"
-		autocomplete="on"
-		enctype="multipart/form-data">
-	<div>
-		<f:form.hidden name="__session" value="{serializedSession}"/>
-		<f:render partial="SpamProtection" arguments="{_all}"/>
-	</div>
+<shape-form namespace="{namespace}"
+			conditional-fields="{settings.clientFeatures.conditionalFields.enabled}"
+			focus-pass="{settings.spamProtection.focusPass.enabled}"
+			validation-messages="{settings.clientFeatures.validationMessages.enabled}"
+			stylable-validation="{settings.clientFeatures.stylableValidation.enabled}">
+	<f:form class="{blockClass}__form"
+			id="c{plugin.uid}-form-{form.name}"
+			name="{namespace}"
+			action="{action}"
+			pageUid="{plugin.pid}"
+			arguments="{pluginUid:plugin.uid, pageIndex:forwardStepPageIndex}"
+			section="c{plugin.uid}"
+			autocomplete="on"
+			enctype="multipart/form-data">
+		<div>
+			<f:form.hidden name="__session" value="{serializedSession}"/>
+			<f:render partial="SpamProtection" arguments="{_all}"/>
+		</div>
 
-	<f:render partial="Messages" arguments="{_all}"/>
+		<f:render partial="Messages" arguments="{_all}"/>
 
-	<f:render partial="FormPage" arguments="{_all}"/>
+		<f:render partial="FormPage" arguments="{_all}"/>
 
-	<f:render partial="Navigation" arguments="{_all}"/>
-</f:form>
+		<f:render partial="Navigation" arguments="{_all}"/>
+	</f:form>
+</shape-form>

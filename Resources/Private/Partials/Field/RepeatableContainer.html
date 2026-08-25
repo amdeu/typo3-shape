@@ -4,9 +4,9 @@
 	<f:render partial="Control/HeaderLabel" arguments="{_all}"/>
 	<f:render partial="Control/Description" arguments="{_all}"/>
 
-	<div id="{id}" class="{blockClass}__repeatable__list -{currentPage.type}-step">
-		<f:variable name="startingIndex" value="{field.createdFieldsets -> f:count()}"/>
-		<template data-iteration="{startingIndex}">
+	<f:variable name="startingIndex" value="{field.createdFieldsets -> f:count()}"/>
+	<shape-repeatable-container id="{id}" iteration="{startingIndex}" class="{blockClass}__repeatable__list -{currentPage.type}-step">
+		<template>
 			<f:alias map="{fields:field.fields, index:'__INDEX'}">
 				<f:render section="RepeatableContainer" arguments="{_all}"/>
 			</f:alias>
@@ -18,20 +18,20 @@
 				</f:alias>
 			</f:for>
 		</f:if>
-	</div>
 
-	<f:if condition="{currentPage.type} !== 'summary'">
-		<button class="{blockClass}__repeatable__add {buttonClass}"
-				type="button"
-				data-shape-repeatable-add="{id}">
-			{f:translate(key:'label.add_fieldset')}
-		</button>
-	</f:if>
+		<f:if condition="{currentPage.type} !== 'summary'">
+			<button class="{blockClass}__repeatable__add {buttonClass}"
+					type="button"
+					data-shape-repeatable-add>
+				{f:translate(key:'label.add_fieldset')}
+			</button>
+		</f:if>
+	</shape-repeatable-container>
 
 </f:render>
 
 <f:section name="RepeatableContainer">
-	<div class="{blockClass}__repeatable__item" data-shape-repeatable-item="{index}">
+	<shape-repeatable-item index="{index}" class="{blockClass}__repeatable__item">
 		<div class="{blockClass}__repeatable__fieldset">
 			<f:alias map="{fields:fields, namespace:'{namespace}[{field.name}][{index}]'}">
 				<f:render partial="FieldList" arguments="{_all}"/>
@@ -44,6 +44,6 @@
 				{f:translate(key:'label.remove_fieldset')}
 			</button>
 		</f:if>
-	</div>
+	</shape-repeatable-item>
 </f:section>
 

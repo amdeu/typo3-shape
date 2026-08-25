@@ -16,7 +16,7 @@ class ShowTextModule extends AbstractModule
 	{
 		$event->finishedTemplate = 'Module/ShowText';
 		$event->addFinishedVariables([
-			'parsedBody' => $this->parseWithValues($this->settings['bodytext'])
+			'parsedBody' => $this->parseWithValues($this->settings['bodytext'], true)
 		]);
 	}
 }

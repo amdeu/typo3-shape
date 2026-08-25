@@ -27,6 +27,11 @@ plugin.tx_shape {
                 value = human
             }
         }
+        clientFeatures {
+            conditionalFields.enabled = 1
+            validationMessages.enabled = 1
+            stylableValidation.enabled = 1
+        }
         finisherDefaults {
             Amdeu\Shape\Form\Finisher\EmailConsentFinisher {
                 consentPage = 0
