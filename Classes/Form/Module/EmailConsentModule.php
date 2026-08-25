@@ -129,7 +129,7 @@ class EmailConsentModule extends AbstractModule
 			'approveLink' => $approveLink,
 			'dismissLink' => $dismissLink,
 			'parsed' => [
-				'body' => $this->parseWithValues($this->settings['body'])
+				'body' => $this->parseWithValues($this->settings['body'], true)
 			]
 		];
 

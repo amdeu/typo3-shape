@@ -55,7 +55,7 @@ class SendEmailModule extends AbstractModule
 			'settings' => $this->settings,
 			'runtime' => $this->runtime,
 			'parsed' => [
-				'body' => $this->parseWithValues($this->settings['body'])
+				'body' => $this->parseWithValues($this->settings['body'], true)
 			]
 		];
 		foreach ($templateConfig['fields'] ?? [] as $key => $config) {

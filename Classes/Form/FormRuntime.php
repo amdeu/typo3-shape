@@ -9,7 +9,6 @@ class FormRuntime
 {
 	public function __construct(
 		readonly protected Core\EventDispatcher\EventDispatcher $eventDispatcher,
-		readonly protected Core\Service\FlexFormService         $flexFormService,
 		readonly protected Module\ModuleInvoker                	$moduleInvoker,
 		readonly protected Condition\FieldConditionResolver     $fieldConditionResolver,
 		readonly protected Processing\FieldValueProcessor       $fieldValueProcessor,
@@ -271,7 +270,7 @@ class FormRuntime
 //			}
 //		}
 
-		$finishEvent = new FormFinishEvent($this);
+		$finishEvent = new FormFinishEvent($this, conditionVariables: $conditionVariables);
 		$this->eventDispatcher->dispatch($finishEvent);
 		return $finishEvent;
 //		return $context;

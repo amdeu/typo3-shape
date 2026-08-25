@@ -43,7 +43,13 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape'] = [
 	]
 ];
 
-if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')) {
+if (
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')
+	&& \Amdeu\Shape\Utility\TcaUtility::getTypo3Version()->getMajorVersion() < 14
+) {
+	// TYPO3 v14+ reads this from TCA instead (see Configuration/TCA/Overrides/tx_scheduler_task.php);
+	// setting it here on v14+ would still work, but via a path that emits an E_USER_DEPRECATED warning
+	// on every read and is removed entirely in v15.
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_shape_email_consent'] = [
 		'expireField' => 'valid_until',
 	];

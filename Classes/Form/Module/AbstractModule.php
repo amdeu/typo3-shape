@@ -68,9 +68,15 @@ abstract class AbstractModule implements ModuleInterface, LoggerAwareInterface
 		return $this->runtime->view;
 	}
 
-	protected function parseWithValues(string $string): string
+	/**
+	 * @param bool $escapeHtml Must be true whenever the result is rendered as HTML (e.g. via f:format.html())
+	 *                         without further escaping, so that submitted form values can't inject markup into
+	 *                         admin-authored RTE content. Leave false for plain-text targets (subjects, addresses,
+	 *                         database columns), where HTML-escaping would corrupt the stored/sent value.
+	 */
+	protected function parseWithValues(string $string, bool $escapeHtml = false): string
 	{
-		return Utility\TemplateVariableParser::parse($string, $this->getFormValues());
+		return Utility\TemplateVariableParser::parse($string, $this->getFormValues(), $escapeHtml);
 	}
 
 	/**

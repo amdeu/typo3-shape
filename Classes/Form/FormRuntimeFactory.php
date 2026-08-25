@@ -12,7 +12,6 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 	public function __construct(
 		protected readonly Core\EventDispatcher\EventDispatcher                $eventDispatcher,
 		protected readonly Core\Resource\StorageRepository                     $storageRepository,
-		protected readonly Core\Service\FlexFormService                        $flexFormService,
 		protected readonly Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
 		protected readonly ContentObjectRenderer                               $contentObject,
 		protected readonly Module\ModuleInvoker                                $moduleInvoker,
@@ -101,7 +100,6 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 
 		return new FormRuntime(
 			$this->eventDispatcher,
-			$this->flexFormService,
 			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,
@@ -181,7 +179,6 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		// todo: BeforeFormRuntimeRecreationEvent to change request
 		return new FormRuntime(
 			$this->eventDispatcher,
-			$this->flexFormService,
 			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,

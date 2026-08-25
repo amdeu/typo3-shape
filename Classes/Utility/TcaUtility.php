@@ -73,10 +73,12 @@ class TcaUtility
 		$GLOBALS['TCA']['tx_shape_field']['ctrl']['typeicon_classes'][$value] = $icon;
 
 		if ($baseType && $GLOBALS['TCA']['tx_shape_field']['types'][$baseType]) {
-			$typeDefinition = Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-				$GLOBALS['TCA']['tx_shape_field']['types'][$baseType],
+			$baseTypeDefinition = $GLOBALS['TCA']['tx_shape_field']['types'][$baseType];
+			Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+				$baseTypeDefinition,
 				$typeDefinition
 			);
+			$typeDefinition = $baseTypeDefinition;
 		}
 		if ($typeDefinition) {
 			$GLOBALS['TCA']['tx_shape_field']['types'][$value] = $typeDefinition;
@@ -105,15 +107,15 @@ class TcaUtility
 			'icon'  => $icon,
 		];
 		$GLOBALS['TCA']['tx_shape_module_configuration']['ctrl']['typeicon_classes'][$identifier] = $icon;
-		if ($flexForm) {
-			static::setFlexForm('tx_shape_module_configuration', 'settings', $identifier, $flexForm);
-		}
 		if ($columnsOverrides) {
 			$baseShowItem = $GLOBALS['TCA']['tx_shape_module_configuration']['types']['0']['showitem'] ?? '';
 			$GLOBALS['TCA']['tx_shape_module_configuration']['types'][$identifier] = [
 				'showitem' => $baseShowItem,
 				'columnsOverrides' => $columnsOverrides,
 			];
+		}
+		if ($flexForm) {
+			static::setFlexForm('tx_shape_module_configuration', 'settings', $identifier, $flexForm);
 		}
 	}
 

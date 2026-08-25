@@ -19,7 +19,7 @@ final class ValueProcessingHandler
 		}
 		$value = $event->value;
 		$field = $event->field;
-		if ($field->getType() === 'password') {
+		if ($field->getType() === 'password' && is_string($value) && $value !== '') {
 			$passwordHashFactory = Core\Utility\GeneralUtility::makeInstance(Core\Crypto\PasswordHashing\PasswordHashFactory::class);
 			$event->processedValue = $passwordHashFactory->getDefaultHashInstance('FE')->getHashedPassword($value);
 		}

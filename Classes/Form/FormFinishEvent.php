@@ -6,7 +6,7 @@ namespace Amdeu\Shape\Form;
 
 use Psr\Http\Message\ResponseInterface;
 
-final class FormFinishEvent implements FormEventInterface
+final class FormFinishEvent implements FormEventInterface, Condition\HasConditionVariablesInterface
 {
 	public string $finishedTemplate = '';
 	public array $finishedVariables = [];
@@ -15,6 +15,7 @@ final class FormFinishEvent implements FormEventInterface
 		public readonly FormRuntime	$runtime,
 		public ?ResponseInterface 	$response = null,
 		protected bool              $propagationStopped = false,
+		protected array             $conditionVariables = [],
 	)
 	{
 	}
@@ -27,6 +28,11 @@ final class FormFinishEvent implements FormEventInterface
 	public function getRuntime(): FormRuntime
 	{
 		return $this->runtime;
+	}
+
+	public function getConditionVariables(): array
+	{
+		return $this->conditionVariables;
 	}
 
 	public function stopPropagation(): void

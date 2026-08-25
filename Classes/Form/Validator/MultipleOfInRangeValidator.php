@@ -65,7 +65,13 @@ final class MultipleOfInRangeValidator extends AbstractValidator
 		$step = round((float)$this->options['step'], $precision);
 		$diff = round($value - $offset, $precision);
 		$allowance = pow(10, -$precision);
-		if (fmod($diff, $step) > $allowance) {
+		$remainder = fmod($diff, $step);
+		if ($remainder < 0) {
+			$remainder += abs($step);
+		}
+		// Float division error can put an exact multiple's remainder close to $step instead of close to 0
+		// (e.g. fmod(0.3, 0.1) can yield ~0.09999999999999998), so both boundaries count as valid.
+		if ($remainder > $allowance && (abs($step) - $remainder) > $allowance) {
 			$nearestValues = [
 				$offset + (int)($diff / $step) * $step,
 				$offset + (int)($diff / $step + 1) * $step,

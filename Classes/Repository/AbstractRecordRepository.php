@@ -252,9 +252,13 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 					return null;
 				}
 
-				$recordKey = $this->getRecordCacheKey($actualUid);
-				if (isset($this->recordCache[$recordKey])) {
-					return $this->recordCache[$recordKey];
+				// recordCache only ever holds hydrated Record objects (see toRecords()); a raw-result
+				// call must not be satisfied from it, or it would return a Record where an array is expected.
+				if (!$this->returnRawQueryResult) {
+					$recordKey = $this->getRecordCacheKey($actualUid);
+					if (isset($this->recordCache[$recordKey])) {
+						return $this->recordCache[$recordKey];
+					}
 				}
 			}
 		}
@@ -547,12 +551,14 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 	protected function getAllowedUidsCacheKey(int $uid): string
 	{
 		return sprintf(
-			'%d|%d|%d|%d|%d',
+			'%d|%d|%d|%d|%d|%d|%d',
 			$uid,
 			$this->storagePid,
 			(int)$this->respectStoragePage,
 			(int)$this->ignoreEnableFields,
-			(int)$this->includeDeleted
+			(int)$this->includeDeleted,
+			(int)$this->respectSysLanguage,
+			$this->respectSysLanguage ? $this->getLanguageUid() : 0
 		);
 	}
 

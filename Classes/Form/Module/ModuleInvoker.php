@@ -30,7 +30,11 @@ class ModuleInvoker
 		$formModules = [];
 		foreach ($configurations as $configuration) {
 
-			// Evaluate module condition
+			// Position-/context-based veto (e.g. the consent split-execution flow in
+			// ConsentModuleOnFinishHandler). This doesn't depend on per-event data, so it's safe to
+			// resolve once here, unlike the `condition` expression field: that one is deliberately
+			// NOT checked here. It's re-evaluated per dispatched event in handleEvent() instead, so
+			// modules can react to state that only exists later (e.g. consent status on finish).
 			$conditionEvent = new ModuleConditionResolutionEvent(
 				$runtime,
 				$configuration,
@@ -38,14 +42,7 @@ class ModuleInvoker
 			);
 
 			$this->eventDispatcher->dispatch($conditionEvent);
-			if ($conditionEvent->isPropagationStopped()) {
-				if ($conditionEvent->result === false) {
-					continue;
-				}
-			} else if (
-				$configuration->getCondition()
-				&& !$expressionResolver->evaluate($configuration->getCondition())
-			) {
+			if ($conditionEvent->isPropagationStopped() && $conditionEvent->result === false) {
 				continue;
 			}
 
@@ -118,28 +115,40 @@ class ModuleInvoker
 		$runtime = $event->getRuntime();
 		$modules = $this->formModules[(string)$runtime->plugin->getUid()] ?? [];
 		$eventClassName = get_class($event);
+		$resolver = null;
 		foreach ($modules as $moduleData) {
 			if ($event instanceof Form\FormFinishEvent && $event->isPropagationStopped()) {
 				break;
 			}
-			$module = $moduleData['instance'];
 			$map = $moduleData['methodEventMap'];
-			if (isset($map[$eventClassName])) {
-				foreach ($map[$eventClassName] as $methodName) {
-					$module->$methodName($event);
+			if (!isset($map[$eventClassName])) {
+				continue;
+			}
+
+			$condition = $moduleData['configuration']->getCondition();
+			// Never gate a module's own participation in building a resolver on a condition that
+			// itself needs a resolver: createExpressionResolver() dispatches ExpressionResolverCreationEvent,
+			// so evaluating a condition here for that event would recurse into building it indefinitely.
+			if ($condition && !($event instanceof Form\Condition\ExpressionResolverCreationEvent)) {
+				$resolver ??= $runtime->createExpressionResolver(
+					$event instanceof Form\Condition\HasConditionVariablesInterface
+						? $event->getConditionVariables()
+						: []
+				);
+				if (!$resolver->evaluate($condition)) {
+					continue;
 				}
+			}
+
+			$module = $moduleData['instance'];
+			foreach ($map[$eventClassName] as $methodName) {
+				$module->$methodName($event);
 			}
 		}
 	}
 
 	#[AsEventListener]
 	public function onFormRuntimeCreation(Form\FormRuntimeCreationEvent $event): void
-	{
-		$this->handleEvent($event);
-	}
-
-	#[AsEventListener]
-	public function onFormCreation(Form\FormCreationEvent $event): void
 	{
 		$this->handleEvent($event);
 	}
