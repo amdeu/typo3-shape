@@ -83,6 +83,7 @@ class FormRuntime
 
 	/**
 	 * Adds messages to be displayed on the form page
+	 * @param FormMessage[] $messages
 	 */
 	public function addMessages(array $messages): void
 	{

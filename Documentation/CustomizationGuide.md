@@ -146,7 +146,7 @@ The following variables are assigned by `FormRuntime::renderPage()` and availabl
 | `{plugin}`                | `Core\Domain\Record`        | Plugin content element record                                    |
 | `{form}`                  | `FormInterface`             | Form record with all properties and methods                      |
 | `{settings}`              | `array`                     | TypoScript plugin settings                                       |
-| `{messages}`              | `array`                     | Form-level messages (errors, warnings, notices)                  |
+| `{messages}`              | `FormMessage[]`              | Form-level messages (errors, warnings, notices)                  |
 | `{spamReasons}`           | `array\|null`               | Spam detection reasons if form failed spam check                 |
 | `{currentPage}`           | `FormPageRecord`            | Current page record                                              |
 | `{pageIndex}`             | `int`                       | Current page index (1-based)                                     |

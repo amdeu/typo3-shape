@@ -2,7 +2,7 @@
     <sheets>
         <general>
             <ROOT>
-                <sheetTitle></sheetTitle>
+                <sheetTitle>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.general</sheetTitle>
                 <type>array</type>
                 <el>
                     <table>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Amdeu\Shape\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Amdeu\Shape\Form;
 
@@ -56,13 +57,13 @@ class FormController extends ActionController
 	{
 		$this->initializeRuntime();
 		if (!$this->runtime->isRequestedPlugin()) {
-			return $this->formPage(messages: [['key' => 'label.not_requested_plugin', 'type' => 'warning']]);
+			return $this->formPage(messages: [Form\FormMessage::fromKey('label.not_requested_plugin', ContextualFeedbackSeverity::WARNING)]);
 		}
 		if (!$this->runtime->isFormPostRequest()) {
-			return $this->formPage(messages: [['key' => 'label.not_form_post_request', 'type' => 'info']]);
+			return $this->formPage(messages: [Form\FormMessage::fromKey('label.not_form_post_request', ContextualFeedbackSeverity::INFO)]);
 		}
 		if ($this->runtime->findSpamReasons()) {
-			return $this->formPage(messages: [['key' => 'label.suspected_spam', 'type' => 'error']]);
+			return $this->formPage(messages: [Form\FormMessage::fromKey('label.suspected_spam', ContextualFeedbackSeverity::ERROR)]);
 		}
 		// pageIndex is 1-based
 		// if pageIndex is 0, the form is being submitted
@@ -136,6 +137,9 @@ class FormController extends ActionController
 		$this->runtime = $this->runtimeFactory
 			->createFromRequest($this->request, $this->view, $this->settings);
 	}
+	/**
+	 * @param Form\FormMessage[] $messages
+	 */
 	protected function formPage(int $pageIndex = 1, array $messages = []): ResponseInterface
 	{
 		if ($messages) {
