@@ -96,6 +96,8 @@ class FormRuntime
 	 */
 	public function renderPage(int $pageIndex = 1): string
 	{
+		$this->addRecordCacheTags();
+
 		$pages = $this->form->getPages();
 		$lastPageIndex = count($pages);
 		$currentPageRecord = $pages[$pageIndex - 1];
@@ -133,6 +135,58 @@ class FormRuntime
 
 		$this->view->assignMultiple($viewVariables);
 		return $this->view->render('Form');
+	}
+
+	/**
+	 * Tags every record that affects this form's rendered output, so DataHandler's generic per-table+uid
+	 * cache flush on save busts the page cache this render ends up in - Domain\Record/RecordFactory,
+	 * unlike Extbase's persistence layer, doesn't tag records automatically.
+	 *
+	 * Two tag types: "<table>_<uid>" per existing record (form, pages, fields, options, module
+	 * configurations), and one "pageId_<form's pid>" tag to catch records that don't exist yet at render
+	 * time (a new field/page/option/module configuration), relying on the recommended convention of
+	 * keeping a form's records in one shared folder (see GettingStarted.md). Not tagged per child record,
+	 * to avoid pulling in unrelated folders if that convention isn't followed.
+	 */
+	protected function addRecordCacheTags(): void
+	{
+		$collector = $this->request->getAttribute('frontend.cache.collector');
+		if (!$collector instanceof Core\Cache\CacheDataCollectorInterface) {
+			return;
+		}
+
+		$collector->addCacheTags(
+			new Core\Cache\CacheTag('tx_shape_form_' . $this->form->getIdentifier()),
+			new Core\Cache\CacheTag('pageId_' . $this->form->getPid()),
+		);
+
+		foreach ($this->form->getPages() as $page) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_form_page_' . $page->getUid()));
+			foreach ($page->getFields() as $field) {
+				$this->addFieldCacheTags($collector, $field);
+			}
+		}
+
+		foreach ($this->form->getModuleConfigurations() as $configuration) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_module_configuration_' . $configuration->getIdentifier()));
+		}
+	}
+
+	/**
+	 * Tags a field and its options, recursing into a repeatable-container's own nested child fields - a
+	 * separate tx_shape_field relation (field_parent), not included in the page's own field list.
+	 */
+	protected function addFieldCacheTags(Core\Cache\CacheDataCollectorInterface $collector, Core\Domain\Record&Model\FieldInterface $field): void
+	{
+		$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_field_' . $field->getUid()));
+		foreach ($field->getOptions() ?? [] as $option) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_field_option_' . $option->getUid()));
+		}
+		if ($field->has('fields')) {
+			foreach ($field->get('fields') as $childField) {
+				$this->addFieldCacheTags($collector, $childField);
+			}
+		}
 	}
 
 	/**
