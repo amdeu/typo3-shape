@@ -6,7 +6,7 @@
                 <type>array</type>
                 <el>
                     <storagePage>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.storagePage</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.storagePage</label>
                         <config>
                             <type>group</type>
                             <allowed>pages</allowed>
@@ -20,7 +20,7 @@
                         </config>
                     </storagePage>
                     <consentPage>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.consentPage</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.consentPage</label>
                         <config>
                             <type>group</type>
                             <allowed>pages</allowed>
@@ -35,51 +35,44 @@
                         </config>
                     </consentPage>
                     <expirationPeriod>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.expirationPeriod</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.expirationPeriod</label>
                         <config>
                             <type>number</type>
                             <default>86400</default>
                         </config>
                     </expirationPeriod>
-                    <expirationPeriod>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.expirationPeriod</label>
-                        <config>
-                            <type>number</type>
-                            <default>86400</default>
-                        </config>
-                    </expirationPeriod>
-                    <splitFinisherExecution>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.splitFinisherExecution</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.splitFinisherExecution.description</description>
+                    <splitModuleExecution>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.splitModuleExecution</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.splitModuleExecution.description</description>
                         <config>
                             <type>check</type>
                             <default>1</default>
                         </config>
-                    </splitFinisherExecution>
+                    </splitModuleExecution>
 <!--                    <showDismissLink>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.showDismissLink</label>-->
-<!--                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.showDismissLink.description</description>-->
+<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissLink</label>-->
+<!--                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissLink.description</description>-->
 <!--                        <config>-->
 <!--                            <type>check</type>-->
 <!--                            <default>0</default>-->
 <!--                        </config>-->
 <!--                    </showDismissLink>-->
 <!--                    <requireApproveVerification>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.requireApproveVerification</label>-->
+<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.requireApproveVerification</label>-->
 <!--                        <config>-->
 <!--                            <type>check</type>-->
 <!--                            <default>1</default>-->
 <!--                        </config>-->
 <!--                    </requireApproveVerification>-->
 <!--                    <requireDismissVerification>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.requireDismissVerification</label>-->
+<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.requireDismissVerification</label>-->
 <!--                        <config>-->
 <!--                            <type>check</type>-->
 <!--                            <default>1</default>-->
 <!--                        </config>-->
 <!--                    </requireDismissVerification>-->
                     <deleteAfterConfirmation>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.deleteAfterConfirmation</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.deleteAfterConfirmation</label>
                         <config>
                             <type>check</type>
                             <default>1</default>
@@ -94,7 +87,7 @@
                 <type>array</type>
                 <el>
                     <recipientAddress>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.recipientAddress</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.recipientAddress</label>
                         <config>
                             <type>input</type>
                             <size>100</size>
@@ -102,22 +95,22 @@
                         </config>
                     </recipientAddress>
                     <subject>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.subject</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.subject</label>
                         <config>
                             <type>input</type>
                             <required>true</required>
                         </config>
                     </subject>
                     <body>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.body</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.body.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.body</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.body.description</description>
                         <config>
                             <type>text</type>
                             <enableRichtext>1</enableRichtext>
                         </config>
                     </body>
                     <replyToAddress>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.emailConsent.replyToAddress</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.replyToAddress</label>
                         <config>
                             <type>input</type>
                             <size>100</size>
@@ -132,18 +125,18 @@
                 <type>array</type>
                 <el>
                     <senderAddress>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderAddress</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderAddress.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderAddress</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderAddress.description</description>
                         <config>
                             <type>email</type>
                         </config>
                     </senderAddress>
                     <senderName>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderName</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderName.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderName</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderName.description</description>
                         <config>
                             <type>input</type>
-                        </config>§
+                        </config>
                     </senderName>
                 </el>
             </ROOT>

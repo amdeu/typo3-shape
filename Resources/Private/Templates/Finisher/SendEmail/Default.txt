@@ -1,1 +1,0 @@
-{parsed.body -> f:format.stripTags()}

@@ -6,14 +6,14 @@
                 <type>array</type>
                 <el>
                     <table>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.table</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.table</label>
                         <config>
                             <type>input</type>
                             <required>1</required>
                         </config>
                     </table>
                     <storagePage>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.storagePage</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.storagePage</label>
                         <config>
                             <type>group</type>
                             <internal_type>db</internal_type>
@@ -28,28 +28,28 @@
                         </config>
                     </storagePage>
                     <whereColumn>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.whereColumn</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.whereColumn</label>
                         <config>
                             <type>input</type>
                         </config>
                     </whereColumn>
                     <whereValue>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.whereValue</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.whereValue</label>
                         <config>
                             <type>input</type>
                         </config>
                     </whereValue>
                     <columns>
-                        <title>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.columns</title>
+                        <title>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.columns</title>
                         <type>array</type>
                         <section>1</section>
                         <el>
                             <column>
-                                <title>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.column</title>
+                                <title>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.column</title>
                                 <type>array</type>
                                 <el>
                                     <name>
-                                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.columnName</label>
+                                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.columnName</label>
                                         <config>
                                             <type>input</type>
                                             <size>255</size>
@@ -57,7 +57,7 @@
                                         </config>
                                     </name>
                                     <value>
-                                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveToDatabase.columnValue</label>
+                                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveToDatabase.columnValue</label>
                                         <config>
                                             <type>input</type>
                                             <size>255</size>

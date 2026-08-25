@@ -8,7 +8,7 @@ Every form consists of:
 - **Form** - Container with name and settings
 - **Pages** - At least one required (even for single-page forms)
 - **Fields** - Form inputs
-- **Finishers** - Actions after submission
+- **Modules** - Actions after submission
 
 ## ✏️ Creating Forms
 
@@ -155,24 +155,25 @@ See [Repeatable Container Guide](RepeatableContainer.md) for complete documentat
 2. Set **Minimum/Maximum** (optional limits)
 3. Add nested fields in **Fields** tab
 
-## 🏁 Finishers
+## 🏁 Modules
 
 Actions executed after form submission: save data, send emails, redirect users.
 
-See [Finishers Reference](Finishers.md) for complete documentation of all finishers and their settings.
+See [Modules Reference](Modules.md) for complete documentation of all modules and their settings.
 
-**Available Finishers:**
+**Available Modules:**
 - **Save Submission** - Save to database
 - **Send Email** - Email with form values
 - **Email Consent** - Double opt-in verification
 - **Save to Database** - Custom table storage
 - **Redirect** - Redirect to page/URL
 - **Show Content Elements** - Display content
+- **Show Text** - Display a rich-text message
 
 ## 🔗 Next Steps
 
 - [Field Reference](FieldReference.md) - Complete field documentation
-- [Finishers Reference](Finishers.md) - Post-submission actions
+- [Modules Reference](Modules.md) - Post-submission actions
 - [Conditions Guide](Conditions.md) - Display condition syntax
 - [Repeatable Container Guide](RepeatableContainer.md) - Dynamic fieldsets
 

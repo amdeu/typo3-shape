@@ -97,27 +97,4 @@ class TcaRelationService
 			);
 		}
 	}
-
-	/**
-	 * Mirrors relations between forms and finishers based on TCA tx_shape_form.finishers type
-	 */
-	public function mirrorCurrentFormFinisherRelations(): void
-	{
-		$finishersType = $GLOBALS['TCA']['tx_shape_form']['columns']['finishers']['config']['type'];
-		if (in_array($finishersType, ['select', 'group'])) {
-			$this->mirrorCSVRelation(
-				'tx_shape_form',
-				'finishers',
-				'tx_shape_finisher',
-				'form_parents'
-			);
-		} else if ($finishersType === 'inline') {
-			$this->mirrorCSVRelation(
-				'tx_shape_finisher',
-				'form_parents',
-				'tx_shape_form',
-				'finishers'
-			);
-		}
-	}
 }

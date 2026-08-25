@@ -6,7 +6,7 @@
                 <type>array</type>
                 <el>
                     <storagePage>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveSubmission.storagePage</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveSubmission.storagePage</label>
                         <config>
                             <type>group</type>
                             <allowed>pages</allowed>
@@ -20,20 +20,20 @@
                         </config>
                     </storagePage>
                     <excludedFields>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveSubmission.excludedFields</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveSubmission.excludedFields</label>
                         <config>
                             <type>input</type>
                         </config>
                     </excludedFields>
                     <saveUserData>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveSubmission.saveUserData</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveSubmission.saveUserData</label>
                         <config>
                             <type>check</type>
                         </config>
                     </saveUserData>
                     <connectToLanguageParentForm>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveSubmission.connectToLanguageParentForm</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.saveSubmission.connectToLanguageParentForm.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveSubmission.connectToLanguageParentForm</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.saveSubmission.connectToLanguageParentForm.description</description>
                         <config>
                             <type>check</type>
                         </config>

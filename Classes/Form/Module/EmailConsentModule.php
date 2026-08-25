@@ -22,7 +22,7 @@ class EmailConsentModule extends AbstractModule
 		'replyToAddress' => '',
 		'expirationPeriod' => 86400,
 		'storagePage' => 0,
-		'splitFinisherExecution' => true,
+		'splitModuleExecution' => true,
 	];
 
 	public function __construct(
@@ -159,7 +159,7 @@ class EmailConsentModule extends AbstractModule
 			return;
 		}
 
-		if ($this->settings['splitFinisherExecution']) {
+		if ($this->settings['splitModuleExecution']) {
 			$event->stopPropagation();
 		}
 	}

@@ -1,6 +1,6 @@
 # Customization Guide (WIP)
 
-Guide for customizing Shape through templates, TCA, TypoScript, event listeners and finishers.
+Guide for customizing Shape through templates, TCA, TypoScript, event listeners and modules.
 
 ## Table of Contents
 
@@ -67,10 +67,11 @@ Resources/Private/
 │   ├── FormLazyLoader.html                        # Lazy loading container
 │   ├── Finished.html                              # Success page
 │   ├── ConsentVerification.html                   # Email consent validation page
-│   └── Finisher/
+│   └── Module/
 │       ├── SendEmail/Default.html                 # Default email template
 │       ├── EmailConsent.html                      # Consent verification email
-│       └── ShowContentElements.html               # Content elements display
+│       ├── ShowContentElements.html               # Content elements display
+│       └── ShowText.html                          # Show text finish page
 └── Partials/
     ├── Form.html                                  # Form container
     ├── FormPage.html                              # Page wrapper
@@ -102,7 +103,7 @@ Resources/Private/
 
 ### Example: Custom Email Template
 
-`Templates/Finisher/SendEmail/Custom.html`:
+`Templates/Module/SendEmail/Custom.html`:
 
 ```html
 <!DOCTYPE html>
@@ -122,9 +123,9 @@ Resources/Private/
 Register in `ext_localconf.php`:
 
 ```php
-$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['finishers']['sendEmail']['templates']['custom'] = [
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates']['Module/SendEmail/Custom'] = [
     'label' => 'Custom Email Layout',
-    'template' => 'EXT:my_site/Resources/Private/Templates/Email/Custom.html',
+    'format' => \TYPO3\CMS\Core\Mail\FluidEmail::FORMAT_BOTH,
 ];
 ```
 
@@ -255,7 +256,7 @@ $GLOBALS['TCA']['tx_shape_field']['palettes']['appearance']['showitem'] .=
 | `tx_shape_form_page`          | Pages (multi-step)                   |
 | `tx_shape_field`              | Form fields                          |
 | `tx_shape_field_option`       | Options for select/radio/checkbox    |
-| `tx_shape_finisher`           | Post-submission actions              |
+| `tx_shape_module_configuration` | Post-submission actions            |
 | `tx_shape_form_submission`    | Submitted data                       |
 | `tx_shape_email_consent`      | Double opt-in tracking               |
 
@@ -263,7 +264,7 @@ $GLOBALS['TCA']['tx_shape_field']['palettes']['appearance']['showitem'] .=
 
 ```
 Form (1:n) Pages (1:n) Fields (1:n) Options
-Form (1:n) Finishers
+Form (1:n) Modules
 Form (1:n) Submissions
 Form (1:n) Email Consents
 Field (1:n) Fields (nested, for repeatable-container)
@@ -280,11 +281,11 @@ Field (1:n) Fields (nested, for repeatable-container)
 | [`FormRuntimeCreationEvent`](../Classes/Form/FormRuntimeCreationEvent.php)                                                 | After runtime created                       | Customize runtime (e.g. modify form models) |
 | [`BeforeFormRenderEvent`](../Classes/Form/Rendering/BeforeFormRenderEvent.php)                                             | Before template render                      | Add view variables                          |
 | [`ValueValidationEvent`](../Classes/Form/Validation/ValueValidationEvent.php)                                              | On field validation                         | Add validators / set validation result      |
-| [`ValueProcessingEvent`](../Classes/Form/Processing/ValueProcessingEvent.php)                                              | After validation, before finisher execution | Transform values                            |
+| [`ValueProcessingEvent`](../Classes/Form/Processing/ValueProcessingEvent.php)                                              | After validation, before module execution   | Transform values                            |
 | [`ValueSerializationEvent`](../Classes/Form/Serialization/ValueSerializationEvent.php)                                     | Before session storage                      | Serialize complex values                    |
 | [`FieldConditionResolutionEvent`](../Classes/Form/Condition/FieldConditionResolutionEvent.php)                             | Evaluating field conditions                 | Override condition result                   |
-| [`FinisherConditionResolutionEvent`](../Classes/Form/Condition/FinisherConditionResolutionEvent.php)                       | Evaluating finisher conditions              | Override condition result                   |
-| [`BeforeFinisherCreationEvent`](../Classes/Form/Finisher/BeforeFinisherCreationEvent.php)                                  | Before finisher instantiation               | Modify finisher class and settings          |
+| [`ModuleConditionResolutionEvent`](../Classes/Form/Module/ModuleConditionResolutionEvent.php)                              | Deciding whether a module is wired up at all | Veto a module regardless of its `condition` expression |
+| [`FormFinishEvent`](../Classes/Form/FormFinishEvent.php)                                                                   | Form finish (all built-in modules react here) | Set a response, add finished template variables, stop remaining modules |
 | [`SpamAnalysisEvent`](../Classes/Form/SpamProtection/SpamAnalysisEvent.php)                                                | Before validation                           | Add spam detection                          |
 | [`ExpressionResolverCreationEvent`](../Classes/Form/Condition/ExpressionResolverCreationEvent.php)                         | Expression engine setup                     | Customize expresssion resolver variables    |
 
@@ -295,5 +296,5 @@ Field (1:n) Fields (nested, for repeatable-container)
 ## 🔗 Next Steps
 
 - [Field Reference](FieldReference.md) - All field types and properties
-- [Finishers Reference](Finishers.md) - All finishers and their settings
+- [Modules Reference](Modules.md) - All modules and their settings
 - [Conditions](Conditions.md) - Display condition syntax

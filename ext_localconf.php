@@ -21,16 +21,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['shape'] = ['Amdeu\Sha
 $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['tx_shape_input_field'] = 'EXT:shape/Configuration/RTE/InputField.yaml';
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape'] = [
-	'finishers' => [
-		'sendEmail' => [
-			'templates' => [
-				'Finisher/SendEmail/Default' => [
-					'label' => 'Default',
-					'format' => \TYPO3\CMS\Core\Mail\FluidEmail::FORMAT_BOTH,
-				],
-			],
-		]
-	],
 	'modules' => [
 		'sendEmail' => [
 			'templates' => [

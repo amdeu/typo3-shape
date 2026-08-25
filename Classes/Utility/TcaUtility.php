@@ -119,27 +119,6 @@ class TcaUtility
 		}
 	}
 
-	/**
-	 * Adds a new type to tx_shape_finisher
-	 * @param string $label
-	 * @param string $value
-	 * @param string $flexForm The flexform for the new type, e.g. 'FILE:EXT:my_ext/Configuration/FlexForms/Finisher/MyFinisher.xml'
-	 */
-	public static function addFinisherType(
-		string $label,
-		string $value,
-		string $flexForm = ''
-	): void
-	{
-		$GLOBALS['TCA']['tx_shape_finisher']['columns']['type']['config']['items'][] = [
-			'label' => $label,
-			'value' => $value,
-		];
-		if ($flexForm) {
-			$GLOBALS['TCA']['tx_shape_finisher']['columns']['settings']['config']['ds'][$value] = $flexForm;
-		}
-	}
-
 
 	protected static ?Core\Information\Typo3Version $typo3Version = null;
 	public static function getTypo3Version(): Core\Information\Typo3Version

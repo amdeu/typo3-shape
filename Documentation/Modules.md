@@ -1,35 +1,36 @@
-# Finishers Reference
+# Modules Reference
 
-Finishers are actions executed after successful form submission. They process form data, send emails, save to database, or redirect users.
+Modules are actions wired into the form lifecycle. Every built-in module currently reacts to **form finish** (after successful submission) — saving data, sending emails, redirecting users — but a module isn't limited to that: it can hook into any form event (validation, rendering, serialization, ...) via `#[AsModuleEventListener]`, so custom modules aren't restricted to "runs after submit."
 
 ## Table of Contents
 
 - [Configuration](#configuration)
   - [Template Variables](#template-variables)
-  - [Finisher Conditions](#finisher-conditions)
+  - [Module Conditions](#module-conditions)
 - [Send Email](#-send-email)
 - [Save Submission](#-save-submission)
 - [Save to Database](#-save-to-database)
 - [Email Consent (Double Opt-In)](#-email-consent-double-opt-in)
 - [Redirect](#-redirect)
 - [Show Content Elements](#-show-content-elements)
-- [Finisher Execution Order](#finisher-execution-order)
-- [Custom Finishers](#custom-finishers)
+- [Show Text](#-show-text)
+- [Module Execution Order](#module-execution-order)
+- [Custom Modules](#custom-modules)
 
 ## Configuration
 
-**Form record → Finishers tab → Create new**
+**Form record → Modules tab → Create new**
 
-All finishers have:
+All modules have:
 - **Title** - Internal identifier
-- **Type** - Finisher class (see below)
+- **Type** - Module type (see below)
 - **Condition** - Optional condition expression ([Conditions Guide](Conditions.md))
 - **Settings** - Type-specific configuration
 
 ### {{ }} Template Variables
 
-Many finisher settings support `{{ variable }}` syntax to dynamically insert form values. The template variable parser provides several powerful features for accessing and formatting data.
-> **📌 Note:** While the included finishers provide only the form values to the TemplateVariableParser, custom finishers could expose other variables to its settings.
+Many module settings support `{{ variable }}` syntax to dynamically insert form values. The template variable parser provides several powerful features for accessing and formatting data.
+> **📌 Note:** While the included modules provide only the form values to the TemplateVariableParser, custom modules could expose other variables to its settings.
 
 #### Basic Syntax
 
@@ -92,12 +93,13 @@ https://example.com/thanks?name={{name}}&interests={{interests[]}}
 - **Null values:** Null values are skipped in array operations
 - **Nested arrays:** Nested arrays are skipped in array operations
 - **Empty results:** Empty arrays produce empty string: `{{empty-array[]}}` → `""`
+- **HTML escaping:** Values inserted into a module's `body` field (Send Email, Email Consent) are HTML-escaped before the surrounding rich-text content is rendered, so a submitted `<script>` doesn't inject markup into the email. Other settings (subject, addresses, database columns) are inserted as-is, since escaping would corrupt plain-text/data values there.
 
 > **📌 Note:** Use actual field names as defined in the field records.
 
-### Finisher Conditions
+### Module Conditions
 
-Execute finishers conditionally using Expression Language:
+Execute modules conditionally using Expression Language:
 
 ```
 value("newsletter") == "yes"
@@ -105,6 +107,8 @@ isConsentApproved()
 isConsentDismissed()
 isBeforeConsent()
 ```
+
+A module's condition is re-evaluated every time that module is about to react to an event — not once when the form is first built — so it correctly sees state that only exists later, such as the consent status when a form is re-finished after a user clicks a consent link.
 
 See [Conditions Guide](Conditions.md) for server-side condition details.
 
@@ -119,7 +123,7 @@ Sends an email with form values.
 #### Mail
 
 | Setting            | Description                                                       |
-|--------------------|-------------------------------------------------------------------|
+|--------------------|---------------------------------------------------------------------|
 | **Template** ✱     | Email template selection (configurable via ext_localconf.php)     |
 | **Subject** ✱      | Email subject line. **Supports template variables.**              |
 | **Body** ✱         | Email body content (RTE-enabled). **Supports template variables.** |
@@ -195,12 +199,12 @@ Save User Agent and IP-Address: Yes
 
 ## 💿 Save to Database
 
-Saves form values to a custom database table. In most cases, a custom finisher and validation logic should be implemented instead.
+Saves form values to a custom database table. In most cases, a custom module and validation logic should be implemented instead.
 
 ### Settings
 
 | Setting                        | Description                                                                        |
-|--------------------------------|------------------------------------------------------------------------------------|
+|--------------------------------|--------------------------------------------------------------------------------------|
 | **Table Name** ✱               | Target database table (e.g., `tx_myext_contact`, `fe_users`)                      |
 | **Record Storage Page**        | PID where record is stored                                                         |
 | **Update Row where Column ...** | Column name for UPDATE queries (optional, for updating existing records)           |
@@ -233,24 +237,24 @@ Columns:
 
 ## ✅ Email Consent (Double Opt-In)
 
-Sends verification email with approval link. Subsequent finishers can be re-executed after user confirms.
+Sends a verification email with an approval link. Modules configured after this one can be re-run after the user confirms.
 
 ### Settings
 
 #### Consent
 
-| Setting                                      | Description                                                                                                                                                                                                                                                                          |
-|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Consent Storage Page** ✱                   | Page where consent records are stored                                                                                                                                                                                                                                                |
-| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Email Consent Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                       |
-| **Expiration Time in Seconds**               | How long the verification link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                                  |
-| **Split Finisher Execution**                 | **Recommended**<br>When enabled: finishers before this run immediately, finishers after run only after approval<br>When disabled: all finishers run immediately AND after approval, fine-tune finisher execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
-| **Delete Consent Record after Confirmation** | Remove consent record from database after approval/dismissal                                                                                                                                                                                                                         |
+| Setting                                      | Description                                                                                                                                                                                                                                                                    |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Consent Storage Page** ✱                   | Page where consent records are stored                                                                                                                                                                                                                                          |
+| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Email Consent Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                |
+| **Expiration Time in Seconds**               | How long the verification link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                           |
+| **Split Module Execution**                   | **Recommended**<br>When enabled: modules before this run immediately, modules after this run only after approval<br>When disabled: all modules run immediately AND after approval, fine-tune module execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
+| **Delete Consent Record after Confirmation** | Remove consent record from database after approval/dismissal                                                                                                                                                                                                                  |
 
 #### Mail
 
 | Setting                        | Description                                                        |
-|--------------------------------|--------------------------------------------------------------------|
+|---------------------------------|----------------------------------------------------------------------|
 | **Recipient Email Address** ✱  | User's email address. **Supports template variables.**             |
 | **Subject** ✱                  | Verification email subject. **Supports template variables.**       |
 | **Body** ✱                     | Verification email body (RTE). Approval link is appended. **Supports template variables.** |
@@ -259,22 +263,22 @@ Sends verification email with approval link. Subsequent finishers can be re-exec
 #### Sender
 
 | Setting                  | Description                    |
-|--------------------------|--------------------------------|
+|--------------------------|----------------------------------|
 | **Sender Email Address** | Falls back to system default   |
 | **Sender Name**          | Falls back to system default   |
 
 ### Workflow
 
 1. User submits form
-2. Email Consent Finisher sends verification email
-3. If Split Finisher Execution enabled: stops subsequent finishers
+2. Email Consent module sends verification email
+3. If Split Module Execution enabled: stops subsequent modules from running on this request
 4. User clicks approval link in email
-5. Consent marked as approved
-6. Subsequent finishers execute (or finishers with `isConsentApproved()` condition)
+5. Consent marked as approved, the form is re-finished
+6. Subsequent modules execute (or modules with an `isConsentApproved()` condition)
 
-### Finisher Conditions
+### Module Conditions
 
-Use these conditions in other finishers:
+Use these conditions on other modules:
 
 - `isConsentApproved()` - Execute only after user approves
 - `isConsentDismissed()` - Execute only if user dismisses
@@ -282,27 +286,27 @@ Use these conditions in other finishers:
 
 ### Example: Newsletter with Verification
 
-**Finisher 1: Email Consent**
+**Module 1: Email Consent**
 ```
 Type: Email Consent
 Recipient Email Address: {{email-address}}
 Subject: Please confirm your newsletter subscription
 Body: ...
 Expiration Time in Seconds: 172800  (48 hours)
-Split Finisher Execution: Yes
+Split Module Execution: Yes
 ```
 
-**Finisher 2: Save to Newsletter Table**
+**Module 2: Save to Newsletter Table**
 ```
 Type: Save to Database
-(Runs only after approval because Split Finisher Execution is enabled)
+(Runs only after approval because Split Module Execution is enabled)
 Table Name: tx_myext_newsletter
 Columns:
   email → {{email-address}}
   confirmed → 1
 ```
 
-**Finisher 3: Send Welcome Email**
+**Module 3: Send Welcome Email**
 ```
 Type: Send Email
 (Runs only after approval)
@@ -319,7 +323,7 @@ Redirects user to a page or URL after form submission.
 ### Settings
 
 | Setting            | Description                                                                                                |
-|--------------------|------------------------------------------------------------------------------------------------------------|
+|---------------------|--------------------------------------------------------------------------------------------------------------|
 | **Redirect URL** ✱ | Target page or URL.<br>Link browser allows selection of:<br>• Internal pages<br>• External URLs<br>• Parameters |
 
 ### Examples
@@ -351,13 +355,13 @@ Displays content elements instead of redirect after submission.
 ### Settings
 
 | Setting                 | Description                                      |
-|-------------------------|--------------------------------------------------|
+|--------------------------|-----------------------------------------------------|
 | **Content Elements** ✱  | Select one or more content elements to display   |
 
 ### Behavior
 
 - Selected content elements rendered in place of form
-- User is still redirected after form submission to respect Post/Redirect/Get pattern 
+- User is still redirected after form submission to respect Post/Redirect/Get pattern
 - Content elements can contain thank-you message, related information, etc.
 
 ### Example
@@ -369,11 +373,30 @@ Content Elements: Thank You Message (ID: 789), Related Products (ID: 790)
 
 ---
 
-## Finisher Execution Order
+## 📝 Show Text
 
-Finishers execute in the order they appear in the form record.
+Displays a rich-text message instead of redirect after submission.
 
-**Important:** Email Consent with "Split Finisher Execution" enabled stops subsequent finishers until user confirms.
+### Settings
+
+| Setting          | Description                                                          |
+|-------------------|--------------------------------------------------------------------|
+| **Bodytext** ✱   | Rich-text content shown on the finish page. **Supports template variables** (HTML-escaped before insertion). |
+
+### Example
+
+```
+Type: Show Text
+Bodytext: Thank you, {{first-name}}! We'll be in touch shortly.
+```
+
+---
+
+## Module Execution Order
+
+Modules execute in the order they appear in the form record.
+
+**Important:** Email Consent with "Split Module Execution" enabled stops subsequent modules from running until the user confirms.
 
 ### Example Flow
 
@@ -410,14 +433,54 @@ User Clicks Approval Link
 
 ---
 
-## Custom Finishers
+## Custom Modules
 
-Developers can create custom finishers by extending [`AbstractFinisher`](../Classes/Form/Finisher/AbstractFinisher.php).
+Developers can create custom modules by implementing [`ModuleInterface`](../Classes/Form/Module/ModuleInterface.php), typically by extending [`AbstractModule`](../Classes/Form/Module/AbstractModule.php) and declaring the events it reacts to with `#[AsModuleEventListener]`:
+
+```php
+<?php
+
+namespace MyVendor\MyExt\Form\Module;
+
+use Amdeu\Shape\Form;
+use Amdeu\Shape\Form\Module\AbstractModule;
+use Amdeu\Shape\Form\Module\AsModuleEventListener;
+
+class LogSubmissionModule extends AbstractModule
+{
+    protected array $settings = [
+        'message' => '',
+    ];
+
+    #[AsModuleEventListener]
+    public function onFormFinish(Form\FormFinishEvent $event): void
+    {
+        $this->logger->info($this->parseWithValues($this->settings['message']));
+    }
+}
+```
+
+A module isn't limited to `FormFinishEvent` — any method tagged `#[AsModuleEventListener]` with a single typed parameter matching a form event class (`ValueValidationEvent`, `BeforeFormRenderEvent`, etc.) is routed automatically; see [PSR-14 Events](CustomizationGuide.md#psr-14-events).
+
+Register the new type from `Configuration/TCA/Overrides/tx_shape_module_configuration.php`:
+
+```php
+<?php
+use Amdeu\Shape\Utility\TcaUtility as Util;
+
+Util::addModuleType(
+    'Log Submission',
+    'logSubmission',
+    \MyVendor\MyExt\Form\Module\LogSubmissionModule::class,
+    'content-elements-mailform',
+    'FILE:EXT:my_ext/Configuration/FlexForms/Module/LogSubmissionModule.xml'
+);
+```
 
 ---
 
 ## 🔗 Related
 
-- [Conditions](Conditions.md) - Finisher condition syntax
+- [Conditions](Conditions.md) - Module condition syntax
 - [Editor Guide](EditorGuide.md) - Building forms
 - [Customization Guide](CustomizationGuide.md)

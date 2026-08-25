@@ -6,7 +6,7 @@
                 <type>array</type>
                 <el>
                     <template>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.template</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.template</label>
                         <onChange>reload</onChange>
                         <config>
                             <type>select</type>
@@ -14,22 +14,22 @@
                         </config>
                     </template>
                     <subject>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.subject</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.subject</label>
                         <config>
                             <type>input</type>
                             <required>true</required>
                         </config>
                     </subject>
                     <body>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.body</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.body.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.body</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.body.description</description>
                         <config>
                             <type>text</type>
                             <enableRichtext>1</enableRichtext>
                         </config>
                     </body>
                     <attachUploads>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.attachUploads</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.attachUploads</label>
                         <config>
                             <type>check</type>
                         </config>
@@ -43,8 +43,8 @@
                 <type>array</type>
                 <el>
                     <recipientAddresses>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.recipientAddresses</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.recipientAddresses.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.recipientAddresses</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.recipientAddresses.description</description>
                         <config>
                             <type>input</type>
                             <size>100</size>
@@ -52,21 +52,21 @@
                         </config>
                     </recipientAddresses>
                     <ccRecipientAddresses>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.ccRecipientAddresses</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.ccRecipientAddresses</label>
                         <config>
                             <type>input</type>
                             <size>100</size>
                         </config>
                     </ccRecipientAddresses>
                     <bccRecipientAddresses>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.bccRecipientAddresses</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.bccRecipientAddresses</label>
                         <config>
                             <type>input</type>
                             <size>100</size>
                         </config>
                     </bccRecipientAddresses>
                     <replyToAddresses>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.replyToAddresses</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.replyToAddresses</label>
                         <config>
                             <type>input</type>
                             <size>100</size>
@@ -81,15 +81,15 @@
                 <type>array</type>
                 <el>
                     <senderAddress>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderAddress</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderAddress.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderAddress</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderAddress.description</description>
                         <config>
                             <type>email</type>
                         </config>
                     </senderAddress>
                     <senderName>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderName</label>
-                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.sendEmail.senderName.description</description>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderName</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.sendEmail.senderName.description</description>
                         <config>
                             <type>input</type>
                         </config>§

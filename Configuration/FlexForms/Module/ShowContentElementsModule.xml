@@ -6,7 +6,7 @@
                 <type>array</type>
                 <el>
                     <contentElements>
-                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.finisher.showContentElements.contentElements</label>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.showContentElements.contentElements</label>
                         <config>
                             <type>group</type>
                             <internal_type>db</internal_type>

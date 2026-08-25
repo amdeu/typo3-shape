@@ -19,13 +19,13 @@ final class ConsentModuleOnFinishHandler
 		if ($request->getControllerExtensionKey() !== 'shape' || $request->getPluginName() !== 'Consent') {
 			return;
 		}
-		// Never execute EmailConsentFinisher in Consent execution flow
+		// Never execute EmailConsentModule in Consent execution flow
 		if ($event->moduleConfiguration->getModuleClassName() === Module\EmailConsentModule::class) {
 			$event->result = false;
 			return;
 		}
-		// If splitFinisherExecution is false, execute modules normally
-		if (!($request->hasArgument('splitFinisherExecution') && $request->getArgument('splitFinisherExecution'))) {
+		// If splitModuleExecution is false, execute modules normally
+		if (!($request->hasArgument('splitModuleExecution') && $request->getArgument('splitModuleExecution'))) {
 			return;
 		}
 		// Check if there is an EmailConsentModule before this module, if not, skip this module

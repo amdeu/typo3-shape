@@ -95,12 +95,6 @@ $columns = [
 			'readOnly' => true,
 		],
 	],
-	'finisher_settings' => [
-		'config' => [
-			'type' => 'json',
-			'readOnly' => true,
-		],
-	],
 	'module_settings' => [
 		'config' => [
 			'type' => 'json',

@@ -68,44 +68,6 @@ $columns = [
 			'showPagination' => true,  // Show pagination dots
 		],
 	],
-	'finishers' => [
-		'config' => [
-			'type' => 'inline',
-			'foreign_field' => 'form_parents',
-			//'type' => 'select',
-			//'renderType' => 'selectMultipleSideBySide',
-			//'type' => 'group',
-			'allowed' => 'tx_shape_finisher',
-			'foreign_table' => 'tx_shape_finisher',
-			'foreign_table_where' => 'AND {#tx_shape_finisher}.{#sys_language_uid}=###REC_FIELD_sys_language_uid###',
-			'localizeReferences' => true,
-			'localizeReferencesAtParentLocalization' => true,
-			'appearance' => [
-				'collapseAll' => true,
-				'expandSingle' => true,
-				'useSortable' => true,
-			],
-			'fieldControl' => [
-				'editPopup' => [
-					'disabled' => false,
-				],
-				'addRecord' => [
-					'disabled' => false,
-				],
-			],
-			'fieldWizard' => [
-				'recordsOverview' => [
-					'disabled' => true,
-				],
-				'tableList' => [
-					'disabled' => true,
-				],
-				'selectIcons' => [
-					'disabled' => false,
-				],
-			]
-		],
-	],
 	'modules' => [
 		'config' => [
 			'type' => 'inline',

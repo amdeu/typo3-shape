@@ -1,18 +1,18 @@
 name: signup
 title: Signup
-finishers:
-  - type: Amdeu\Shape\Form\Finisher\RedirectFinisher
+modules:
+  - type: redirect
     settings:
       uri: 'https://www.amdeu.net/thank-you'
-  - type: Amdeu\Shape\Form\Finisher\EmailConsentFinisher
+  - type: emailConsent
     settings:
       storagePage: 187
       consentPage: 188
-      splitFinisherExecution: 1
+      splitModuleExecution: 1
       deleteAfterConfirmation: 1
       recipientAddress: '{{ email }}'
       subject: 'Bitte bestätigen Sie die Registrierung als {{ email }} auf der Seite hermes-experts.com'
-      body: '%signup_consentfinisher_mailbody%'
+      body: '%signup_consentmodule_mailbody%'
 
 pages:
   - type: page

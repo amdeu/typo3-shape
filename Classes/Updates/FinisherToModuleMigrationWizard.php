@@ -14,13 +14,18 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use Amdeu\Shape\Form\Module\ModuleRegistry;
 
 /**
- * Migrates tx_shape_finisher rows to tx_shape_module_configuration rows.
+ * Migrates tx_shape_finisher rows to tx_shape_module_configuration rows, and separately renames the
+ * EmailConsent type's `splitFinisherExecution` FlexForm field to `splitModuleExecution` wherever it's
+ * still stored under the old name.
  *
+ * Finisher -> Module row migration:
  * The Finisher system is being replaced by the Module system; both share the same FlexForm field
  * layout per type (only the sheet/DS registration differs), so a Finisher row's `settings` value can
- * be copied verbatim into the new Module row, with one known exception: the SendEmail type's
- * `template` field stores a value like "Finisher/SendEmail/Default", which is remapped to
- * "Module/SendEmail/Default" (see remapSendEmailTemplateValue()).
+ * be copied verbatim into the new Module row, with two known exceptions applied while copying:
+ * - SendEmail's `template` field stores a value like "Finisher/SendEmail/Default", remapped to
+ *   "Module/SendEmail/Default" (see remapSendEmailTemplateValue()).
+ * - EmailConsent's `splitFinisherExecution` field is renamed to `splitModuleExecution` (see
+ *   renameFlexFormField()), same as below.
  *
  * A Finisher type is matched to a Module type by naming convention: `Ns\Finisher\XyzFinisher` is
  * expected to have a counterpart `Ns\Module\XyzModule` registered in ModuleRegistry. This covers all
@@ -33,6 +38,17 @@ use Amdeu\Shape\Form\Module\ModuleRegistry;
  * Migrated Finisher rows are soft-deleted (not hard-deleted), so this wizard is safe to run again -
  * already-migrated rows are simply skipped, and the originals remain recoverable via the recycler
  * until a later cleanup.
+ *
+ * The tx_shape_finisher table itself no longer ships with this extension version (TCA and
+ * ext_tables.sql removed) - getMigratableFinisherRows() checks for its existence first, so this
+ * wizard degrades to "nothing to migrate" rather than erroring on a fresh install or a site that has
+ * already dropped the table.
+ *
+ * splitFinisherExecution -> splitModuleExecution field rename:
+ * This field was renamed on the Module side's FlexForm regardless of a row's origin, so any existing
+ * tx_shape_module_configuration row of type `emailConsent` created directly (never having a Finisher
+ * counterpart) also still carries the old field name and needs the same rename. This wizard sweeps
+ * those independently of the Finisher migration above (see getEmailConsentModuleRowsNeedingFieldRename()).
  */
 #[UpgradeWizard('shape_finisherToModuleMigration')]
 class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, ConfirmableInterface, ChattyInterface
@@ -60,7 +76,10 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 			. 'registered Module identifier), copies its settings and form relation across, and '
 			. 'soft-deletes the migrated Finisher row. Rows it cannot map are left untouched and listed '
 			. 'in the wizard output instead. Safe to run again: already-migrated (deleted) Finisher rows '
-			. 'are simply skipped.';
+			. 'are simply skipped. '
+			. 'It also renames the EmailConsent module type\'s "splitFinisherExecution" FlexForm field to '
+			. '"splitModuleExecution" in any tx_shape_module_configuration row that still has it under the '
+			. 'old name, regardless of whether that row came from a migrated Finisher or was always a Module.';
 	}
 
 	public function getPrerequisites(): array
@@ -89,7 +108,8 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 
 	public function updateNecessary(): bool
 	{
-		return $this->getMigratableFinisherRows() !== [];
+		return $this->getMigratableFinisherRows() !== []
+			|| $this->getEmailConsentModuleRowsNeedingFieldRename() !== [];
 	}
 
 	public function executeUpdate(): bool
@@ -122,9 +142,11 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 				continue;
 			}
 
-			$settings = $moduleIdentifier === 'sendEmail'
-				? $this->remapSendEmailTemplateValue((string)$row['settings'])
-				: (string)$row['settings'];
+			$settings = match ($moduleIdentifier) {
+				'sendEmail' => $this->remapSendEmailTemplateValue((string)$row['settings']),
+				'emailConsent' => $this->renameFlexFormField((string)$row['settings'], 'splitFinisherExecution', 'splitModuleExecution'),
+				default => (string)$row['settings'],
+			};
 
 			$newUid = $this->createModuleRow(
 				$row,
@@ -146,6 +168,22 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 				$this->log(' - ' . $message);
 			}
 		}
+
+		$renamed = 0;
+		foreach ($this->getEmailConsentModuleRowsNeedingFieldRename() as $row) {
+			$newSettings = $this->renameFlexFormField((string)$row['settings'], 'splitFinisherExecution', 'splitModuleExecution');
+			if ($newSettings === $row['settings']) {
+				continue;
+			}
+			$updateBuilder = $this->connectionPool->getQueryBuilderForTable(self::TARGET_TABLE);
+			$updateBuilder
+				->update(self::TARGET_TABLE)
+				->where($updateBuilder->expr()->eq('uid', $updateBuilder->createNamedParameter($row['uid'])))
+				->set('settings', $newSettings)
+				->executeStatement();
+			$renamed++;
+		}
+		$this->log(sprintf('Renamed splitFinisherExecution -> splitModuleExecution in %d existing emailConsent module row(s).', $renamed));
 
 		return true;
 	}
@@ -207,6 +245,60 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 		return $rewritten !== false ? $rewritten : $settingsXml;
 	}
 
+	/**
+	 * Renames a FlexForm field's `index` attribute in raw stored FlexForm XML, leaving its value and
+	 * every other field untouched. No-op (returns the input unchanged) if the field isn't present.
+	 */
+	protected function renameFlexFormField(string $settingsXml, string $oldFieldName, string $newFieldName): string
+	{
+		if ($settingsXml === '' || !str_contains($settingsXml, $oldFieldName)) {
+			return $settingsXml;
+		}
+
+		$previousUseErrors = libxml_use_internal_errors(true);
+		$xml = simplexml_load_string($settingsXml);
+		libxml_use_internal_errors($previousUseErrors);
+
+		if ($xml === false) {
+			return $settingsXml;
+		}
+
+		$changed = false;
+		foreach ($xml->xpath(sprintf('//field[@index="%s"]', $oldFieldName)) ?: [] as $field) {
+			$field['index'] = $newFieldName;
+			$changed = true;
+		}
+
+		if (!$changed) {
+			return $settingsXml;
+		}
+
+		$rewritten = $xml->asXML();
+		return $rewritten !== false ? $rewritten : $settingsXml;
+	}
+
+	/**
+	 * Finds tx_shape_module_configuration rows of type `emailConsent` whose stored FlexForm settings
+	 * still use the old `splitFinisherExecution` field name, regardless of whether the row came from a
+	 * migrated Finisher or was always a Module. The LIKE pre-filter avoids parsing XML for rows that
+	 * plainly don't need it.
+	 */
+	protected function getEmailConsentModuleRowsNeedingFieldRename(): array
+	{
+		$queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TARGET_TABLE);
+		$queryBuilder->getRestrictions()->removeAll();
+		return $queryBuilder
+			->select('uid', 'settings')
+			->from(self::TARGET_TABLE)
+			->where(
+				$queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('emailConsent')),
+				$queryBuilder->expr()->eq('t3ver_wsid', 0),
+				$queryBuilder->expr()->like('settings', $queryBuilder->createNamedParameter('%splitFinisherExecution%')),
+			)
+			->executeQuery()
+			->fetchAllAssociative();
+	}
+
 	protected function resolveMappedUid(array $uidMap, int $oldUid): int
 	{
 		return $oldUid > 0 ? ($uidMap[$oldUid] ?? 0) : 0;
@@ -256,6 +348,13 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 
 	protected function getMigratableFinisherRows(): array
 	{
+		$connection = $this->connectionPool->getConnectionForTable(self::SOURCE_TABLE);
+		// The source table itself is gone (never existed on a fresh install of this version, or a
+		// site already dropped it after a previous run) - nothing to migrate, not an error.
+		if (!$connection->createSchemaManager()->tablesExist([self::SOURCE_TABLE])) {
+			return [];
+		}
+
 		$queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::SOURCE_TABLE);
 		$queryBuilder->getRestrictions()->removeAll();
 		return $queryBuilder

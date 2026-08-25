@@ -26,14 +26,6 @@ class FormRecord extends Record implements FormInterface
 	}
 
 	/**
-	 * @return LazyRecordCollection<FinisherConfigurationInterface>|array<FinisherConfigurationInterface>
-	 */
-	public function getFinisherConfigurations(): LazyRecordCollection|array
-	{
-		return $this->get('finishers');
-	}
-
-	/**
 	 * @return LazyRecordCollection<ModuleConfigurationInterface>|array<ModuleConfigurationInterface>
 	 */
 	public function getModuleConfigurations(): LazyRecordCollection|array

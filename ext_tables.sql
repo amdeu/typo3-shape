@@ -18,11 +18,6 @@ CREATE TABLE tx_shape_form_page
     fields      VARCHAR(1024) DEFAULT '',
 );
 
-CREATE TABLE tx_shape_finisher
-(
-    form_parents varchar(1024) DEFAULT NULL,
-);
-
 CREATE TABLE tx_shape_form_submission
 (
     form       int UNSIGNED DEFAULT '0' NOT NULL,
