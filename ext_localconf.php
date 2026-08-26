@@ -1,6 +1,7 @@
 <?php
 
 use Amdeu\Shape\Controller;
+use Amdeu\Shape\Form\Module;
 use Amdeu\Shape\Utility\PluginUtility;
 
 defined('TYPO3') or die();
@@ -32,6 +33,14 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape'] = [
 		]
 	]
 ];
+
+Module\ModuleRegistry::register('saveSubmission', Module\SaveSubmissionModule::class);
+Module\ModuleRegistry::register('sendEmail', Module\SendEmailModule::class);
+Module\ModuleRegistry::register('emailConsent', Module\EmailConsentModule::class);
+Module\ModuleRegistry::register('saveToDatabase', Module\SaveToDatabaseModule::class);
+Module\ModuleRegistry::register('showContentElements', Module\ShowContentElementsModule::class);
+Module\ModuleRegistry::register('showText', Module\ShowTextModule::class);
+Module\ModuleRegistry::register('redirect', Module\RedirectModule::class);
 
 if (
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('scheduler')

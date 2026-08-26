@@ -86,21 +86,23 @@ class TcaUtility
 	}
 
 	/**
-	 * Registers a module type: adds it to the TCA select, registers the alias in ModuleRegistry,
-	 * and optionally wires up a FlexForm and columnsOverrides for its settings.
-	 * Call this from a TCA/Overrides file.
+	 * Adds a module type to the TCA select, and optionally wires up a FlexForm and columnsOverrides
+	 * for its settings. Call this from a TCA/Overrides file.
+	 *
+	 * This does NOT register the identifier with ModuleRegistry - TCA/Overrides files only execute
+	 * while the TCA cache is being (re)built, not on every request, so ModuleRegistry's in-memory
+	 * mapping (needed on every request to resolve the identifier back to a class) has to be registered
+	 * separately from ext_localconf.php, which does run every request.
 	 *
 	 * @param string $columnsOverrides  Optional TCA columnsOverrides for this type (e.g. to enable language sync on settings)
 	 */
 	public static function addModuleType(
 		string $label,
 		string $identifier,
-		string $className,
 		string $icon = 'shape-module-default',
 		string $flexForm = '',
 		array $columnsOverrides = []
 	): void {
-		\Amdeu\Shape\Form\Module\ModuleRegistry::register($identifier, $className);
 		$GLOBALS['TCA']['tx_shape_module_configuration']['columns']['type']['config']['items'][] = [
 			'label' => $label,
 			'value' => $identifier,

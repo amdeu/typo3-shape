@@ -157,7 +157,7 @@ See [Repeatable Container Guide](RepeatableContainer.md) for complete documentat
 
 ## 🏁 Modules
 
-Actions executed after form submission: save data, send emails, redirect users.
+Modules add behavior to the form - saving data, sending emails, redirecting users, and more. They can act at any point as a visitor works through the form, though the built-in modules below all act once the form is successfully submitted.
 
 See [Modules Reference](Modules.md) for complete documentation of all modules and their settings.
 

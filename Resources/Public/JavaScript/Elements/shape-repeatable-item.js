@@ -17,9 +17,6 @@ export class ShapeRepeatableItemElement extends HTMLElement {
 		})
 
 		this.querySelector('[data-shape-repeatable-remove]')?.addEventListener('click', () => this.remove())
-
-		// Lets the conditional-fields feature re-evaluate now that this item's conditions/values exist.
-		this.dispatchEvent(new CustomEvent('shape:fieldset-added', { bubbles: true }))
 	}
 }
 

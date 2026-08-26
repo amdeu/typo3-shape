@@ -2,6 +2,8 @@
 
 Show or hide fields and pages based on user input or context.
 
+> **📌 Note:** Modules use the same server-side expression language for their own `condition` field, with additional functions like `isConsentApproved()` - see [Module Conditions](Modules.md#module-conditions).
+
 ## Table of Contents
 
 - [Server-Side vs Client-Side](#server-side-vs-client-side)

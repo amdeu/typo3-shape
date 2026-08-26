@@ -1,9 +1,16 @@
 # Modules Reference
 
-Modules are actions wired into the form lifecycle. Every built-in module currently reacts to **form finish** (after successful submission) — saving data, sending emails, redirecting users — but a module isn't limited to that: it can hook into any form event (validation, rendering, serialization, ...) via `#[AsModuleEventListener]`, so custom modules aren't restricted to "runs after submit."
+Modules are the extension point for form actions - saving data, sending emails, redirecting, showing a custom finish page. A module is a small class registered against a type identifier; a form's **Modules** relation is a list of configured instances of these types, each with its own settings, an optional `condition`, and a position that determines execution order.
+
+## How Modules Work
+
+A module is a class implementing [`ModuleInterface`](../Classes/Form/Module/ModuleInterface.php) that declares, per public method, which form-lifecycle event it wants to react to via a `#[AsModuleEventListener]` attribute. [`ModuleInvoker`](../Classes/Form/Module/ModuleInvoker.php) builds this event → method mapping once per class (via reflection, cached) and routes the matching PSR-14 event to every module configured on the form whenever that event fires.
+
+Every built-in module in this reference declares only an `onFormFinish` method, reacting to **form finish** (after successful submission). A module isn't restricted to that, though - it can react to validation, rendering, value processing, or any other point in the form lifecycle; see [Custom Modules](#custom-modules) for the full list of events and what a module can do with each.
 
 ## Table of Contents
 
+- [How Modules Work](#how-modules-work)
 - [Configuration](#configuration)
   - [Template Variables](#template-variables)
   - [Module Conditions](#module-conditions)
@@ -16,6 +23,11 @@ Modules are actions wired into the form lifecycle. Every built-in module current
 - [Show Text](#-show-text)
 - [Module Execution Order](#module-execution-order)
 - [Custom Modules](#custom-modules)
+  - [Implementing a Module](#implementing-a-module)
+  - [Capabilities](#capabilities)
+  - [Events](#events)
+  - [Advanced: Vetoing a Module Entirely](#advanced-vetoing-a-module-entirely)
+  - [Registering the Type](#registering-the-type)
 
 ## Configuration
 
@@ -435,6 +447,8 @@ User Clicks Approval Link
 
 ## Custom Modules
 
+### Implementing a Module
+
 Developers can create custom modules by implementing [`ModuleInterface`](../Classes/Form/Module/ModuleInterface.php), typically by extending [`AbstractModule`](../Classes/Form/Module/AbstractModule.php) and declaring the events it reacts to with `#[AsModuleEventListener]`:
 
 ```php
@@ -460,9 +474,43 @@ class LogSubmissionModule extends AbstractModule
 }
 ```
 
-A module isn't limited to `FormFinishEvent` — any method tagged `#[AsModuleEventListener]` with a single typed parameter matching a form event class (`ValueValidationEvent`, `BeforeFormRenderEvent`, etc.) is routed automatically; see [PSR-14 Events](CustomizationGuide.md#psr-14-events).
+A module isn't limited to `FormFinishEvent` — any public method tagged `#[AsModuleEventListener]` with exactly one typed parameter matching a form event class is routed automatically. A module can declare as many of these methods as it needs, one per event.
 
-Register the new type from `Configuration/TCA/Overrides/tx_shape_module_configuration.php`:
+### Capabilities
+
+`AbstractModule` gives every module:
+
+- **`$this->settings`** - declare your own defaults as a protected property; values configured via the module's FlexForm are merged over them automatically before any event fires (`configure()` → `overrideSettings()`, using `ArrayUtility::mergeRecursiveWithOverrule`).
+- **`parseWithValues(string $string, bool $escapeHtml = false): string`** - resolves `{{ field-name }}` placeholders against the current form values (the same parser used by all built-in modules' settings, see [Template Variables](#-template-variables) above). Pass `escapeHtml: true` whenever the result is rendered as HTML without further escaping (e.g. via `f:format.html()`) - the built-in email/text modules do this for their `body`/`bodytext` fields specifically, and nowhere else, since HTML-escaping a database column or an email address would corrupt it rather than protect it.
+- **`getRequest()`, `getPlugin()`, `getForm()`, `getFormValues()`, `getPluginSettings()`, `getView()`** - accessors onto the current [`FormRuntime`](../Classes/Form/FormRuntime.php) (also reachable directly as `$this->runtime`).
+- **`$this->logger`** (PSR-3, auto-injected) and **`getLogContext(array $additionalContext = []): array`** - a minimal context array (currently just the form's uid) to keep log entries correlatable without leaking form data into logs by default.
+- **`$this->configuration`** - the raw [`ModuleConfigurationInterface`](../Classes/Form/Model/ModuleConfigurationInterface.php) record (title, condition, identifier), if you need something `$this->settings` doesn't expose.
+
+### Events
+
+| Event | Fires | What a module can do |
+|-------|-------|------------------------|
+| [`FormRuntimeCreationEvent`](../Classes/Form/FormRuntimeCreationEvent.php) | Once, right after the runtime, all configured modules, and field session values all exist | One-time setup that needs the fully-assembled runtime |
+| [`ExpressionResolverCreationEvent`](../Classes/Form/Condition/ExpressionResolverCreationEvent.php) | Every time an expression resolver is built (field conditions, module conditions, finish conditions, ...) | `addVariables()` to expose custom variables/functions to condition expressions across the whole form. Never fired for a module's own `condition` check on this event specifically, to avoid needing a resolver to build a resolver |
+| [`BeforeFormRenderEvent`](../Classes/Form/Rendering/BeforeFormRenderEvent.php) | Every time a page renders | `addVariables()` to inject extra Fluid view variables |
+| [`FieldConditionResolutionEvent`](../Classes/Form/Condition/FieldConditionResolutionEvent.php) | Resolving one field's `display_condition` | Set `$event->result` to override the outcome for that field |
+| [`ValueValidationEvent`](../Classes/Form/Validation/ValueValidationEvent.php) | Validating one field's submitted value | `addValidator()` to add an Extbase validator to the chain, or set `$event->result` directly to fully replace validation for that field |
+| [`ValueSerializationEvent`](../Classes/Form/Serialization/ValueSerializationEvent.php) | Before a field's value is written to session storage | Set `$event->serializedValue` to transform the value (e.g. a custom field type with a non-scalar runtime value) |
+| [`ValueProcessingEvent`](../Classes/Form/Processing/ValueProcessingEvent.php) | After validation, before finish-time modules run | Set `$event->processedValue` to transform the final value (e.g. hashing, normalization) |
+| [`SpamAnalysisEvent`](../Classes/Form/SpamProtection/SpamAnalysisEvent.php) | Once per submission, before validation | Add entries to `$event->spamReasons` to flag the submission as spam |
+| [`FormFinishEvent`](../Classes/Form/FormFinishEvent.php) | Once, when the form finishes successfully | Set `$event->response` (a PSR-7 response that short-circuits the rest of finishing), set `$event->finishedTemplate`/`addFinishedVariables()` (custom finish page), call `$event->stopPropagation()` (skip remaining modules), or read `$event->getConditionVariables()` (extra variables available to *this* dispatch's condition evaluation, e.g. `consentStatus` when re-finishing after a consent link) |
+
+General PSR-14 mechanics (how `#[AsEventListener]` differs from `#[AsModuleEventListener]`, event ordering, etc.) are covered in [Customization Guide → PSR-14 Events](CustomizationGuide.md#psr-14-events).
+
+### Advanced: Vetoing a Module Entirely
+
+Separate from a module's own `condition` field, [`ModuleConditionResolutionEvent`](../Classes/Form/Module/ModuleConditionResolutionEvent.php) fires once per configured module while the form runtime is being built - *before* that module is instantiated. Because of that timing, it's handled by a plain PSR-14 listener (`#[AsEventListener]`, not `#[AsModuleEventListener]` on the module itself - the module doesn't exist yet), which can set `$event->result = false` to exclude a module from the form entirely, regardless of its `condition`.
+
+This is how the double opt-in flow works: [`ConsentModuleOnFinishHandler`](../Classes/Form/Consent/ConsentModuleOnFinishHandler.php) uses it to skip the Email Consent module (and everything configured before it) when re-finishing a form after a consent link is clicked. Most custom modules won't need this - it's for vetoing based on context that has nothing to do with the module's own settings, not a general-purpose condition mechanism (use `condition` for that).
+
+### Registering the Type
+
+`Configuration/TCA/Overrides/tx_shape_module_configuration.php` adds the type to the TCA select and wires up its FlexForm:
 
 ```php
 <?php
@@ -471,12 +519,21 @@ use Amdeu\Shape\Utility\TcaUtility as Util;
 Util::addModuleType(
     'Log Submission',
     'logSubmission',
-    \MyVendor\MyExt\Form\Module\LogSubmissionModule::class,
     'content-elements-mailform',
     'FILE:EXT:my_ext/Configuration/FlexForms/Module/LogSubmissionModule.xml'
 );
 ```
 
+The last argument accepts an optional `columnsOverrides` array too, e.g. to enable language synchronization on the settings field.
+
+`ext_localconf.php` registers the identifier with `ModuleRegistry`, which is what actually resolves `'logSubmission'` back to the class at runtime:
+
+```php
+<?php
+use Amdeu\Shape\Form\Module\ModuleRegistry;
+
+ModuleRegistry::register('logSubmission', \MyVendor\MyExt\Form\Module\LogSubmissionModule::class);
+```
 ---
 
 ## 🔗 Related
