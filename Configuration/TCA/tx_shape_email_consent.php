@@ -95,7 +95,7 @@ $columns = [
 			'readOnly' => true,
 		],
 	],
-	'finisher_settings' => [
+	'module_settings' => [
 		'config' => [
 			'type' => 'json',
 			'readOnly' => true,
@@ -129,7 +129,7 @@ $palettes = [
 		--linebreak--,
 		validation_hash, session,
 		--linebreak--,
-		finisher_settings, approve_link',
+		module_settings, approve_link',
 	],
 ];
 $showItem = '

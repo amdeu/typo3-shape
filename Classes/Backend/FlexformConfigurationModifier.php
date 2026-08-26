@@ -15,12 +15,12 @@ final readonly class FlexformConfigurationModifier
 		$identifier = $event->getIdentifier();
 		if (
 			$identifier['type'] === 'tca'
-			&& $identifier['tableName'] === 'tx_shape_finisher'
-			&& $identifier['dataStructureKey'] === 'Amdeu\Shape\Form\Finisher\SendEmailFinisher'
+			&& $identifier['tableName'] === 'tx_shape_module_configuration'
+			&& $identifier['dataStructureKey'] === 'Amdeu\Shape\Form\Module\SendEmailModule'
 		) {
 			$dataStructure = $event->getDataStructure();
 			$dataStructure['sheets']['mail']['ROOT']['el']['template']['config']['items'] = [];
-			$mailTemplates = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['finishers']['sendEmail']['templates'];
+			$mailTemplates = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'];
 			foreach ($mailTemplates as $template => $config) {
 				$dataStructure['sheets']['mail']['ROOT']['el']['template']['config']['items'][] = [
 					'label' => $config['label'],
@@ -46,6 +46,5 @@ final readonly class FlexformConfigurationModifier
 			}
 			$event->setDataStructure($dataStructure);
 		}
-
 	}
 }

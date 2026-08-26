@@ -9,7 +9,7 @@ use Amdeu\Shape\Form;
 /**
  * Event dispatched by @see FieldValueProcessor to allow listeners to process field values.
  */
-final class ValueProcessingEvent
+final class ValueProcessingEvent implements Form\FormEventInterface
 {
 	public function __construct(
 		public readonly Form\FormRuntime          $runtime,
@@ -18,6 +18,11 @@ final class ValueProcessingEvent
 		public mixed                              $processedValue = null,
 	)
 	{
+	}
+
+	public function getRuntime(): Form\FormRuntime
+	{
+		return $this->runtime;
 	}
 
 	public function isPropagationStopped(): bool

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Amdeu\Shape\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Amdeu\Shape\Form;
 use Amdeu\Shape\Enum;
@@ -27,7 +28,7 @@ class ConsentController extends ActionController
 	): ResponseInterface
 	{
 		if (!$uid || !$hash || $status === Enum\ConsentStatus::Pending) {
-			return $this->messageResponse([['key' => 'label.invalid_consent_request', 'type' => 'warning']]);
+			return $this->messageResponse([Form\FormMessage::fromKey('label.invalid_consent_request', ContextualFeedbackSeverity::WARNING)]);
 		}
 		$consent = $this->consentRepository
 			->reset()
@@ -35,16 +36,16 @@ class ConsentController extends ActionController
 			->findByUid($uid);
 
 		if (!$consent) {
-			return $this->messageResponse([['key' => 'label.consent_not_found', 'type' => 'error']]);
+			return $this->messageResponse([Form\FormMessage::fromKey('label.consent_not_found', ContextualFeedbackSeverity::ERROR)]);
 		}
 		if ($hash !== $consent['validation_hash']) {
-			return $this->messageResponse([['key' => 'label.invalid_consent_hash', 'type' => 'error']]);
+			return $this->messageResponse([Form\FormMessage::fromKey('label.invalid_consent_hash', ContextualFeedbackSeverity::ERROR)]);
 		}
 		if ($consent['status'] !== Enum\ConsentStatus::Pending->value) {
-			return $this->messageResponse([['key' => 'label.consent_not_pending', 'type' => 'info']]);
+			return $this->messageResponse([Form\FormMessage::fromKey('label.consent_not_pending', ContextualFeedbackSeverity::INFO)]);
 		}
 		if (time() > $consent['valid_until']) {
-			return $this->messageResponse([['key' => 'label.consent_expired', 'type' => 'info']]);
+			return $this->messageResponse([Form\FormMessage::fromKey('label.consent_expired', ContextualFeedbackSeverity::INFO)]);
 		}
 
 		// If verify is set, just show the verification page
@@ -60,11 +61,11 @@ class ConsentController extends ActionController
 		}
 
 		// Otherwise, re-finish the form
-		$consentSettings = json_decode($consent['finisher_settings'], true);
+		$consentSettings = json_decode($consent['module_settings'], true);
 
 		$request = $this->request->withArgument(
-			'splitFinisherExecution',
-			$consentSettings['splitFinisherExecution']
+			'splitModuleExecution',
+			$consentSettings['splitModuleExecution']
 		);
 
 		$runtime = $this->formRuntimeFactory->recreateFromRequestAndConsent(
@@ -86,6 +87,13 @@ class ConsentController extends ActionController
 		if ($finishResult->response) {
 			return $finishResult->response;
 		}
+		$nonce = bin2hex(random_bytes(16));
+		$feAuth = $this->request->getAttribute('frontend.user');
+		$feAuth->setAndSaveSessionData('tx_shape_finish_' . $nonce, [
+			'template' => $finishResult->finishedTemplate,
+			'variables' => $finishResult->finishedVariables,
+			'formValues' => $runtime->session->values,
+		]);
 		$redirectUri = $this->uriBuilder
 			->reset()
 			->setCreateAbsoluteUri(true)
@@ -93,7 +101,7 @@ class ConsentController extends ActionController
 			->setTargetPageUid($runtime->plugin->getPid())
 			->uriFor(
 				'finished',
-				$finishResult->finishedActionArguments,
+				['finishToken' => $nonce],
 				'Form',
 				'Shape',
 				'Form'
@@ -101,6 +109,9 @@ class ConsentController extends ActionController
 		return $this->redirectToUri($redirectUri);
 	}
 
+	/**
+	 * @param Form\FormMessage[] $messages
+	 */
 	protected function messageResponse(array $messages): ResponseInterface
 	{
 		$this->view->assign('messages', $messages);

@@ -64,12 +64,18 @@ tt_content.' . $pluginSignature . ' {
 			$group,
 			$description,
 		);
-		if ($flexForm) {
-			$GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['*' . ',' . $pluginSignature] = $flexForm;
-		}
 		if ($typeDefinition) {
 			$GLOBALS['TCA']['tt_content']['types'][$pluginSignature] = $typeDefinition;
 		}
+		if ($flexForm) {
+			TcaUtility::setFlexForm(
+				'tt_content',
+				'pi_flexform',
+				$pluginSignature,
+				$flexForm
+			);
+		}
 		return $pluginSignature;
 	}
+
 }

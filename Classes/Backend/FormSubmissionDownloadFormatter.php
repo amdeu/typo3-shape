@@ -14,6 +14,10 @@ final class FormSubmissionDownloadFormatter
 			return;
 		}
 
+		if (!in_array('form_values', $event->getColumnsToRender())) {
+			return;
+		}
+
 		$records = [];
 		$format = $event->getFormat();
 

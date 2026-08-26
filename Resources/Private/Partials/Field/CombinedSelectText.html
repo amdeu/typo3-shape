@@ -19,7 +19,7 @@
 						 value="1"
 						 autocomplete="off"
 						 checked="{hasCustomValue}"
-						 onchange="this.closest('[data-shape-field]').querySelectorAll('[data-shape-control]').forEach(el => el.toggleAttribute('disabled'))"/>
+						 onchange="this.closest('shape-field').querySelectorAll('[data-shape-control]').forEach(el => el.toggleAttribute('disabled'))"/>
 		{f:translate(key:'label.enter_custom_value')}
 	</label>
 	<f:form.textfield name="{fieldAttributes.name}"

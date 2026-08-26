@@ -47,14 +47,14 @@ Field types represent standard HTML form controls and their attributes. Configur
 - **🔬 Custom validators** - Add validators via PSR-14 events
 - **👁️ Display conditions** - Show/hide fields based on values or context (client and server-side)
 
-### 🏁 Finishers
+### 🏁 Modules
 - **📧 Send emails** - Template-based emails
-- **✉️ Double opt-in** - Email verification flow with finisher re-execution
+- **✉️ Double opt-in** - Email verification flow with module re-execution
 - **💾 Save submissions** - Store form data in database with JSON values
 - **🗄️ Database integration** - Insert/update custom tables
 - **➡️ Redirects** - Dynamic redirects after submission
 - **📜 Show content** - Display content elements after submission
-- **🧩 Modular finishers** - Freely combine and configure finishers
+- **🧩 Modular actions** - Freely combine and configure modules
 
 ### 🛡️ Security & Spam Protection
 - **🔒 HMAC-signed sessions** - Secure session persistence between form pages
@@ -68,8 +68,8 @@ Field types represent standard HTML form controls and their attributes. Configur
 Beyond TCA customization, Shape provides standard extension points:
 
 - **📄 Fluid templates** - Override any template, partial, or layout
-- **📡 PSR-14 events** - 10+ events for validation, processing, rendering, finisher execution, etc.
-- **🏁 Custom finishers** - Extend AbstractFinisher to implement post-submission actions
+- **📡 PSR-14 events** - 10+ events for validation, processing, rendering, module execution, etc.
+- **🏁 Custom modules** - Extend AbstractModule to implement post-submission actions
 - **🛠️ Custom implementations** - Swap out core services via DI configuration
 
 ## 📋 Requirements
@@ -103,14 +103,14 @@ See [Getting Started](Documentation/GettingStarted.md) for details.
 
 ### Reference
 - **[Field Reference](Documentation/FieldReference.md)** - Field types, properties, and validation
-- **[Finishers Reference](Documentation/Finishers.md)** - All finishers and their settings
+- **[Modules Reference](Documentation/Modules.md)** - All modules and their settings
 
 ### Feature Guides
 - **[Repeatable Field Groups](Documentation/RepeatableContainer.md)** - Dynamic fieldsets
 - **[Display Conditions](Documentation/Conditions.md)** - Show/hide fields based on values
 
 ### Advanced
-- **[Customization Guide](Documentation/CustomizationGuide.md)** - TypoScript, templates, events, and custom finishers
+- **[Customization Guide](Documentation/CustomizationGuide.md)** - TypoScript, templates, events, and custom modules
 
 ## License
 

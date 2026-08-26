@@ -57,7 +57,7 @@ contact-persons[1][full-name] = "Jane Smith"
 contact-persons[1][email-address] = "jane@example.com"
 ```
 
-Access in finishers or templates:
+Access in modules or templates:
 
 ```php
 $contacts = $formValues['contact-persons']; // Array of arrays

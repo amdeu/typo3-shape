@@ -9,7 +9,7 @@ class FormRuntime
 {
 	public function __construct(
 		readonly protected Core\EventDispatcher\EventDispatcher $eventDispatcher,
-		readonly protected Core\Service\FlexFormService         $flexFormService,
+		readonly protected Module\ModuleInvoker                	$moduleInvoker,
 		readonly protected Condition\FieldConditionResolver     $fieldConditionResolver,
 		readonly protected Processing\FieldValueProcessor       $fieldValueProcessor,
 		readonly protected Serialization\FieldValueSerializer   $fieldValueSerializer,
@@ -29,6 +29,7 @@ class FormRuntime
 		protected bool                                          $hasErrors = false,
 	)
 	{
+		$this->moduleInvoker->initializeModules($this);
 		$this->setFieldSessionValues();
 		$event = new FormRuntimeCreationEvent($this);
 		$this->eventDispatcher->dispatch($event);
@@ -82,6 +83,7 @@ class FormRuntime
 
 	/**
 	 * Adds messages to be displayed on the form page
+	 * @param FormMessage[] $messages
 	 */
 	public function addMessages(array $messages): void
 	{
@@ -94,6 +96,8 @@ class FormRuntime
 	 */
 	public function renderPage(int $pageIndex = 1): string
 	{
+		$this->addRecordCacheTags();
+
 		$pages = $this->form->getPages();
 		$lastPageIndex = count($pages);
 		$currentPageRecord = $pages[$pageIndex - 1];
@@ -131,6 +135,58 @@ class FormRuntime
 
 		$this->view->assignMultiple($viewVariables);
 		return $this->view->render('Form');
+	}
+
+	/**
+	 * Tags every record that affects this form's rendered output, so DataHandler's generic per-table+uid
+	 * cache flush on save busts the page cache this render ends up in - Domain\Record/RecordFactory,
+	 * unlike Extbase's persistence layer, doesn't tag records automatically.
+	 *
+	 * Two tag types: "<table>_<uid>" per existing record (form, pages, fields, options, module
+	 * configurations), and one "pageId_<form's pid>" tag to catch records that don't exist yet at render
+	 * time (a new field/page/option/module configuration), relying on the recommended convention of
+	 * keeping a form's records in one shared folder (see GettingStarted.md). Not tagged per child record,
+	 * to avoid pulling in unrelated folders if that convention isn't followed.
+	 */
+	protected function addRecordCacheTags(): void
+	{
+		$collector = $this->request->getAttribute('frontend.cache.collector');
+		if (!$collector instanceof Core\Cache\CacheDataCollectorInterface) {
+			return;
+		}
+
+		$collector->addCacheTags(
+			new Core\Cache\CacheTag('tx_shape_form_' . $this->form->getIdentifier()),
+			new Core\Cache\CacheTag('pageId_' . $this->form->getPid()),
+		);
+
+		foreach ($this->form->getPages() as $page) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_form_page_' . $page->getUid()));
+			foreach ($page->getFields() as $field) {
+				$this->addFieldCacheTags($collector, $field);
+			}
+		}
+
+		foreach ($this->form->getModuleConfigurations() as $configuration) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_module_configuration_' . $configuration->getIdentifier()));
+		}
+	}
+
+	/**
+	 * Tags a field and its options, recursing into a repeatable-container's own nested child fields - a
+	 * separate tx_shape_field relation (field_parent), not included in the page's own field list.
+	 */
+	protected function addFieldCacheTags(Core\Cache\CacheDataCollectorInterface $collector, Core\Domain\Record&Model\FieldInterface $field): void
+	{
+		$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_field_' . $field->getUid()));
+		foreach ($field->getOptions() ?? [] as $option) {
+			$collector->addCacheTags(new Core\Cache\CacheTag('tx_shape_field_option_' . $option->getUid()));
+		}
+		if ($field->has('fields')) {
+			foreach ($field->get('fields') as $childField) {
+				$this->addFieldCacheTags($collector, $childField);
+			}
+		}
 	}
 
 	/**
@@ -215,91 +271,20 @@ class FormRuntime
 	}
 
 	/**
-	 * Executes finishers configured for the form
-	 * Finishers are executed in the order they are defined
-	 * Considers finisher conditions and calls finisher validation which can prevent execution if errors occur
-	 * Finishers can also cancel further execution of subsequent finishers
+	 * Dispatches a FormFinishEvent to invoke all configured modules listening on form finish.
+	 * Modules can call stopPropagation() on the event to prevent subsequent modules from executing.
 	 */
-	public function finishForm(array $conditionVariables = []): Finisher\FinisherExecutionContext
+	public function finishForm(array $conditionVariables = []): FormFinishEvent
 	{
-		$context = new Finisher\FinisherExecutionContext($this);
-		$expressionResolver = $this->createExpressionResolver($conditionVariables);
-
-		$executableFinishers = [];
-		foreach ($this->form->getFinisherConfigurations() as $configuration) {
-
-			$conditionEvent = new Condition\FinisherConditionResolutionEvent(
-				$this,
-				$configuration,
-				$expressionResolver
-			);
-			$this->eventDispatcher->dispatch($conditionEvent);
-			if ($conditionEvent->isPropagationStopped()) {
-				if ($conditionEvent->result === false) {
-					continue;
-				}
-			} else if ($configuration->getCondition() && !$expressionResolver->evaluate($configuration->getCondition())) {
-				continue;
-			}
-
-			$finisher = $this->createFinisherInstance($configuration);
-
-			// todo: add finisher validation event?
-			$validationResult = $finisher->validate();
-
-			if ($validationResult->hasErrors()) {
-				$this->hasErrors = true;
-
-				// todo: rework messages to use message objects instead of arrays
-				$this->addMessages(
-					array_map(
-						function (Extbase\Validation\Error $error) {
-							return ['message' => $error->getMessage(), 'type' => 'error'];
-						},
-						$validationResult->getErrors()
-					)
-				);
-				return $context;
-			}
-			$executableFinishers[] = $finisher;
-		}
-
-		foreach ($executableFinishers as $finisher) {
-			$finisher->execute($context);
-			if ($context->isCancelled()) {
-				break;
-			}
-		}
-
-		$context->finishedActionArguments['pluginUid'] = $this->plugin->getUid();
-		return $context;
-	}
-
-	/**
-	 * Creates an instance of a finisher based on the given configuration
-	 */
-	public function createFinisherInstance(Model\FinisherConfigurationInterface $configuration): Finisher\FinisherInterface
-	{
-		// todo: maybe add "finisherDefaults". Problem is there's no good way to merge. ArrayUtility::mergeRecursiveWithOverrule either overwrites everything or discards empty values ('' and '0'), but we want to keep '0', otherwise checkboxes can't overwrite with false. Extbase has "ignoreFlexFormSettingsIfEmpty" but that doesn't really solve the problem either. To have booleans with default values, we'd need to render them as selects with values '', '0', '1' and then only ignore ''.
-		$event = new Finisher\BeforeFinisherCreationEvent(
-			$this,
-			$configuration,
-			$configuration->getFinisherClassName(),
-			$configuration->getSettings()
-		);
-		$this->eventDispatcher->dispatch($event);
-		$finisher = Core\Utility\GeneralUtility::makeInstance($event->finisherClassName);
-		if (!($finisher instanceof Finisher\FinisherInterface)) {
-			throw new \InvalidArgumentException('Argument "finisherClassName" must the name of a class that implements Amdeu\Shape\Form\Finisher\FinisherInterface.', 1741369249);
-		}
-		$finisher->setSettings($event->settings);
-		return $finisher;
+		$finishEvent = new FormFinishEvent($this, conditionVariables: $conditionVariables);
+		$this->eventDispatcher->dispatch($finishEvent);
+		return $finishEvent;
 	}
 
 	/**
 	 * Creates an expression resolver with the given additional variables
 	 */
-	public function createExpressionResolver(array $variables): Core\ExpressionLanguage\Resolver
+	public function createExpressionResolver(array $variables = []): Core\ExpressionLanguage\Resolver
 	{
 		$variables = array_merge([
 			'formRuntime' => $this,

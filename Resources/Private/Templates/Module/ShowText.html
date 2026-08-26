@@ -1,0 +1,6 @@
+<f:variable name="blockClass" value="shape"/>
+
+<section id="c{plugin.uid}"
+		 class="{blockClass}__section {blockClass}__show-text-module -layout-{form.layout} {form.css_class}">
+	{parsedBody -> f:format.html()}
+</section>

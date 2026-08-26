@@ -17,8 +17,8 @@ final class RecordCreator
 			case 'tx_shape_field':
 				$this->setRecord($event, FieldRecord::class);
 				break;
-			case 'tx_shape_finisher':
-				$this->setRecord($event, FinisherConfigurationRecord::class);
+			case 'tx_shape_module_configuration':
+				$this->setRecord($event, ModuleConfigurationRecord::class);
 				break;
 			case 'tx_shape_form_page':
 				$this->setRecord($event, FormPageRecord::class);

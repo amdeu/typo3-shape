@@ -7,6 +7,11 @@ use TYPO3\CMS\Core\Domain\Record;
 
 class FormRecord extends Record implements FormInterface
 {
+	public function getIdentifier(): int|string
+	{
+		return $this->getUid();
+	}
+
 	public function getName(): string
 	{
 		return $this->properties['name'] ?? '';
@@ -21,10 +26,10 @@ class FormRecord extends Record implements FormInterface
 	}
 
 	/**
-	 * @return LazyRecordCollection<FinisherConfigurationInterface>|array<FinisherConfigurationInterface>
+	 * @return LazyRecordCollection<ModuleConfigurationInterface>|array<ModuleConfigurationInterface>
 	 */
-	public function getFinisherConfigurations(): LazyRecordCollection|array
+	public function getModuleConfigurations(): LazyRecordCollection|array
 	{
-		return $this->get('finishers');
+		return $this->get('modules');
 	}
 }

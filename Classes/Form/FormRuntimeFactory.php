@@ -12,9 +12,9 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 	public function __construct(
 		protected readonly Core\EventDispatcher\EventDispatcher                $eventDispatcher,
 		protected readonly Core\Resource\StorageRepository                     $storageRepository,
-		protected readonly Core\Service\FlexFormService                        $flexFormService,
 		protected readonly Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
 		protected readonly ContentObjectRenderer                               $contentObject,
+		protected readonly Module\ModuleInvoker                                $moduleInvoker,
 		protected readonly Condition\FieldConditionResolver                    $fieldConditionResolver,
 		protected readonly Processing\FieldValueProcessor                      $fieldValueProcessor,
 		protected readonly Serialization\FieldValueSerializer                  $fieldValueSerializer,
@@ -100,7 +100,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 
 		return new FormRuntime(
 			$this->eventDispatcher,
-			$this->flexFormService,
+			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,
 			$this->fieldValueSerializer,
@@ -159,11 +159,11 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 
 		/**
 		 * $view->getRenderingContext() ties us to the FluidView implementation
-		 * manipulating the root paths here is only necessary for finishers that render Fluid templates or need access to template paths
+		 * manipulating the root paths here is only necessary for modules that render Fluid templates or need access to template paths
 		 * For the current implementation (with Consent) to work with, for example, a JSON view, one would have to implement a different FormRuntimeFactory and Form-/ConsentController (because the controllers return html responses)
 		 * the view problem for headless could also be solved by rendering json in the fluid templates
 		 * the response type problem in controllers could be resolved by adding a request argument to determine the response type
-		 * maybe make Finishers work with their own view instance via ViewFactoryInterface instead of the runtime view? => would remove the need to change the view here, make them view implementation agnostic and in combination with the json request argument allow headless usage
+		 * maybe make Modules work with their own view instance via ViewFactoryInterface instead of the runtime view? => would remove the need to change the view here, make them view implementation agnostic and in combination with the json request argument allow headless usage
 		 * simpler solution would be to only add the json request argument and manipulate the rendering via events, adding a json variable to the fluid template
 		 */
 		$viewClone->getRenderingContext()->setControllerName('Form');
@@ -179,7 +179,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		// todo: BeforeFormRuntimeRecreationEvent to change request
 		return new FormRuntime(
 			$this->eventDispatcher,
-			$this->flexFormService,
+			$this->moduleInvoker,
 			$this->fieldConditionResolver,
 			$this->fieldValueProcessor,
 			$this->fieldValueSerializer,
@@ -205,7 +205,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 		array $settings
 	): Core\Domain\Record
 	{
-		$uid = $settings['pluginUid'];
+		$uid = $settings['pluginUid'] ?? 0;
 		if (!$uid) {
 			if ($request->getAttribute('currentContentObject')?->data['CType']) {
 				return Core\Utility\GeneralUtility::makeInstance(Core\Domain\RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $request->getAttribute('currentContentObject')?->data);

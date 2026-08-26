@@ -7,7 +7,7 @@
 			<trans-unit id="tab.advanced"><source>Advanced</source></trans-unit>
 			<trans-unit id="tab.extended"><source>Extended</source></trans-unit>
 			<trans-unit id="tab.condition"><source>Condition</source></trans-unit>
-			<trans-unit id="tab.finishers"><source>Finishers</source></trans-unit>
+			<trans-unit id="tab.modules"><source>Modules</source></trans-unit>
 			<trans-unit id="tab.lazyLoad"><source>Lazy Load</source></trans-unit>
 			<trans-unit id="tab.mail"><source>Mail</source></trans-unit>
 			<trans-unit id="tab.consent"><source>Consent</source></trans-unit>
@@ -29,7 +29,7 @@
 			<trans-unit id="form.title"><source>Title</source></trans-unit>
 			<trans-unit id="form.name"><source>Name</source></trans-unit>
 			<trans-unit id="form.pages"><source>Pages</source></trans-unit>
-			<trans-unit id="form.finishers"><source>Finishers</source></trans-unit>
+			<trans-unit id="form.modules"><source>Modules</source></trans-unit>
 			<trans-unit id="form.layout"><source>Layout</source></trans-unit>
 			<trans-unit id="form.header_layout"><source>Header Layout</source></trans-unit>
 			<trans-unit id="form.css_class"><source>CSS Class</source></trans-unit>
@@ -38,7 +38,7 @@
 			<trans-unit id="form_page.title"><source>Header</source></trans-unit>
 			<trans-unit id="form_page.type"><source>Type</source></trans-unit>
 			<trans-unit id="form_page.fields"><source>Fields</source></trans-unit>
-			<trans-unit id="form_page.form_parent"><source>Form Parent</source></trans-unit>
+			<trans-unit id="form_page.form_parent"><source>Form</source></trans-unit>
 			<trans-unit id="form_page.display_condition"><source>Display Condition</source></trans-unit>
 			<trans-unit id="form_page.prev_label"><source>Back-Button Label</source></trans-unit>
 			<trans-unit id="form_page.next_label"><source>Next-Button Label</source></trans-unit>
@@ -97,7 +97,7 @@
 			<trans-unit id="field.type.item.content-element"><source>Content Element</source></trans-unit>
 
 			<trans-unit id="field.default_value"><source>Default Value</source></trans-unit>
-			<trans-unit id="field.page_parents"><source>Used on</source></trans-unit>
+			<trans-unit id="field.page_parents"><source>Form Page</source></trans-unit>
 			<trans-unit id="field.field_parent"><source>Field Parent</source></trans-unit>
 			<trans-unit id="field.fields"><source>Fields</source></trans-unit>
 			<trans-unit id="field.required"><source>Required</source></trans-unit>
@@ -146,21 +146,23 @@
 			<trans-unit id="field_option.selected"><source>Selected</source></trans-unit>
 			<trans-unit id="field_option.field_parent"><source>Field Parent</source></trans-unit>
 
-			<trans-unit id="finisher.ctrl.title"><source>Form Finisher</source></trans-unit>
-			<trans-unit id="finisher.form_parents"><source>Used on</source></trans-unit>
-			<trans-unit id="finisher.title"><source>Title</source></trans-unit>
-			<trans-unit id="finisher.type"><source>Type</source></trans-unit>
-			<trans-unit id="finisher.type.item.save_submission"><source>Save Submission</source></trans-unit>
-			<trans-unit id="finisher.type.item.consent"><source>Mail Consent (Double-Opt-in)</source></trans-unit>
-			<trans-unit id="finisher.type.item.save_to_database"><source>Save to Database</source></trans-unit>
-			<trans-unit id="finisher.type.item.send_email"><source>Send Email</source></trans-unit>
-			<trans-unit id="finisher.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
-			<trans-unit id="finisher.type.item.redirect"><source>Redirect</source></trans-unit>
-			<trans-unit id="finisher.type.item.email_consent"><source>Email Consent (Double-Opt-in)</source></trans-unit>
-			<trans-unit id="finisher.condition"><source>Condition</source></trans-unit>
-			<trans-unit id="finisher.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
-			<trans-unit id="finisher.settings"><source>Settings</source></trans-unit>
-
+			<trans-unit id="module.ctrl.title"><source>Form Configuration Module</source></trans-unit>
+			<trans-unit id="module.form_parents"><source>Form</source></trans-unit>
+			<trans-unit id="module.title"><source>Title</source></trans-unit>
+			<trans-unit id="module.type"><source>Type</source></trans-unit>
+			<trans-unit id="module.type.item.save_submission"><source>Save Submission</source></trans-unit>
+			<trans-unit id="module.type.item.consent"><source>Mail Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.save_to_database"><source>Save to Database</source></trans-unit>
+			<trans-unit id="module.type.item.send_email"><source>Send Email</source></trans-unit>
+			<trans-unit id="module.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
+			<trans-unit id="module.type.item.redirect"><source>Redirect</source></trans-unit>
+			<trans-unit id="module.type.item.email_consent"><source>Email Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.show_text"><source>Show Text</source></trans-unit>
+			<trans-unit id="module.condition"><source>Condition</source></trans-unit>
+			<trans-unit id="module.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
+			<trans-unit id="module.settings"><source>Settings</source></trans-unit>
+			
+			
 			<trans-unit id="form_submission.ctrl.title"><source>Form Submission</source></trans-unit>
 			<trans-unit id="form_submission.tstamp"><source>Timestamp</source></trans-unit>
 			<trans-unit id="form_submission.form"><source>Form</source></trans-unit>
@@ -193,54 +195,56 @@
 			<trans-unit id="flexform.form.lazyLoadFragmentPage"><source>Lazy load uncached form</source></trans-unit>
 			<trans-unit id="flexform.form.lazyLoadFragmentPage.description"><source>This must be set for lazy load to work. Page should not contain a Shape form plugin.</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.redirect.uri"><source>Redirect URL</source></trans-unit>
+			<trans-unit id="flexform.module.redirect.uri"><source>Redirect URL</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.saveSubmission.storagePage"><source>Submission Storage Page</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveSubmission.excludedFields"><source>Exclude fields from saved data</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveSubmission.saveUserData"><source>Save User Agent and IP-Address</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveSubmission.connectToLanguageParentForm"><source>Connect to original language form</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveSubmission.connectToLanguageParentForm.description"><source>Submissions are connected to the form and plugin they were submitted from. When enabled, this will connect them to the original language version of form and plugin, if possible.</source></trans-unit>
+			<trans-unit id="flexform.module.saveSubmission.storagePage"><source>Submission Storage Page</source></trans-unit>
+			<trans-unit id="flexform.module.saveSubmission.excludedFields"><source>Exclude fields from saved data</source></trans-unit>
+			<trans-unit id="flexform.module.saveSubmission.saveUserData"><source>Save User Agent and IP-Address</source></trans-unit>
+			<trans-unit id="flexform.module.saveSubmission.connectToLanguageParentForm"><source>Connect to original language form</source></trans-unit>
+			<trans-unit id="flexform.module.saveSubmission.connectToLanguageParentForm.description"><source>Submissions are connected to the form and plugin they were submitted from. When enabled, this will connect them to the original language version of form and plugin, if possible.</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.saveToDatabase.table"><source>Table Name</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.storagePage"><source>Record Storage Page</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.whereColumn"><source>Update Row where Column ...</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.whereValue"><source>... equals Value</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.columns"><source>Columns</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.column"><source>Column</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.columnName"><source>Name</source></trans-unit>
-			<trans-unit id="flexform.finisher.saveToDatabase.columnValue"><source>Value</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.table"><source>Table Name</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.storagePage"><source>Record Storage Page</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.whereColumn"><source>Update Row where Column ...</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.whereValue"><source>... equals Value</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.columns"><source>Columns</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.column"><source>Column</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.columnName"><source>Name</source></trans-unit>
+			<trans-unit id="flexform.module.saveToDatabase.columnValue"><source>Value</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.showContentElements.contentElements"><source>Content Elements</source></trans-unit>
+			<trans-unit id="flexform.module.showContentElements.contentElements"><source>Content Elements</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.sendEmail.subject"><source>Subject</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.title"><source>Title</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.body"><source>Body</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.body.description"><source>Mail bodytext. Form values can be used with "{{ field-name }}".</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.attachUploads"><source>Attach Uploads</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.template"><source>Template</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.recipientAddresses"><source>Recipient Email Addresses</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.recipientAddresses.description"><source>Comma separated list of email addresses to send to. Form values can be used with "{{ field-name }}".</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.ccRecipientAddresses"><source>CC Recipient Email Addresses</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.bccRecipientAddresses"><source>BCC Recipient Email Addresses</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.replyToAddresses"><source>Reply-to Email Addresses</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.senderAddress"><source>Sender Email Address</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.senderAddress.description"><source>Falls back to [MAIL][defaultMailFromAddress].</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.senderName"><source>Sender Name</source></trans-unit>
-			<trans-unit id="flexform.finisher.sendEmail.senderName.description"><source>Falls back to [MAIL][defaultMailFromName].</source></trans-unit>
+			<trans-unit id="flexform.module.showText.bodytext"><source>Bodytext</source></trans-unit>
 
-			<trans-unit id="flexform.finisher.emailConsent.storagePage"><source>Consent Storage Page</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.consentPage"><source>Consent Validation Plugin Page</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.recipientAddress"><source>Recipient Email Address</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.replyToAddress"><source>Reply-to Email Address</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.expirationPeriod"><source>Expiration Time in Seconds</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.deleteAfterConfirmation"><source>Delete Consent Record after Confirmation</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution"><source>Split Finisher Execution</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.splitFinisherExecution.description"><source>Finishers are re-run when Consent is confirmed. When enabled, Finishers before this are executed only on the initial Form Submission, Finishers after this are executed only on Consent Confirmation.
+			<trans-unit id="flexform.module.sendEmail.subject"><source>Subject</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.title"><source>Title</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.body"><source>Body</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.body.description"><source>Mail bodytext. Form values can be used with "{{ field-name }}".</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.attachUploads"><source>Attach Uploads</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.template"><source>Template</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.recipientAddresses"><source>Recipient Email Addresses</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.recipientAddresses.description"><source>Comma separated list of email addresses to send to. Form values can be used with "{{ field-name }}".</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.ccRecipientAddresses"><source>CC Recipient Email Addresses</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.bccRecipientAddresses"><source>BCC Recipient Email Addresses</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.replyToAddresses"><source>Reply-to Email Addresses</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.senderAddress"><source>Sender Email Address</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.senderAddress.description"><source>Falls back to [MAIL][defaultMailFromAddress].</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.senderName"><source>Sender Name</source></trans-unit>
+			<trans-unit id="flexform.module.sendEmail.senderName.description"><source>Falls back to [MAIL][defaultMailFromName].</source></trans-unit>
+
+			<trans-unit id="flexform.module.emailConsent.storagePage"><source>Consent Storage Page</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.consentPage"><source>Consent Validation Plugin Page</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.recipientAddress"><source>Recipient Email Address</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.replyToAddress"><source>Reply-to Email Address</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.expirationPeriod"><source>Expiration Time in Seconds</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.deleteAfterConfirmation"><source>Delete Consent Record after Confirmation</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.splitModuleExecution"><source>Split Module Execution</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.splitModuleExecution.description"><source>Modules that trigger on Form Finish are re-run when Consent is confirmed. When enabled, Modules before this are finished only on the initial Form Submission, Modules after this are finished only on Consent Confirmation.
 			</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.showDismissLink"><source>Show Consent Dismissal Link in Email</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.showDismissLink.description"><source>By default, all Finishers that are executed after Consent Approval are also executed after Dismissal. Use Finisher Conditions to differentiate between the two.</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.requireApproveVerification"><source>Require Verification for Consent Approval</source></trans-unit>
-			<trans-unit id="flexform.finisher.emailConsent.requireDismissVerification"><source>Require Verification for Consent Dismissal</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.showDismissLink"><source>Show Consent Dismissal Link in Email</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.showDismissLink.description"><source>By default, all Modules that are executed after Consent Approval are also executed after Dismissal. Use Module Conditions to differentiate between the two.</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.requireApproveVerification"><source>Require Verification for Consent Approval</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.requireDismissVerification"><source>Require Verification for Consent Dismissal</source></trans-unit>
 		</body>
 	</file>
 </xliff>

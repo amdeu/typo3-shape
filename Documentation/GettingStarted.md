@@ -27,7 +27,7 @@ vendor/bin/typo3 database:updateschema
 
 ## 🚀 Your First Form
 
-> **💡 Tip:** Create a new sysfolder for each form to make sure the list view gives you a clean overview of one form and its related records (pages, fields, finishers).
+> **💡 Tip:** Create a new sysfolder for each form to make sure the list view gives you a clean overview of one form and its related records (pages, fields, modules).
 
 ### Step 1: Create a Form
 
@@ -75,9 +75,9 @@ Required: Yes
 
 > **💡 Note:** Field names are unique within the PID and use kebab-case (e.g., `email-address`, `your-name`).
 
-### Step 4: Add a Finisher
+### Step 4: Add a Module
 
-1. In the form record → **Finishers** tab → **Create new**
+1. In the form record → **Modules** tab → **Create new**
 2. Select **Type** from the dropdown
 
 Examples:
@@ -112,4 +112,4 @@ Your form is now ready to use!
 - [Editor Guide](EditorGuide.md) - Learn all field types and features
 - [Customization Guide](CustomizationGuide.md) - Extend and customize Shape
 - [Field Reference](FieldReference.md) - Complete field property reference
-- [Finishers Reference](Finishers.md) - All finishers and their settings
+- [Modules Reference](Modules.md) - All modules and their settings

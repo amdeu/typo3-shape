@@ -4,13 +4,13 @@
             <f:for each="{messages}" as="message">
                 <f:if condition="{message.key}">
                     <f:then>
-                        <p class="{blockClass}__message -{message.type}">
-                            {f:translate(key: message.key)}
+                        <p class="{blockClass}__message -{message.cssModifier}">
+                            {f:translate(key: message.key, arguments: message.arguments)}
                         </p>
                     </f:then>
                     <f:else>
-                        <p class="{blockClass}__message">
-                            {message}
+                        <p class="{blockClass}__message -{message.cssModifier}">
+                            {message.text}
                         </p>
                     </f:else>
                 </f:if>

@@ -1,12 +1,12 @@
 <f:variable name="fieldWidthStyle"
-			value="--yf-field-width:{field.width}%;"/>
+			value="--shape-field-width:{field.width}%;"/>
 
-<div class="{blockClass}__field {blockClass}__{field.type}-field -layout-{field.layout} -width-{field.width} -{currentPage.type}-step {field.css_class}{f:if(condition:'{field.js_display_condition}',then:' --hidden')}"
-	 data-shape-field="{field.name}"
-	 data-shape-condition="{field.js_display_condition}"
+<shape-field class="{blockClass}__field {blockClass}__{field.type}-field -layout-{field.layout} -width-{field.width} -{currentPage.type}-step {field.css_class}{f:if(condition:'{field.js_display_condition}',then:' --hidden')}"
+	 name="{field.name}"
+	 condition="{field.js_display_condition}"
 	 style="{fieldWidthStyle}">
 
 	{content -> f:format.raw()}
 
 	<f:render partial="Control/Errors" arguments="{_all}"/>
-</div>
+</shape-field>

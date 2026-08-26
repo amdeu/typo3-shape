@@ -73,10 +73,12 @@ class TcaUtility
 		$GLOBALS['TCA']['tx_shape_field']['ctrl']['typeicon_classes'][$value] = $icon;
 
 		if ($baseType && $GLOBALS['TCA']['tx_shape_field']['types'][$baseType]) {
-			$typeDefinition = Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-				$GLOBALS['TCA']['tx_shape_field']['types'][$baseType],
+			$baseTypeDefinition = $GLOBALS['TCA']['tx_shape_field']['types'][$baseType];
+			Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+				$baseTypeDefinition,
 				$typeDefinition
 			);
+			$typeDefinition = $baseTypeDefinition;
 		}
 		if ($typeDefinition) {
 			$GLOBALS['TCA']['tx_shape_field']['types'][$value] = $typeDefinition;
@@ -84,23 +86,68 @@ class TcaUtility
 	}
 
 	/**
-	 * Adds a new type to tx_shape_finisher
-	 * @param string $label
-	 * @param string $value
-	 * @param string $flexForm The flexform for the new type, e.g. 'FILE:EXT:my_ext/Configuration/FlexForms/Finisher/MyFinisher.xml'
+	 * Adds a module type to the TCA select, and optionally wires up a FlexForm and columnsOverrides
+	 * for its settings. Call this from a TCA/Overrides file.
+	 *
+	 * This does NOT register the identifier with ModuleRegistry - TCA/Overrides files only execute
+	 * while the TCA cache is being (re)built, not on every request, so ModuleRegistry's in-memory
+	 * mapping (needed on every request to resolve the identifier back to a class) has to be registered
+	 * separately from ext_localconf.php, which does run every request.
+	 *
+	 * @param string $columnsOverrides  Optional TCA columnsOverrides for this type (e.g. to enable language sync on settings)
 	 */
-	public static function addFinisherType(
+	public static function addModuleType(
 		string $label,
-		string $value,
-		string $flexForm = ''
-	): void
-	{
-		$GLOBALS['TCA']['tx_shape_finisher']['columns']['type']['config']['items'][] = [
+		string $identifier,
+		string $icon = 'shape-module-default',
+		string $flexForm = '',
+		array $columnsOverrides = []
+	): void {
+		$GLOBALS['TCA']['tx_shape_module_configuration']['columns']['type']['config']['items'][] = [
 			'label' => $label,
-			'value' => $value,
+			'value' => $identifier,
+			'icon'  => $icon,
+		];
+		$GLOBALS['TCA']['tx_shape_module_configuration']['ctrl']['typeicon_classes'][$identifier] = $icon;
+		$baseShowItem = $GLOBALS['TCA']['tx_shape_module_configuration']['types']['0']['showitem'] ?? '';
+		$GLOBALS['TCA']['tx_shape_module_configuration']['types'][$identifier] = [
+			'showitem' => $baseShowItem,
+			'columnsOverrides' => $columnsOverrides,
 		];
 		if ($flexForm) {
-			$GLOBALS['TCA']['tx_shape_finisher']['columns']['settings']['config']['ds'][$value] = $flexForm;
+			static::setFlexForm('tx_shape_module_configuration', 'settings', $identifier, $flexForm);
+		}
+	}
+
+
+	protected static ?Core\Information\Typo3Version $typo3Version = null;
+	public static function getTypo3Version(): Core\Information\Typo3Version
+	{
+		if (static::$typo3Version === null) {
+			static::$typo3Version = Core\Utility\GeneralUtility::makeInstance(Core\Information\Typo3Version::class);
+		}
+		return static::$typo3Version;
+	}
+
+	public static function setFlexForm(
+		string $table,
+		string $field,
+		string $type,
+		string $flexForm,
+	): void
+	{
+		if (!$type) {
+			if (static::getTypo3Version()->getMajorVersion() < 14) {
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][0] = $flexForm;
+			} else {
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'] = $flexForm;
+			}
+			return;
+		}
+		if (static::getTypo3Version()->getMajorVersion() < 14) {
+			$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$type] = $flexForm;
+		} else {
+			$GLOBALS['TCA'][$table]['types'][$type]['columnsOverrides'][$field]['config']['ds'] = $flexForm;
 		}
 	}
 }

@@ -24,7 +24,6 @@ final class UniqueInSubmissionsValidator extends AbstractValidator
 	public function isValid(mixed $value): void
 	{
 		$isUnique = $this->submissionRepository
-			->reset()
 			->isUniqueValue(
 				$this->options['fieldName'],
 				$value,

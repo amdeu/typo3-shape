@@ -19,17 +19,30 @@ class FormSubmissionRepository extends AbstractRecordRepository
 		string $formName = ''
 	): bool
 	{
+		if (!preg_match('/^[a-zA-Z0-9_-]+$/', $fieldName)) {
+			throw new \InvalidArgumentException(
+				sprintf('Invalid field name "%s" for uniqueness check.', $fieldName),
+				1740000001
+			);
+		}
+
 		$builder = $this->getQueryBuilder();
-		$where = [
-			'form_values->"$.' . $fieldName .'"' . ' = ' . $builder->createNamedParameter($value),
-		];
+		$builder
+			->count('uid')
+			->from($this->getTableName())
+			->andWhere(
+				$builder->expr()->eq(
+					'JSON_UNQUOTE(JSON_EXTRACT(form_values, ' . $builder->createNamedParameter('$."' . $fieldName . '"') . '))',
+					$builder->createNamedParameter($value)
+				)
+			);
 		if ($pluginUid) {
-			$where[] = $builder->expr()->eq('plugin', $builder->createNamedParameter($pluginUid));
+			$builder->andWhere($builder->expr()->eq('plugin', $builder->createNamedParameter($pluginUid)));
 		}
 		if ($formUid) {
-			$where[] = $builder->expr()->eq('form', $builder->createNamedParameter($formUid));
+			$builder->andWhere($builder->expr()->eq('form', $builder->createNamedParameter($formUid)));
 		}
-		$count = $this->countWhere(...$where);
+		$count = (int)$builder->executeQuery()->fetchOne();
 		return !$count;
 	}
 }

@@ -61,20 +61,23 @@ $columns = [
 			'foreign_sortby' => 'sorting',
 			'appearance' => [
 				'expandSingle' => true,
-				'useSortable' => true
+				'useSortable' => true,
+				//'useCarousel' => true,  // This enables carousel
 			],
+			'showArrows' => true,      // Show navigation arrows
+			'showPagination' => true,  // Show pagination dots
 		],
 	],
-	'finishers' => [
+	'modules' => [
 		'config' => [
 			'type' => 'inline',
 			'foreign_field' => 'form_parents',
 			//'type' => 'select',
 			//'renderType' => 'selectMultipleSideBySide',
 			//'type' => 'group',
-			'allowed' => 'tx_shape_finisher',
-			'foreign_table' => 'tx_shape_finisher',
-			'foreign_table_where' => 'AND {#tx_shape_finisher}.{#sys_language_uid}=###REC_FIELD_sys_language_uid###',
+			'allowed' => 'tx_shape_module_configuration',
+			'foreign_table' => 'tx_shape_module_configuration',
+			'foreign_table_where' => 'AND {#tx_shape_module_configuration}.{#sys_language_uid}=###REC_FIELD_sys_language_uid###',
 			'localizeReferences' => true,
 			'localizeReferencesAtParentLocalization' => true,
 			'appearance' => [
@@ -158,8 +161,8 @@ $showItem = '
         pages,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance, 
     	--palette--;;appearance,
-    --div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.finishers, 
-    	finishers,
+    --div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.modules, 
+    	modules,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, 
         sys_language_uid, 
         l10n_parent, 

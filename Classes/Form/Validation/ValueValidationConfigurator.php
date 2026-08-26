@@ -150,7 +150,11 @@ final class ValueValidationConfigurator
 	protected function addCountValidator(ValueValidationEvent $event): void
 	{
 		$field = $event->field;
-		if ($field->getType() !== 'file' && is_array($event->value) && ($field->has('min') || $field->has('max'))) {
+		$type = $field->getType();
+		if (in_array($type, ['multi-checkbox','multi-select','repeatable-container']) && ($field->has('min') || $field->has('max'))) {
+			if (!$event->value) {
+				$event->value = [];
+			}
 			$event->addValidator($this->makeValidator(
 				Validator\CountValidator::class,
 				[

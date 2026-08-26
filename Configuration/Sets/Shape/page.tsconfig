@@ -1,5 +1,6 @@
 mod.web_list.tableDisplayOrder {
-    tx_shape_form_page.after = tx_shape_form
+    tx_shape_module_configuration.after = tx_shape_form
+    tx_shape_form_page.after = tx_shape_module_configuration
     tx_shape_field.after = tx_shape_form_page
     tx_shape_field_option.after = tx_shape_field
 }
