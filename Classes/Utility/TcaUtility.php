@@ -109,13 +109,11 @@ class TcaUtility
 			'icon'  => $icon,
 		];
 		$GLOBALS['TCA']['tx_shape_module_configuration']['ctrl']['typeicon_classes'][$identifier] = $icon;
-		if ($columnsOverrides) {
-			$baseShowItem = $GLOBALS['TCA']['tx_shape_module_configuration']['types']['0']['showitem'] ?? '';
-			$GLOBALS['TCA']['tx_shape_module_configuration']['types'][$identifier] = [
-				'showitem' => $baseShowItem,
-				'columnsOverrides' => $columnsOverrides,
-			];
-		}
+		$baseShowItem = $GLOBALS['TCA']['tx_shape_module_configuration']['types']['0']['showitem'] ?? '';
+		$GLOBALS['TCA']['tx_shape_module_configuration']['types'][$identifier] = [
+			'showitem' => $baseShowItem,
+			'columnsOverrides' => $columnsOverrides,
+		];
 		if ($flexForm) {
 			static::setFlexForm('tx_shape_module_configuration', 'settings', $identifier, $flexForm);
 		}
