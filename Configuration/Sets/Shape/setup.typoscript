@@ -32,13 +32,6 @@ plugin.tx_shape {
             validationMessages.enabled = 1
             stylableValidation.enabled = 1
         }
-        finisherDefaults {
-            Amdeu\Shape\Form\Finisher\EmailConsentFinisher {
-                consentPage = 0
-                splitFinisherExecution = 1
-                deleteAfterConfirmation = 1
-            }
-        }
     ignoreFlexFormSettingsIfEmpty = uploadFolder
     }
 }
