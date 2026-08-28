@@ -1,7 +1,8 @@
-
 <?php
 
 return [
-	'dependencies' => ['backend'],
-	'imports' => []
+	'dependencies' => ['backend', 'core'],
+	'imports' => [
+		'@amdeu/shape/' => 'EXT:shape/Resources/Public/JavaScript/',
+	],
 ];

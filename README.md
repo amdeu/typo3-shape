@@ -49,7 +49,7 @@ Field types represent standard HTML form controls and their attributes. Configur
 
 ### 🏁 Modules
 - **📧 Send emails** - Template-based emails
-- **✉️ Double opt-in** - Email verification flow with module re-execution
+- **✉️ Double Opt-in** - Email verification flow with module re-execution
 - **💾 Save submissions** - Store form data in database with JSON values
 - **🗄️ Database integration** - Insert/update custom tables
 - **➡️ Redirects** - Dynamic redirects after submission

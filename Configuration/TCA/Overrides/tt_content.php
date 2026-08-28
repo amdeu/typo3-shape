@@ -18,7 +18,8 @@ PluginUtility::register(
 		--palette--;;general,
 		--palette--;;header,
 		pi_flexform,',
-		'columnsOverrides' => []
+		'columnsOverrides' => [],
+		'previewRenderer' => \Amdeu\Shape\Backend\Preview\FormPluginPreviewRenderer::class,
 	]
 );
 

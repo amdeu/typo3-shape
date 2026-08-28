@@ -2,6 +2,7 @@
 
 namespace Amdeu\Shape\Form\Model;
 
+use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
@@ -133,7 +134,7 @@ class FieldRecord extends Record implements FieldInterface
 		$this->runtimeOverrides[$key] = $value;
 	}
 
-	public function getOptions(): ?array
+	public function getOptions(): LazyRecordCollection|array|null
 	{
 		if (!$this->has('field_options')) {
 			return null;

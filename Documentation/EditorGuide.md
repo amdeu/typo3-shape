@@ -164,10 +164,10 @@ See [Modules Reference](Modules.md) for complete documentation of all modules an
 **Available Modules:**
 - **Save Submission** - Save to database
 - **Send Email** - Email with form values
-- **Email Consent** - Double opt-in verification
+- **Double Opt-in** - Email address verification via confirmation link
 - **Save to Database** - Custom table storage
 - **Redirect** - Redirect to page/URL
-- **Show Content Elements** - Display content
+- **Show Content** - Display content
 - **Show Text** - Display a rich-text message
 
 ## 🔗 Next Steps

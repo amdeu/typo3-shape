@@ -17,9 +17,9 @@ Every built-in module in this reference declares only an `onFormFinish` method, 
 - [Send Email](#-send-email)
 - [Save Submission](#-save-submission)
 - [Save to Database](#-save-to-database)
-- [Email Consent (Double Opt-In)](#-email-consent-double-opt-in)
+- [Double Opt-in](#-double-opt-in)
 - [Redirect](#-redirect)
-- [Show Content Elements](#-show-content-elements)
+- [Show Content](#-show-content)
 - [Show Text](#-show-text)
 - [Module Execution Order](#module-execution-order)
 - [Custom Modules](#custom-modules)
@@ -39,7 +39,7 @@ All modules have:
 - **Condition** - Optional condition expression ([Conditions Guide](Conditions.md))
 - **Settings** - Type-specific configuration
 
-### {{ }} Template Variables
+### Template Variables
 
 Many module settings support `{{ variable }}` syntax to dynamically insert form values. The template variable parser provides several powerful features for accessing and formatting data.
 > **📌 Note:** While the included modules provide only the form values to the TemplateVariableParser, custom modules could expose other variables to its settings.
@@ -105,7 +105,7 @@ https://example.com/thanks?name={{name}}&interests={{interests[]}}
 - **Null values:** Null values are skipped in array operations
 - **Nested arrays:** Nested arrays are skipped in array operations
 - **Empty results:** Empty arrays produce empty string: `{{empty-array[]}}` → `""`
-- **HTML escaping:** Values inserted into a module's `body` field (Send Email, Email Consent) are HTML-escaped before the surrounding rich-text content is rendered, so a submitted `<script>` doesn't inject markup into the email. Other settings (subject, addresses, database columns) are inserted as-is, since escaping would corrupt plain-text/data values there.
+- **HTML escaping:** Values inserted into a module's `body` field (Send Email, Double Opt-in) are HTML-escaped before the surrounding rich-text content is rendered, so a submitted `<script>` doesn't inject markup into the email. Other settings (subject, addresses, database columns) are inserted as-is, since escaping would corrupt plain-text/data values there.
 
 > **📌 Note:** Use actual field names as defined in the field records.
 
@@ -247,7 +247,7 @@ Columns:
 
 ---
 
-## ✅ Email Consent (Double Opt-In)
+## ✅ Double Opt-in
 
 Sends a verification email with an approval link. Modules configured after this one can be re-run after the user confirms.
 
@@ -258,7 +258,7 @@ Sends a verification email with an approval link. Modules configured after this 
 | Setting                                      | Description                                                                                                                                                                                                                                                                    |
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Consent Storage Page** ✱                   | Page where consent records are stored                                                                                                                                                                                                                                          |
-| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Email Consent Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                |
+| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Double Opt-in Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                |
 | **Expiration Time in Seconds**               | How long the verification link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                           |
 | **Split Module Execution**                   | **Recommended**<br>When enabled: modules before this run immediately, modules after this run only after approval<br>When disabled: all modules run immediately AND after approval, fine-tune module execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
 | **Delete Consent Record after Confirmation** | Remove consent record from database after approval/dismissal                                                                                                                                                                                                                  |
@@ -282,7 +282,7 @@ Sends a verification email with an approval link. Modules configured after this 
 ### Workflow
 
 1. User submits form
-2. Email Consent module sends verification email
+2. Double Opt-in module sends verification email
 3. If Split Module Execution enabled: stops subsequent modules from running on this request
 4. User clicks approval link in email
 5. Consent marked as approved, the form is re-finished
@@ -298,9 +298,9 @@ Use these conditions on other modules:
 
 ### Example: Newsletter with Verification
 
-**Module 1: Email Consent**
+**Module 1: Double Opt-in**
 ```
-Type: Email Consent
+Type: Double Opt-in
 Recipient Email Address: {{email-address}}
 Subject: Please confirm your newsletter subscription
 Body: ...
@@ -360,7 +360,7 @@ Redirect URL: https://example.com/thanks
 
 ---
 
-## 📄 Show Content Elements
+## 📄 Show Content
 
 Displays content elements instead of redirect after submission.
 
@@ -379,7 +379,7 @@ Displays content elements instead of redirect after submission.
 ### Example
 
 ```
-Type: Show Content Elements
+Type: Show Content
 Content Elements: Thank You Message (ID: 789), Related Products (ID: 790)
 ```
 
@@ -408,14 +408,14 @@ Bodytext: Thank you, {{first-name}}! We'll be in touch shortly.
 
 Modules execute in the order they appear in the form record.
 
-**Important:** Email Consent with "Split Module Execution" enabled stops subsequent modules from running until the user confirms.
+**Important:** Double Opt-in with "Split Module Execution" enabled stops subsequent modules from running until the user confirms.
 
 ### Example Flow
 
 ```
 Form Submission
   ↓
-1. Email Consent (Split enabled)
+1. Double Opt-in (Split enabled)
   ↓ [STOPS HERE]
 User Clicks Approval Link
   ↓
@@ -433,7 +433,7 @@ Form Submission
   ↓
 1. Save Submission (with condition: isBeforeConsent())
   ↓
-2. Email Consent (Split disabled)
+2. Double Opt-in (Split disabled)
   ↓
 3. Send Thank You Email (with condition: isConsentApproved(), not executed yet)
   ↓
@@ -481,7 +481,7 @@ A module isn't limited to `FormFinishEvent` — any public method tagged `#[AsMo
 `AbstractModule` gives every module:
 
 - **`$this->settings`** - declare your own defaults as a protected property; values configured via the module's FlexForm are merged over them automatically before any event fires (`configure()` → `overrideSettings()`, using `ArrayUtility::mergeRecursiveWithOverrule`).
-- **`parseWithValues(string $string, bool $escapeHtml = false): string`** - resolves `{{ field-name }}` placeholders against the current form values (the same parser used by all built-in modules' settings, see [Template Variables](#-template-variables) above). Pass `escapeHtml: true` whenever the result is rendered as HTML without further escaping (e.g. via `f:format.html()`) - the built-in email/text modules do this for their `body`/`bodytext` fields specifically, and nowhere else, since HTML-escaping a database column or an email address would corrupt it rather than protect it.
+- **`parseWithValues(string $string, bool $escapeHtml = false): string`** - resolves `{{ field-name }}` placeholders against the current form values (the same parser used by all built-in modules' settings, see [Template Variables](#template-variables) above). Pass `escapeHtml: true` whenever the result is rendered as HTML without further escaping (e.g. via `f:format.html()`) - the built-in email/text modules do this for their `body`/`bodytext` fields specifically, and nowhere else, since HTML-escaping a database column or an email address would corrupt it rather than protect it.
 - **`getRequest()`, `getPlugin()`, `getForm()`, `getFormValues()`, `getPluginSettings()`, `getView()`** - accessors onto the current [`FormRuntime`](../Classes/Form/FormRuntime.php) (also reachable directly as `$this->runtime`).
 - **`$this->logger`** (PSR-3, auto-injected) and **`getLogContext(array $additionalContext = []): array`** - a minimal context array (currently just the form's uid) to keep log entries correlatable without leaking form data into logs by default.
 - **`$this->configuration`** - the raw [`ModuleConfigurationInterface`](../Classes/Form/Model/ModuleConfigurationInterface.php) record (title, condition, identifier), if you need something `$this->settings` doesn't expose.
@@ -506,7 +506,7 @@ General PSR-14 mechanics (how `#[AsEventListener]` differs from `#[AsModuleEvent
 
 Separate from a module's own `condition` field, [`ModuleConditionResolutionEvent`](../Classes/Form/Module/ModuleConditionResolutionEvent.php) fires once per configured module while the form runtime is being built - *before* that module is instantiated. Because of that timing, it's handled by a plain PSR-14 listener (`#[AsEventListener]`, not `#[AsModuleEventListener]` on the module itself - the module doesn't exist yet), which can set `$event->result = false` to exclude a module from the form entirely, regardless of its `condition`.
 
-This is how the double opt-in flow works: [`ConsentModuleOnFinishHandler`](../Classes/Form/Consent/ConsentModuleOnFinishHandler.php) uses it to skip the Email Consent module (and everything configured before it) when re-finishing a form after a consent link is clicked. Most custom modules won't need this - it's for vetoing based on context that has nothing to do with the module's own settings, not a general-purpose condition mechanism (use `condition` for that).
+This is how the double opt-in flow works: [`ConsentModuleOnFinishHandler`](../Classes/Form/Consent/ConsentModuleOnFinishHandler.php) uses it to skip the Double Opt-in module (and everything configured before it) when re-finishing a form after a consent link is clicked. Most custom modules won't need this - it's for vetoing based on context that has nothing to do with the module's own settings, not a general-purpose condition mechanism (use `condition` for that).
 
 ### Registering the Type
 

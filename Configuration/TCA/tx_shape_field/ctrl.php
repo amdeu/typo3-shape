@@ -22,6 +22,9 @@ return [
 	],
 	'searchFields' => 'label,description',
 	'type' => 'type',
+	'security' => [
+		'ignorePageTypeRestriction' => true,
+	],
 	'typeicon_column' => 'type',
 	'typeicon_classes' => [
 		'default' => 'form-text',

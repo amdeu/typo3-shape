@@ -6,6 +6,7 @@ $showItem = '
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
 		--palette--;;base,
 		settings,
+		form_parents,
 	--div--;LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:tab.condition,
     	condition,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
@@ -101,7 +102,7 @@ return [
 		],
 	],
 	'palettes' => [
-		'base' => ['showitem' => 'form_parents, --linebreak--, title, type'],
+		'base' => ['showitem' => 'title, type'],
 	],
 	'types' => [
 		'0' => ['showitem' => $showItem],

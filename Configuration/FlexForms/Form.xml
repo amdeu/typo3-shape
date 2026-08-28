@@ -16,6 +16,25 @@
                             <maxitems>1</maxitems>
                             <localizeReferencesAtParentLocalization>1</localizeReferencesAtParentLocalization>
                             <foreign_table>tx_shape_form</foreign_table>
+                            <fieldControl>
+                                <editPopup>
+                                    <disabled>1</disabled>
+                                </editPopup>
+                                <addRecord>
+                                    <disabled>0</disabled>
+                                </addRecord>
+                                <listModule>
+                                    <disabled>1</disabled>
+                                </listModule>
+                                <elementBrowser>
+                                    <disabled>0</disabled>
+                                </elementBrowser>
+                            </fieldControl>
+                            <fieldWizard>
+                                <tableList>
+                                    <disabled>1</disabled>
+                                </tableList>
+                            </fieldWizard>
 <!--                            <foreign_table_where>AND {#tx_shape_form}.{#sys_language_uid}=###REC_FIELD_sys_language_uid###</foreign_table_where>-->
                         </config>
                     </settings.form>
@@ -24,7 +43,6 @@
                         <config>
                             <type>folder</type>
                             <size>1</size>
-                            <minitems>1</minitems>
                             <maxitems>1</maxitems>
                         </config>
 

@@ -87,10 +87,10 @@ Resources/Private/
 │   ├── Form.html                                  # Main form template
 │   ├── FormLazyLoader.html                        # Lazy loading container
 │   ├── Finished.html                              # Success page
-│   ├── ConsentVerification.html                   # Email consent validation page
+│   ├── ConsentVerification.html                   # Double opt-in confirmation page
 │   └── Module/
 │       ├── SendEmail/Default.html                 # Default email template
-│       ├── EmailConsent.html                      # Consent verification email
+│       ├── EmailConsent.html                      # Double opt-in verification email
 │       ├── ShowContentElements.html               # Content elements display
 │       └── ShowText.html                          # Show text finish page
 └── Partials/
@@ -319,7 +319,7 @@ $GLOBALS['TCA']['tx_shape_field']['palettes']['appearance']['showitem'] .=
 Form (1:n) Pages (1:n) Fields (1:n) Options
 Form (1:n) Modules
 Form (1:n) Submissions
-Form (1:n) Email Consents
+Form (1:n) Double Opt-in records
 Field (1:n) Fields (nested, for repeatable-container)
 ```
 

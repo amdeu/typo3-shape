@@ -18,8 +18,20 @@
 			<trans-unit id="plugin.form"><source>Shape Form</source></trans-unit>
 			<trans-unit id="plugin.form.description"><source>Plugin to render Shape Form Record.</source></trans-unit>
 
-			<trans-unit id="plugin.consent"><source>Shape Email Consent Validation</source></trans-unit>
-			<trans-unit id="plugin.consent.description"><source>Plugin to process consent links.</source></trans-unit>
+			<trans-unit id="plugin.consent"><source>Shape Double Opt-in Validation</source></trans-unit>
+			<trans-unit id="plugin.consent.description"><source>Plugin to process double opt-in confirmation links.</source></trans-unit>
+
+			<trans-unit id="preview.form.edit"><source>Edit form "%s"</source></trans-unit>
+			<trans-unit id="preview.form.info"><source>Show information and references for form "%s"</source></trans-unit>
+			<trans-unit id="preview.form.history"><source>Show change history for form "%s"</source></trans-unit>
+			<trans-unit id="preview.form.list"><source>Show the form's records in the list module</source></trans-unit>
+			<trans-unit id="preview.form.missing"><source>No form record selected.</source></trans-unit>
+			<trans-unit id="preview.form.notFound"><source>Selected form record (uid %d) was not found.</source></trans-unit>
+			<trans-unit id="preview.dragToReorder"><source>Drag to reorder</source></trans-unit>
+			<trans-unit id="preview.formPage.edit"><source>Edit form page "%s"</source></trans-unit>
+			<trans-unit id="preview.formPage.new"><source>Add a form page</source></trans-unit>
+			<trans-unit id="preview.module.edit"><source>Edit module "%s"</source></trans-unit>
+			<trans-unit id="preview.module.new"><source>Add a module</source></trans-unit>
 
 
 			<trans-unit id="general.default"><source>Default</source></trans-unit>
@@ -151,12 +163,12 @@
 			<trans-unit id="module.title"><source>Title</source></trans-unit>
 			<trans-unit id="module.type"><source>Type</source></trans-unit>
 			<trans-unit id="module.type.item.save_submission"><source>Save Submission</source></trans-unit>
-			<trans-unit id="module.type.item.consent"><source>Mail Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.consent"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="module.type.item.save_to_database"><source>Save to Database</source></trans-unit>
 			<trans-unit id="module.type.item.send_email"><source>Send Email</source></trans-unit>
 			<trans-unit id="module.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
 			<trans-unit id="module.type.item.redirect"><source>Redirect</source></trans-unit>
-			<trans-unit id="module.type.item.email_consent"><source>Email Consent (Double-Opt-in)</source></trans-unit>
+			<trans-unit id="module.type.item.email_consent"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="module.type.item.show_text"><source>Show Text</source></trans-unit>
 			<trans-unit id="module.condition"><source>Condition</source></trans-unit>
 			<trans-unit id="module.condition.description"><source>Condition in Symfony Expression Language.</source></trans-unit>
@@ -173,7 +185,7 @@
 			<trans-unit id="form_submission.user_agent"><source>User Agent</source></trans-unit>
 			<trans-unit id="form_submission.form_values"><source>Form Values</source></trans-unit>
 
-			<trans-unit id="email_consent.ctrl.title"><source>Email Consent</source></trans-unit>
+			<trans-unit id="email_consent.ctrl.title"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="email_consent.tstamp"><source>Timestamp</source></trans-unit>
 			<trans-unit id="email_consent.valid_until"><source>Valid until</source></trans-unit>
 			<trans-unit id="email_consent.status"><source>Status</source></trans-unit>

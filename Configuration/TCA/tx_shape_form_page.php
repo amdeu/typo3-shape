@@ -27,6 +27,9 @@ $ctrl = [
 		'page' => 'form-page',
 		'summary' => 'form-summary-page',
 	],
+	'security' => [
+		'ignorePageTypeRestriction' => true,
+	],
 ];
 $interface = [];
 $columns = [
@@ -179,7 +182,7 @@ foreach ($columns as $key => $column) {
 }
 $palettes = [
 	'title' => [
-		'showitem' => 'form_parent, --linebreak--, title, type',
+		'showitem' => 'title, type',
 	],
 	'button-labels' => [
 		'showitem' => 'prev_label, next_label',
@@ -193,7 +196,8 @@ $showItem = '
 		--palette--;;title,
 		fields,
 		--palette--;;button-labels,
-    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance, 
+		form_parent,
+    --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
     	--palette--;;appearance,
     --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language, 
         sys_language_uid, 

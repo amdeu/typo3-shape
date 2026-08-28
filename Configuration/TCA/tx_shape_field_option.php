@@ -20,6 +20,9 @@ $ctrl = [
 	],
 	'searchFields' => 'label',
 	'hideTable' => true,
+	'security' => [
+		'ignorePageTypeRestriction' => true,
+	],
 ];
 $interface = [];
 $columns = [
