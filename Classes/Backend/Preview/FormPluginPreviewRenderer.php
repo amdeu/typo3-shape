@@ -99,7 +99,7 @@ class FormPluginPreviewRenderer extends StandardContentPreviewRenderer
 	}
 
 	/**
-	 * Action button group for the form record itself: edit, record info, history, list module.
+	 * Action button group for the form record itself: edit, record info, list module.
 	 */
 	protected function renderFormActions(array $formRecord, string $returnUrl): string
 	{
@@ -113,13 +113,23 @@ class FormPluginPreviewRenderer extends StandardContentPreviewRenderer
 		$editTitle = sprintf($languageService->sL(TcaUtility::t('preview.form.edit')), $title);
 
 		$buttons = [
-			// Form label + edit
+			// Form label
 			$this->editTrigger(
 				'tx_shape_form',
 				$formUid,
 				$returnUrl,
 				$iconFactory->getIconForRecord('tx_shape_form', $formRecord, IconSize::SMALL)->render()
 					. '<span class="ms-1">' . htmlspecialchars($title) . '</span>',
+				$editTitle,
+				'btn btn-default btn-borderless',
+				$canEditForm
+			),
+			// Explicit edit action
+			$this->editTrigger(
+				'tx_shape_form',
+				$formUid,
+				$returnUrl,
+				$iconFactory->getIcon('actions-open', IconSize::SMALL)->render(),
 				$editTitle,
 				'btn btn-default btn-borderless',
 				$canEditForm
@@ -136,22 +146,6 @@ class FormPluginPreviewRenderer extends StandardContentPreviewRenderer
 				htmlspecialchars($infoTitle),
 				htmlspecialchars('tx_shape_form,' . $formUid),
 				$iconFactory->getIcon('actions-document-info', IconSize::SMALL)->render()
-			);
-		}
-
-		// Change history / undo - write action, plus the options.showHistory userTSconfig
-		if ($canEditForm && $this->historyEnabled('tx_shape_form')) {
-			$historyTitle = sprintf($languageService->sL(TcaUtility::t('preview.form.history')), $title);
-			$historyUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('record_history', [
-				'element' => 'tx_shape_form:' . $formUid,
-				'returnUrl' => $returnUrl,
-			]);
-			$buttons[] = sprintf(
-				'<a class="btn btn-default btn-borderless" href="%s#latest" title="%s" aria-label="%s">%s</a>',
-				htmlspecialchars($historyUrl),
-				htmlspecialchars($historyTitle),
-				htmlspecialchars($historyTitle),
-				$iconFactory->getIcon('actions-document-history-open', IconSize::SMALL)->render()
 			);
 		}
 
@@ -399,11 +393,6 @@ class FormPluginPreviewRenderer extends StandardContentPreviewRenderer
 			return $backendUser->checkRecordEditAccess($table, $record)->isAllowed;
 		}
 		return $backendUser->recordEditAccessInternals($table, $record);
-	}
-
-	protected function historyEnabled(string $table): bool
-	{
-		return (bool)trim($this->userTsOption('showHistory', $table, '1'));
 	}
 
 	protected function listModuleAccessible(): bool

@@ -23,7 +23,6 @@
 
 			<trans-unit id="preview.form.edit"><source>Edit form "%s"</source></trans-unit>
 			<trans-unit id="preview.form.info"><source>Show information and references for form "%s"</source></trans-unit>
-			<trans-unit id="preview.form.history"><source>Show change history for form "%s"</source></trans-unit>
 			<trans-unit id="preview.form.list"><source>Show the form's records in the list module</source></trans-unit>
 			<trans-unit id="preview.form.missing"><source>No form record selected.</source></trans-unit>
 			<trans-unit id="preview.form.notFound"><source>Selected form record (uid %d) was not found.</source></trans-unit>
@@ -166,7 +165,7 @@
 			<trans-unit id="module.type.item.consent"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="module.type.item.save_to_database"><source>Save to Database</source></trans-unit>
 			<trans-unit id="module.type.item.send_email"><source>Send Email</source></trans-unit>
-			<trans-unit id="module.type.item.show_content_elements"><source>Show Content Elements</source></trans-unit>
+			<trans-unit id="module.type.item.show_content_elements"><source>Show Content</source></trans-unit>
 			<trans-unit id="module.type.item.redirect"><source>Redirect</source></trans-unit>
 			<trans-unit id="module.type.item.email_consent"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="module.type.item.show_text"><source>Show Text</source></trans-unit>
