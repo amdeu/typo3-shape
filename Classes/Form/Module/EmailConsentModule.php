@@ -36,10 +36,17 @@ class EmailConsentModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		$recipientAddress = $this->parseWithValues($this->settings['recipientAddress']);
+		$recipientAddress = trim($this->parseWithValues($this->settings['recipientAddress']));
 
 		if (!$recipientAddress) {
 			$this->logger->warning('Recipient address is empty', $this->getLogContext());
+			return;
+		}
+
+		// Must resolve to exactly one RFC-valid address - a submitted value used here (double opt-in on
+		// the user's own address) must not be able to inject extra recipients via commas/newlines.
+		if (!filter_var($recipientAddress, FILTER_VALIDATE_EMAIL)) {
+			$this->logger->warning('Recipient address is not a valid e-mail address', $this->getLogContext(['value' => $recipientAddress]));
 			return;
 		}
 
@@ -50,6 +57,13 @@ class EmailConsentModule extends AbstractModule
 
 		if (!$this->settings['consentPage']) {
 			$this->logger->warning('Consent page not configured', $this->getLogContext());
+			return;
+		}
+
+		$senderAddressString = $this->settings['senderAddress']
+			?: ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? '');
+		if (!filter_var($senderAddressString, FILTER_VALIDATE_EMAIL)) {
+			$this->logger->error('No valid sender address configured', $this->getLogContext());
 			return;
 		}
 
@@ -82,10 +96,19 @@ class EmailConsentModule extends AbstractModule
 		$template = $this->settings['template'];
 		$format = Core\Mail\FluidEmail::FORMAT_BOTH;
 		$senderAddress = new Address(
-			$this->settings['senderAddress'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'],
-			$this->settings['senderName'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+			$senderAddressString,
+			$this->settings['senderName'] ?: ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ?? '')
 		);
-		$replyToAddress = $this->settings['replyToAddress'] ? $this->parseWithValues($this->settings['replyToAddress']) : null;
+
+		$replyToAddress = null;
+		if ($this->settings['replyToAddress']) {
+			$parsedReplyTo = trim($this->parseWithValues($this->settings['replyToAddress']));
+			if (filter_var($parsedReplyTo, FILTER_VALIDATE_EMAIL)) {
+				$replyToAddress = $parsedReplyTo;
+			} else {
+				$this->logger->warning('Skipped invalid reply-to address', $this->getLogContext(['value' => $parsedReplyTo]));
+			}
+		}
 
 		$approveLink = $this->uriBuilder
 			->reset()

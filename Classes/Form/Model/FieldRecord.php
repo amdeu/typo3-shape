@@ -22,6 +22,15 @@ class FieldRecord extends Record implements FieldInterface
 		protected readonly ?SystemProperties $systemProperties = null,
 	)
 	{
+		$this->initialize();
+	}
+
+	/**
+	 * Runs once on construction. Subclasses override this (calling parent::initialize())
+	 * to hook in their own property setup.
+	 */
+	protected function initialize(): void
+	{
 		$this->initializeDefaultValue();
 		$this->normalizeHtmlAttributeProperties();
 	}

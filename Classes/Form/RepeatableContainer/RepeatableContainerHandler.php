@@ -49,7 +49,7 @@ final class RepeatableContainerHandler
 		}
 		foreach ($field->getCreatedFieldsets() as $index => $fields) {
 			foreach ($fields as $childField) {
-				$childField->set('display_condition', str_replace('__INDEX', $index, $childField->get('display_condition')));
+				$childField->runtimeOverride('display_condition', str_replace('__INDEX', $index, (string)$childField->get('display_condition')));
 				$childField->setConditionResult($this->fieldConditionResolver->evaluate($event->runtime, $childField, $event->resolver));
 			}
 		}

@@ -11,7 +11,7 @@ class RepeatableContainerRecord extends FieldRecord
 	protected function initialize(): void
 	{
 		parent::initialize();
-		if (!$this->get('display_condition')) {
+		if (!$this->has('display_condition') || !$this->get('display_condition')) {
 			$this->properties['display_condition'] = 'true';
 		}
 	}

@@ -40,10 +40,17 @@ class SendEmailModule extends AbstractModule
 			return;
 		}
 
+		$senderAddressString = $this->settings['senderAddress']
+			?: ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? '');
+		if (!filter_var($senderAddressString, FILTER_VALIDATE_EMAIL)) {
+			$this->logger->error('No valid sender address configured', $this->getLogContext());
+			return;
+		}
+
 		$email = new Core\Mail\FluidEmail($this->getView()->getRenderingContext()->getTemplatePaths());
 		$senderAddress = new Address(
-			$this->settings['senderAddress'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'],
-			$this->settings['senderName'] ?: $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
+			$senderAddressString,
+			$this->settings['senderName'] ?: ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ?? '')
 		);
 		$template = $this->settings['template'] ?: 'Module/SendEmail/Default';
 		$templateConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'][$template] ?? [];
@@ -71,14 +78,14 @@ class SendEmailModule extends AbstractModule
 			->setTemplate($template)
 			->assignMultiple($variables);
 
-		if ($this->settings['ccRecipientAddresses']) {
-			$email->cc(...$this->getAddresses($this->settings['ccRecipientAddresses']));
+		if ($cc = $this->getAddresses($this->settings['ccRecipientAddresses'])) {
+			$email->cc(...$cc);
 		}
-		if ($this->settings['bccRecipientAddresses']) {
-			$email->bcc(...$this->getAddresses($this->settings['bccRecipientAddresses']));
+		if ($bcc = $this->getAddresses($this->settings['bccRecipientAddresses'])) {
+			$email->bcc(...$bcc);
 		}
-		if ($this->settings['replyToAddresses']) {
-			$email->replyTo(...$this->getAddresses($this->settings['replyToAddresses']));
+		if ($replyTo = $this->getAddresses($this->settings['replyToAddresses'])) {
+			$email->replyTo(...$replyTo);
 		}
 
 		if ($this->settings['attachUploads']) {
@@ -115,15 +122,30 @@ class SendEmailModule extends AbstractModule
 		}
 	}
 
+	/**
+	 * Resolves a comma-separated list of address templates to validated Address objects.
+	 *
+	 * Each list entry is parsed on its own and must resolve to exactly one RFC-valid address
+	 * (a bare address or a "Name <address>" form). This is deliberate: entries commonly contain
+	 * {{ field }} placeholders pointing at submitted values (autoresponders etc.), and a submitted
+	 * value must not be able to smuggle in additional recipients via commas or header-injection
+	 * newlines - such a value fails to parse and is dropped.
+	 *
+	 * @return Address[]
+	 */
 	protected function getAddresses(string $addressList): array
 	{
-		$addressList = $this->parseWithValues($addressList);
 		$addresses = [];
-		foreach (Core\Utility\GeneralUtility::trimExplode(',', $addressList, true) as $address) {
-			if (str_starts_with($address, '{{')) {
+		foreach (Core\Utility\GeneralUtility::trimExplode(',', $addressList, true) as $addressTemplate) {
+			$parsed = trim($this->parseWithValues($addressTemplate));
+			if ($parsed === '' || str_starts_with($parsed, '{{')) {
 				continue;
 			}
-			$addresses[] = $address;
+			try {
+				$addresses[] = Address::create($parsed);
+			} catch (\Exception $e) {
+				$this->logger->warning('Skipped invalid e-mail recipient', $this->getLogContext(['value' => $parsed]));
+			}
 		}
 		return $addresses;
 	}

@@ -30,18 +30,16 @@ class TcaRelationService
 		string $targetColumn,
 		bool $emptyTargetColumn = true): void
 	{
-		$originQuery = $this->connectionPool->getQueryBuilderForTable($originTable);
-		$targetQuery = $this->connectionPool->getQueryBuilderForTable($targetTable);
 
 		// empty target column
 		if ($emptyTargetColumn) {
-			$targetQuery
+			$this->connectionPool->getQueryBuilderForTable($targetTable)
 				->update($targetTable)
 				->set($targetColumn, '')
 				->executeStatement();
 		}
 		// find all target records
-		$targetRows = $targetQuery
+		$targetRows = $this->connectionPool->getQueryBuilderForTable($targetTable)
 			->select('uid', $targetColumn)
 			->from($targetTable)
 			->executeQuery()
@@ -49,7 +47,9 @@ class TcaRelationService
 		// for each record in target table, find all records in origin table that have target uid in origin column
 		// and update target column with comma-separated list of origin uids
 		foreach ($targetRows as $row) {
-			$targetUid = $row['uid'];
+			$targetUid = (int)$row['uid'];
+
+			$originQuery = $this->connectionPool->getQueryBuilderForTable($originTable);
 			$oppositeRows = $originQuery
 				->select('uid')
 				->from($originTable)
@@ -61,15 +61,20 @@ class TcaRelationService
 			if (empty($oppositeRows)) {
 				continue;
 			}
-			$oppositeUids = array_map(function ($oRow) {
-				return $oRow['uid'];
-			}, $oppositeRows);
-			$oppositeUids = implode(',', $oppositeUids);
-			$targetQuery
+			$oppositeUids = implode(',', array_map(
+				static fn ($oRow) => (int)$oRow['uid'],
+				$oppositeRows
+			));
+
+			$updateQuery = $this->connectionPool->getQueryBuilderForTable($targetTable);
+			$updateQuery
 				->update($targetTable)
 				->set($targetColumn, $oppositeUids)
 				->where(
-					$targetQuery->expr()->eq('uid', $targetUid)
+					$updateQuery->expr()->eq(
+						'uid',
+						$updateQuery->createNamedParameter($targetUid, Core\Database\Connection::PARAM_INT)
+					)
 				)
 				->executeStatement();
 		}
