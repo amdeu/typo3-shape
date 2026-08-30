@@ -11,6 +11,7 @@ plugin.tx_shape {
             1 = EXT:shape/Resources/Private/Layouts/
         }
     }
+    ignoreFlexFormSettingsIfEmpty = uploadFolder
     settings {
         form = 0
         uploadFolder = 1:/user_upload/
@@ -32,7 +33,6 @@ plugin.tx_shape {
             validationMessages.enabled = 1
             stylableValidation.enabled = 1
         }
-    ignoreFlexFormSettingsIfEmpty = uploadFolder
     }
 }
 

@@ -29,7 +29,6 @@ class ModuleConfigurationRecord extends Record implements ModuleConfigurationInt
 		if (!$this->has('settings')) {
 			$this->settings = [];
 		} else {
-
 			/**
 			 * FlexFormFieldValues are stored as sheets, but we want the "merged" settings array
 			 * Maybe we should adapt to the sheet structure, but I kinda think that sheets should be a presentational feature and stay independent of the data structure
@@ -39,7 +38,7 @@ class ModuleConfigurationRecord extends Record implements ModuleConfigurationInt
 			 * since all field value transformations for Records are based on TCA, maybe the 'flexform' type in TCA should have an option to decide between sheets or merged structure?
 			 */
 			$flexFormService = Core\Utility\GeneralUtility::makeInstance(Core\Service\FlexFormService::class);
-			$this->settings = $flexFormService->convertFlexFormContentToArray($this->getRawRecord()->get('settings'));
+			$this->settings = $flexFormService->convertFlexFormContentToArray($this->getRawRecord()->get('settings') ?? '');
 		}
 		return $this->settings ?? [];
 	}
