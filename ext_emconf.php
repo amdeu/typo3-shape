@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Shape',
-	'description' => '',
+	'description' => 'Extensible and editor-friendly TYPO3 Form Extension',
 	'author' => 'Amadeus Kiener',
 	'author_email' => 'amd.kiener@gmail.com',
 	'state' => 'beta',
@@ -13,8 +13,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '0.4.0',
 	'constraints' => array(
 		'depends' => array(
-            'typo3' => '',
-    ),
+			'typo3' => '13.4.0-14.99.99',
+		),
 		'conflicts' => array(
 		),
 		'suggests' => array(

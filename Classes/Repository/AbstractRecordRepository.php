@@ -159,6 +159,9 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 		$this->includeDeleted = false;
 		$this->returnRawQueryResult = false;
 		$this->enableRuntimeCache = true;
+		// The identity map is keyed by uid only; changing query settings (language, enable fields, …)
+		// would otherwise hand back a record hydrated under the previous settings.
+		$this->clearRuntimeCache();
 		return $this;
 	}
 	public function clearRuntimeCache(): self

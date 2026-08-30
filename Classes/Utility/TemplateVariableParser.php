@@ -31,7 +31,7 @@ class TemplateVariableParser
 			'/\{\{\s*([^}]+?)\s*\}\}/',
 			fn($matches) => self::parsePlaceholder(trim($matches[1]), $data, $escapeHtml),
 			$template
-		);
+		) ?? $template;
 	}
 
 	/**
@@ -47,7 +47,7 @@ class TemplateVariableParser
 		// Handle simple variable
 		$value = self::getValue($data, explode('.', $path));
 		if ($value === null || is_array($value)) {
-			return '{{' . $path . '}}';
+			return '{{ ' . $path . ' }}';
 		}
 
 		return $escapeHtml ? htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8') : (string)$value;
@@ -69,7 +69,7 @@ class TemplateVariableParser
 			return '';
 		}
 		if (!is_array($array)) {
-			return '{{' . $path . '}}';
+			return '{{ ' . $path . ' }}';
 		}
 
 		// If there's a property path after [], map that property

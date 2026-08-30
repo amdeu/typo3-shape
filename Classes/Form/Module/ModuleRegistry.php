@@ -20,8 +20,8 @@ class ModuleRegistry
 	 */
 	public static function resolve(string $identifier): string
 	{
-		return self::$identifierToClass[$identifier]
-			?? (str_contains($identifier, '\\') ? $identifier : $identifier);
+		// Registered alias -> class; otherwise return as-is (pre-alias records stored the FQCN directly).
+		return self::$identifierToClass[$identifier] ?? $identifier;
 	}
 
 	public static function getAll(): array

@@ -123,28 +123,26 @@ class SendEmailModule extends AbstractModule
 	}
 
 	/**
-	 * Resolves a comma-separated list of address templates to validated Address objects.
+	 * Resolves a configured recipient string to Address objects.
 	 *
-	 * Each list entry is parsed on its own and must resolve to exactly one RFC-valid address
-	 * (a bare address or a "Name <address>" form). This is deliberate: entries commonly contain
-	 * {{ field }} placeholders pointing at submitted values (autoresponders etc.), and a submitted
-	 * value must not be able to smuggle in additional recipients via commas or header-injection
-	 * newlines - such a value fails to parse and is dropped.
+	 * The whole string is interpolated first (so list expansions like "{{ team[].email }}" work),
+	 * then split on commas. Each resulting entry must be a single RFC-valid address ("addr" or
+	 * "Name <addr>"); anything else is logged and dropped rather than thrown - a malformed value
+	 * can't crash the finisher, and a header-injection newline can't reach the mailer.
 	 *
 	 * @return Address[]
 	 */
 	protected function getAddresses(string $addressList): array
 	{
 		$addresses = [];
-		foreach (Core\Utility\GeneralUtility::trimExplode(',', $addressList, true) as $addressTemplate) {
-			$parsed = trim($this->parseWithValues($addressTemplate));
-			if ($parsed === '' || str_starts_with($parsed, '{{')) {
+		foreach (Core\Utility\GeneralUtility::trimExplode(',', $this->parseWithValues($addressList), true) as $address) {
+			if (str_starts_with($address, '{{')) {
 				continue;
 			}
 			try {
-				$addresses[] = Address::create($parsed);
+				$addresses[] = Address::create($address);
 			} catch (\Exception $e) {
-				$this->logger->warning('Skipped invalid e-mail recipient', $this->getLogContext(['value' => $parsed]));
+				$this->logger->warning('Skipped invalid e-mail recipient', $this->getLogContext(['value' => $address]));
 			}
 		}
 		return $addresses;

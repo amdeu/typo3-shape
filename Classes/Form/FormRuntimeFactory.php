@@ -46,12 +46,12 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 			$postBody = $request->getParsedBody()[$parsedBodyKey];
 
 			// unserialize session from post body or create new session
-			$serializedSessionWithHmac = $postBody['__session'] ?? null;
-			if (!$serializedSessionWithHmac) {
+			$sessionToken = $postBody['__session'] ?? null;
+			if (!$sessionToken) {
 				$session = new FormSession();
 			} else {
 				try {
-					$session = FormSession::validateAndUnserialize($serializedSessionWithHmac);
+					$session = FormSession::validateAndUnserialize($sessionToken);
 				} catch (Exception\InvalidSessionException  $e) {
 					// todo: log invalid session
 					//$logger->warning('Invalid session detected', ['exception' => $e]);
@@ -90,7 +90,7 @@ class FormRuntimeFactory implements FormRuntimeFactoryInterface
 				$cleanedPostValues
 			);
 
-			$pageIndex = $request->getArguments()['pageIndex'] ?? 1;
+			$pageIndex = (int)($request->getArguments()['pageIndex'] ?? 1);
 			$isStepBack = $session->returnPageIndex > $pageIndex;
 
 		} else {
