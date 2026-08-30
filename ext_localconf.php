@@ -54,22 +54,29 @@ if (
 	];
 }
 
-// Configure logging for ALL environments
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['writerConfiguration'] = [
-	// Log everything from DEBUG level up
-	\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-		// Write to database for Log module
-		\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [],
-		// Write to file for backup/debugging
-		\TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
-			'logFileInfix' => 'shape',
+// Logging: in production only warnings and above, to a file. In dev the full DEBUG stream
+// goes to the database (Log module) and file, with call-site introspection.
+// DEBUG + DatabaseWriter on a busy form means a sys_log INSERT per module event on every submission.
+if (\TYPO3\CMS\Core\Core\Environment::getContext()->isProduction()) {
+	$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['writerConfiguration'] = [
+		\TYPO3\CMS\Core\Log\LogLevel::WARNING => [
+			\TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+				'logFileInfix' => 'shape',
+			],
 		],
-	],
-];
-
-// Ensure the threshold doesn't filter out our logs
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['processorConfiguration'] = [
-	\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
-		\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class => [],
-	],
-];
+	];
+} else {
+	$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['writerConfiguration'] = [
+		\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
+			\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class => [],
+			\TYPO3\CMS\Core\Log\Writer\FileWriter::class => [
+				'logFileInfix' => 'shape',
+			],
+		],
+	];
+	$GLOBALS['TYPO3_CONF_VARS']['LOG']['Amdeu']['Shape']['processorConfiguration'] = [
+		\TYPO3\CMS\Core\Log\LogLevel::DEBUG => [
+			\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class => [],
+		],
+	];
+}

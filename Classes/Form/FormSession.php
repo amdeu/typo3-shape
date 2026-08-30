@@ -37,7 +37,7 @@ class FormSession
 				$serializedSessionWithHmac,
 				self::SECRET
 			);
-			$session = unserialize(base64_decode($serializedSession));
+			$session = unserialize(base64_decode($serializedSession), ['allowed_classes' => [self::class]]);
 			if (!$session instanceof self) {
 				throw new \InvalidArgumentException('Unserialized data is not a FormSession', 1741370001);
 			}

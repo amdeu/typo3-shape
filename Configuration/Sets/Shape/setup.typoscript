@@ -53,6 +53,7 @@ tx_shape_contentFragmentPage {
         tables = tt_content
         source.data = GP:ceUid
         dontCheckPid = 1
+        where = CType = 'shape_form'
     }
     config {
         disableAllHeaderCode = 1

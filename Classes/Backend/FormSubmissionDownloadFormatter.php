@@ -14,48 +14,77 @@ final class FormSubmissionDownloadFormatter
 			return;
 		}
 
-		if (!in_array('form_values', $event->getColumnsToRender())) {
+		if (!in_array('form_values', $event->getColumnsToRender(), true)) {
 			return;
 		}
 
+		match ($event->getFormat()) {
+			'json' => $this->formatJson($event),
+			'csv' => $this->formatCsv($event),
+			default => null,
+		};
+	}
+
+	/**
+	 * Replaces the serialized form_values JSON string with the decoded structure.
+	 */
+	protected function formatJson(BeforeRecordDownloadIsExecutedEvent $event): void
+	{
 		$records = [];
-		$format = $event->getFormat();
-
-		if ($format === 'json') {
-			foreach ($event->getRecords() as $record) {
-				$formValues = json_decode($record['form_values'], true);
-				$record['form_values'] = $formValues;
-				$records[] = $record;
-			}
+		foreach ($event->getRecords() as $record) {
+			$record['form_values'] = $this->decode($record['form_values'] ?? null);
+			$records[] = $record;
 		}
-
-		if ($format === 'csv') {
-			$additionalHeaders = [];
-			foreach ($event->getRecords() as $record) {
-				$formValues = json_decode($record['form_values'], true);
-				foreach ($formValues as $key => $value) {
-					$col = '$'.$key;
-					$additionalHeaders[$col] = $key;
-					if (is_array($value)) {
-						try {
-							$record[$col] = implode(',', $value);
-						} catch (\Exception $e) {
-							$record[$col] = json_encode($value);
-						}
-					} else {
-						$record[$col] = $value;
-					}
-
-				}
-				unset($record['form_values']);
-				$records[] = $record;
-			}
-
-			$headerRow = $event->getHeaderRow();
-			unset($headerRow['form_values']);
-			$event->setHeaderRow(array_merge($headerRow, $additionalHeaders));
-		}
-
 		$event->setRecords($records);
+	}
+
+	/**
+	 * Explodes form_values into one "$fieldName" column per submitted field.
+	 *
+	 * Every record is given the full column set (missing fields as empty strings) so the columns
+	 * line up in the CSV even when submissions contain different fields - csvDownloadAction() writes
+	 * record values in array order, not keyed to the header.
+	 */
+	protected function formatCsv(BeforeRecordDownloadIsExecutedEvent $event): void
+	{
+		$headerRow = $event->getHeaderRow();
+		unset($headerRow['form_values']);
+
+		// '$fieldName' => 'fieldName', first-seen order preserved across all records
+		$valueColumns = [];
+		$decodedByRecord = [];
+		foreach ($event->getRecords() as $index => $record) {
+			$decoded = $this->decode($record['form_values'] ?? null);
+			$decodedByRecord[$index] = is_array($decoded) ? $decoded : [];
+			foreach ($decodedByRecord[$index] as $key => $value) {
+				$valueColumns['$' . $key] = $key;
+			}
+		}
+
+		$records = [];
+		foreach ($event->getRecords() as $index => $record) {
+			unset($record['form_values']);
+			foreach ($valueColumns as $column => $key) {
+				$value = $decodedByRecord[$index][$key] ?? '';
+				$record[$column] = is_array($value) ? $this->flatten($value) : $value;
+			}
+			$records[] = $record;
+		}
+
+		$event->setHeaderRow(array_merge($headerRow, $valueColumns));
+		$event->setRecords($records);
+	}
+
+	protected function decode(mixed $formValues): mixed
+	{
+		return json_decode((string)($formValues ?? ''), true);
+	}
+
+	protected function flatten(array $value): string
+	{
+		return implode(', ', array_map(
+			static fn ($item) => is_scalar($item) ? (string)$item : json_encode($item),
+			$value
+		));
 	}
 }

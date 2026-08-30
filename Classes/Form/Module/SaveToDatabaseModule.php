@@ -23,13 +23,18 @@ class SaveToDatabaseModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		if (!$this->settings['table']) {
+		$table = (string)$this->settings['table'];
+		if (!$table) {
 			$this->logger->warning('Table name is empty', $this->getLogContext());
+			return;
+		}
+		if (!isset($GLOBALS['TCA'][$table])) {
+			$this->logger->error('Unknown table', $this->getLogContext(['table' => $table]));
 			return;
 		}
 
 		$repository = $this->genericRepositoryFactory
-			->forTable($this->settings['table'])
+			->forTable($table)
 			->reset();
 
 		$values = [
@@ -39,21 +44,28 @@ class SaveToDatabaseModule extends AbstractModule
 
 		foreach ($this->settings['columns'] as $item) {
 			$column = $item['column'] ?? null;
-			if (!$column) {
+			if (!$column || !isset($column['name'])) {
 				continue;
 			}
-			$name = $column['name'];
-			$value = $this->parseWithValues($column['value']);
-			$values[$name] = $value;
+			$name = (string)$column['name'];
+			if (!$this->isValidColumnName($name)) {
+				$this->logger->warning('Skipped column with invalid name', $this->getLogContext(['table' => $table, 'column' => $name]));
+				continue;
+			}
+			$values[$name] = $this->parseWithValues($column['value'] ?? '');
 		}
 
 		if ($this->settings['whereColumn'] && $this->settings['whereValue']) {
-			$whereColumn = $this->settings['whereColumn'];
+			$whereColumn = (string)$this->settings['whereColumn'];
+			if (!$this->isValidColumnName($whereColumn)) {
+				$this->logger->error('Invalid WHERE column name', $this->getLogContext(['table' => $table, 'column' => $whereColumn]));
+				return;
+			}
 			$whereValue = $this->parseWithValues($this->settings['whereValue']);
 
 			if (empty($whereValue)) {
 				$this->logger->error('WHERE value is empty - preventing mass update', $this->getLogContext([
-					'table' => $this->settings['table'],
+					'table' => $table,
 				]));
 				return;
 			}
@@ -61,11 +73,11 @@ class SaveToDatabaseModule extends AbstractModule
 			try {
 				$repository->updateBy([$whereColumn => $whereValue], $values);
 				$this->logger->info('Record updated', $this->getLogContext([
-					'table' => $this->settings['table'],
+					'table' => $table,
 				]));
 			} catch (\Exception $e) {
 				$this->logger->error('Failed to update record', $this->getLogContext([
-					'table' => $this->settings['table'],
+					'table' => $table,
 					'error' => $e->getMessage(),
 				]));
 			}
@@ -74,15 +86,24 @@ class SaveToDatabaseModule extends AbstractModule
 			try {
 				$newUid = $repository->create($values);
 				$this->logger->info('Record created', $this->getLogContext([
-					'table' => $this->settings['table'],
+					'table' => $table,
 					'uid' => $newUid,
 				]));
 			} catch (\Exception $e) {
 				$this->logger->error('Failed to create record', $this->getLogContext([
-					'table' => $this->settings['table'],
+					'table' => $table,
 					'error' => $e->getMessage(),
 				]));
 			}
 		}
+	}
+
+	/**
+	 * Column names reach the query builder as identifiers; keep them to a safe character set
+	 * (the builder quotes them too, this just fails a misconfiguration early and clearly).
+	 */
+	protected function isValidColumnName(string $name): bool
+	{
+		return (bool)preg_match('/^[a-zA-Z0-9_]+$/', $name);
 	}
 }

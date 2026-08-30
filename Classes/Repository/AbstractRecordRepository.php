@@ -212,11 +212,7 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 	{
 		$builder = $this->createQuery();
 
-		foreach ($criteria as $field => $value) {
-			$builder->andWhere(
-				$builder->expr()->eq($field, $builder->createNamedParameter($value))
-			);
-		}
+		$this->applyCriteria($builder, $criteria);
 
 		if ($orderBy) {
 			foreach ($orderBy as $field => $direction) {
@@ -333,11 +329,7 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 	{
 		$builder = $this->createQuery();
 
-		foreach ($criteria as $field => $value) {
-			$builder->andWhere(
-				$builder->expr()->eq($field, $builder->createNamedParameter($value))
-			);
-		}
+		$this->applyCriteria($builder, $criteria);
 
 		return (int)$builder
 			->count('uid')
@@ -365,11 +357,7 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 		$builder = $this->getQueryBuilder();
 		$builder->update($this->getTableName());
 
-		foreach ($criteria as $field => $value) {
-			$builder->andWhere(
-				$builder->expr()->eq($field, $builder->createNamedParameter($value))
-			);
-		}
+		$this->applyCriteria($builder, $criteria);
 
 		foreach ($data as $column => $value) {
 			$builder->set($column, $value);
@@ -405,11 +393,7 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 		$builder = $this->getQueryBuilder();
 		$builder->delete($this->getTableName());
 
-		foreach ($criteria as $field => $value) {
-			$builder->andWhere(
-				$builder->expr()->eq($field, $builder->createNamedParameter($value))
-			);
-		}
+		$this->applyCriteria($builder, $criteria);
 
 		$builder->executeStatement();
 		$this->clearRuntimeCache();
@@ -427,6 +411,24 @@ abstract class AbstractRecordRepository implements Log\LoggerAwareInterface
 	}
 
 	// ========== Query Building ==========
+
+	/**
+	 * Adds `field = value` conditions to a builder's WHERE for every criteria entry.
+	 *
+	 * Field names are quoted as identifiers, so a caller-supplied column name (e.g. coming from a
+	 * FlexForm setting via GenericRepository) cannot break out into SQL. Array values become IN().
+	 */
+	protected function applyCriteria(QueryBuilder $builder, array $criteria): void
+	{
+		foreach ($criteria as $field => $value) {
+			$quotedField = $builder->quoteIdentifier((string)$field);
+			$builder->andWhere(
+				is_array($value)
+					? $builder->expr()->in($quotedField, $builder->createNamedParameter($value, Core\Database\Connection::PARAM_STR_ARRAY))
+					: $builder->expr()->eq($quotedField, $builder->createNamedParameter($value))
+			);
+		}
+	}
 
 	protected function createQuery(): QueryBuilder
 	{
