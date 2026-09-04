@@ -116,7 +116,7 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 	{
 		$rows = $this->getMigratableFinisherRows();
 		// Default-language rows first, so translations can remap l10n_parent/l10n_source to the new uid.
-		usort($rows, static fn(array $a, array $b) => $a['sys_language_uid'] <=> $b['sys_language_uid']);
+		usort($rows, static fn(array $a, array $b) => ($a['sys_language_uid'] ?? 0) <=> ($b['sys_language_uid'] ?? 0));
 
 		$uidMap = [];
 		$skipped = [];
@@ -316,20 +316,20 @@ class FinisherToModuleMigrationWizard implements UpgradeWizardInterface, Confirm
 		$queryBuilder
 			->insert(self::TARGET_TABLE)
 			->values([
-				'pid' => (int)$sourceRow['pid'],
+				'pid' => (int)($sourceRow['pid'] ?? 0),
 				'tstamp' => time(),
 				'crdate' => time(),
-				'sorting' => (int)$sourceRow['sorting'],
-				'sys_language_uid' => (int)$sourceRow['sys_language_uid'],
+				'sorting' => (int)($sourceRow['sorting'] ?? 0),
+				'sys_language_uid' => (int)($sourceRow['sys_language_uid'] ?? 0),
 				'l10n_parent' => $l10nParent,
 				'l10n_source' => $l10nSource,
-				'l10n_diffsource' => (string)$sourceRow['l10n_diffsource'],
-				'hidden' => (int)$sourceRow['hidden'],
-				'title' => (string)$sourceRow['title'],
+				'l10n_diffsource' => (string)($sourceRow['l10n_diffsource'] ?? ''),
+				'hidden' => (int)($sourceRow['hidden'] ?? 0),
+				'title' => (string)($sourceRow['title'] ?? ''),
 				'type' => $moduleIdentifier,
-				'condition' => (string)$sourceRow['condition'],
+				'condition' => (string)($sourceRow['condition'] ?? ''),
 				'settings' => $settings,
-				'form_parents' => (string)$sourceRow['form_parents'],
+				'form_parents' => (string)($sourceRow['form_parents'] ?? ''),
 			])
 			->executeStatement();
 

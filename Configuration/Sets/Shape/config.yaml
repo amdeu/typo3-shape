@@ -2,7 +2,6 @@ name: amdeu/shape
 label: Shape
 dependencies:
   - typo3/fluid-styled-content
-  - typo3/form
 settings:
   template:
     default: true

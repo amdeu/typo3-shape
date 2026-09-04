@@ -1,4 +1,6 @@
 
-<f:for each="{arguments.contentElements}" as="uid">
-	<f:cObject typoscriptObjectPath="lib.tx_shape.contentElementRendering">{uid}</f:cObject>
+<f:for each="{contentElements}" as="uid">
+	<shape:parseTemplateVariables
+			string="{f:cObject(typoscriptObjectPath:'lib.tx_shape.contentElementRendering', data:uid)}"
+			data="{formValues}"/>
 </f:for>

@@ -249,7 +249,7 @@ Columns:
 
 ## ✅ Double Opt-in
 
-Sends a verification email with an approval link. Modules configured after this one can be re-run after the user confirms.
+Sends a confirmation email with a single link. The link opens a page (the "Consent Validation Plugin Page") with a **Confirm** button; only pressing that button records the consent. Modules configured after this one can be re-run once the user confirms.
 
 ### Settings
 
@@ -258,18 +258,19 @@ Sends a verification email with an approval link. Modules configured after this 
 | Setting                                      | Description                                                                                                                                                                                                                                                                    |
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Consent Storage Page** ✱                   | Page where consent records are stored                                                                                                                                                                                                                                          |
-| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Double Opt-in Validation" plugin (handles approval/dismissal links)                                                                                                                                                                                |
-| **Expiration Time in Seconds**               | How long the verification link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                           |
-| **Split Module Execution**                   | **Recommended**<br>When enabled: modules before this run immediately, modules after this run only after approval<br>When disabled: all modules run immediately AND after approval, fine-tune module execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
-| **Delete Consent Record after Confirmation** | Remove consent record from database after approval/dismissal                                                                                                                                                                                                                  |
+| **Consent Validation Plugin Page** ✱         | Page containing the "Shape Double Opt-in Validation" plugin - the email link opens this page                                                                                                                                                                                  |
+| **Expiration Time in Seconds**               | How long the confirmation link is valid (default: 86400 = 24 hours)                                                                                                                                                                                                           |
+| **Split Module Execution**                   | **Recommended**<br>When enabled: modules before this run immediately, modules after this run only after confirmation<br>When disabled: all modules run immediately AND after confirmation, fine-tune module execution with conditions like `isBeforeConsent()` and `isConsentApproved()` |
+| **Show a Decline Button on the Confirmation Page** | Adds a second button next to "Confirm" that records a dismissal instead of an approval. Use `isConsentDismissed()` conditions to react to it.                                                                                                                             |
+| **Delete Consent Record after Confirmation** | Remove the consent record from the database once confirmed or declined                                                                                                                                                                                                        |
 
 #### Mail
 
 | Setting                        | Description                                                        |
 |---------------------------------|----------------------------------------------------------------------|
 | **Recipient Email Address** ✱  | User's email address. **Supports template variables.**             |
-| **Subject** ✱                  | Verification email subject. **Supports template variables.**       |
-| **Body** ✱                     | Verification email body (RTE). Approval link is appended. **Supports template variables.** |
+| **Subject** ✱                  | Confirmation email subject. **Supports template variables.**       |
+| **Body** ✱                     | Confirmation email body (RTE). The confirmation link is appended. **Supports template variables.** |
 | **Reply-to Email Address**     | Optional reply-to address. **Supports template variables.**        |
 
 #### Sender
@@ -282,11 +283,13 @@ Sends a verification email with an approval link. Modules configured after this 
 ### Workflow
 
 1. User submits form
-2. Double Opt-in module sends verification email
+2. Double Opt-in module sends the confirmation email
 3. If Split Module Execution enabled: stops subsequent modules from running on this request
-4. User clicks approval link in email
-5. Consent marked as approved, the form is re-finished
-6. Subsequent modules execute (or modules with an `isConsentApproved()` condition)
+4. User clicks the link in the email and lands on the confirmation page
+5. User presses **Confirm** (or **Decline**, if enabled) - a `POST`, so link prefetchers and mail
+   security scanners that fetch the link cannot confirm on the user's behalf
+6. Consent is marked approved/dismissed and the form is re-finished
+7. Subsequent modules execute (or modules with an `isConsentApproved()` / `isConsentDismissed()` condition)
 
 ### Module Conditions
 

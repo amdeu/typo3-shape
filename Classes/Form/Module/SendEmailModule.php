@@ -128,7 +128,7 @@ class SendEmailModule extends AbstractModule
 	 * The whole string is interpolated first (so list expansions like "{{ team[].email }}" work),
 	 * then split on commas. Each resulting entry must be a single RFC-valid address ("addr" or
 	 * "Name <addr>"); anything else is logged and dropped rather than thrown - a malformed value
-	 * can't crash the finisher, and a header-injection newline can't reach the mailer.
+	 * can't crash the module, and a header-injection newline can't reach the mailer.
 	 *
 	 * @return Address[]
 	 */

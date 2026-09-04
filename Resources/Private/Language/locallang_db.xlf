@@ -162,7 +162,6 @@
 			<trans-unit id="module.title"><source>Title</source></trans-unit>
 			<trans-unit id="module.type"><source>Type</source></trans-unit>
 			<trans-unit id="module.type.item.save_submission"><source>Save Submission</source></trans-unit>
-			<trans-unit id="module.type.item.consent"><source>Double Opt-in</source></trans-unit>
 			<trans-unit id="module.type.item.save_to_database"><source>Save to Database</source></trans-unit>
 			<trans-unit id="module.type.item.send_email"><source>Send Email</source></trans-unit>
 			<trans-unit id="module.type.item.show_content_elements"><source>Show Content</source></trans-unit>
@@ -197,7 +196,7 @@
 			<trans-unit id="email_consent.plugin"><source>Plugin</source></trans-unit>
 			<trans-unit id="email_consent.session"><source>Session</source></trans-unit>
 			<trans-unit id="email_consent.validation_hash"><source>Validation Hash</source></trans-unit>
-			<trans-unit id="email_consent.approve_link"><source>Approve Link</source></trans-unit>
+			<trans-unit id="email_consent.confirmation_link"><source>Confirmation Link</source></trans-unit>
 
 			<trans-unit id="flexform.form.form"><source>Form</source></trans-unit>
 			<trans-unit id="flexform.form.uploadFolder"><source>Upload Folder</source></trans-unit>
@@ -252,10 +251,8 @@
 			<trans-unit id="flexform.module.emailConsent.splitModuleExecution"><source>Split Module Execution</source></trans-unit>
 			<trans-unit id="flexform.module.emailConsent.splitModuleExecution.description"><source>Modules that trigger on Form Finish are re-run when Consent is confirmed. When enabled, Modules before this are finished only on the initial Form Submission, Modules after this are finished only on Consent Confirmation.
 			</source></trans-unit>
-			<trans-unit id="flexform.module.emailConsent.showDismissLink"><source>Show Consent Dismissal Link in Email</source></trans-unit>
-			<trans-unit id="flexform.module.emailConsent.showDismissLink.description"><source>By default, all Modules that are executed after Consent Approval are also executed after Dismissal. Use Module Conditions to differentiate between the two.</source></trans-unit>
-			<trans-unit id="flexform.module.emailConsent.requireApproveVerification"><source>Require Verification for Consent Approval</source></trans-unit>
-			<trans-unit id="flexform.module.emailConsent.requireDismissVerification"><source>Require Verification for Consent Dismissal</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.showDismissButton"><source>Show a Decline Button on the Confirmation Page</source></trans-unit>
+			<trans-unit id="flexform.module.emailConsent.showDismissButton.description"><source>Adds a second button next to "Confirm" that records a dismissal instead. By default, Modules executed after Consent Approval also run after a Dismissal - use Module Conditions (isConsentApproved / isConsentDismissed) to differentiate.</source></trans-unit>
 		</body>
 	</file>
 </xliff>

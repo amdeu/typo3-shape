@@ -9,18 +9,23 @@ use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 
 final readonly class FlexformConfigurationModifier
 {
+	/**
+	 * Populates the SendEmail module's "template" select with the templates registered under
+	 * $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'], and
+	 * adds a "Template" sheet with any per-template extra fields those templates declare.
+	 */
 	#[AsEventListener]
 	public function __invoke(AfterFlexFormDataStructureParsedEvent $event): void
 	{
 		$identifier = $event->getIdentifier();
 		if (
-			$identifier['type'] === 'tca'
-			&& $identifier['tableName'] === 'tx_shape_module_configuration'
-			&& $identifier['dataStructureKey'] === 'Amdeu\Shape\Form\Module\SendEmailModule'
+			($identifier['type'] ?? null) === 'tca'
+			&& ($identifier['tableName'] ?? null) === 'tx_shape_module_configuration'
+			&& ($identifier['dataStructureKey'] ?? null) === 'sendEmail'
 		) {
 			$dataStructure = $event->getDataStructure();
 			$dataStructure['sheets']['mail']['ROOT']['el']['template']['config']['items'] = [];
-			$mailTemplates = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'];
+			$mailTemplates = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['shape']['modules']['sendEmail']['templates'] ?? [];
 			foreach ($mailTemplates as $template => $config) {
 				$dataStructure['sheets']['mail']['ROOT']['el']['template']['config']['items'][] = [
 					'label' => $config['label'],

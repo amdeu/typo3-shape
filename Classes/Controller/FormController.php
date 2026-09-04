@@ -93,14 +93,8 @@ class FormController extends ActionController
 		if ($finishResult->response) {
 			return $finishResult->response;
 		}
-		$nonce = bin2hex(random_bytes(16));
-		$feAuth = $this->request->getAttribute('frontend.user');
-		$feAuth->setAndSaveSessionData('tx_shape_finish_' . $nonce, [
-			'template' => $finishResult->finishedTemplate,
-			'variables' => $finishResult->finishedVariables,
-			'formValues' => $this->runtime->session->values,
-		]);
-		return $this->redirect('finished', arguments: ['finishToken' => $nonce]);
+		$finishToken = Form\FinishedForm::fromFinishEvent($finishResult)->stash($this->request);
+		return $this->redirect('finished', arguments: ['finishToken' => $finishToken]);
 	}
 
 	/**
@@ -118,15 +112,11 @@ class FormController extends ActionController
 			'settings' => $this->settings,
 		];
 		$template = '';
-		if ($finishToken) {
-			$feAuth = $this->request->getAttribute('frontend.user');
-			$sessionKey = 'tx_shape_finish_' . $finishToken;
-			$finishContext = $feAuth->getSessionData($sessionKey);
-			if ($finishContext) {
-				$template = $finishContext['template'] ?? '';
-				$variables = array_merge($variables, $finishContext['variables'] ?? []);
-				$variables['formValues'] = $finishContext['formValues'] ?? [];
-			}
+		$finished = Form\FinishedForm::restore($this->request, $finishToken);
+		if ($finished) {
+			$template = $finished->template;
+			$variables = array_merge($variables, $finished->variables);
+			$variables['formValues'] = $finished->formValues;
 		}
 		$this->view->assignMultiple($variables);
 		return $this->htmlResponse($this->view->render($template));

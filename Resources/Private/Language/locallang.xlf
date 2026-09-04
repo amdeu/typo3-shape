@@ -39,6 +39,8 @@
 			<trans-unit id="label.password_saved"><source>Password saved</source></trans-unit>
 			<trans-unit id="label.enter_custom_value"><source>Enter custom value:</source></trans-unit>
 
+			<trans-unit id="label.submit_message"><source>Thank you. Your submission has been received.</source></trans-unit>
+
 			<trans-unit id="label.not_requested_plugin"><source>Starting this form will reset progress on another form that you are currently completing.</source></trans-unit>
 			<trans-unit id="label.not_form_post_request"><source>This form process was started in another session. Please resume your original session or start here.</source></trans-unit>
 			<trans-unit id="label.suspected_spam"><source>Your submission was flagged as spam. Please try again.</source></trans-unit>
@@ -48,13 +50,10 @@
 			<trans-unit id="label.invalid_consent_hash"><source>The requested email consent could not be verified.</source></trans-unit>
 			<trans-unit id="label.consent_not_pending"><source>The requested email consent was already confirmed.</source></trans-unit>
 			<trans-unit id="label.consent_expired"><source>The requested email consent has expired.</source></trans-unit>
-			<trans-unit id="label.consent_dismissed"><source>The requested email consent was successfully dismissed.</source></trans-unit>
 
-			<trans-unit id="label.approve_consent"><source>Approve email consent</source></trans-unit>
-			<trans-unit id="label.dismiss_consent"><source>Dismiss email consent</source></trans-unit>
-
-			<trans-unit id="label.confirm_consent_approved"><source>Confirm consent approval</source></trans-unit>
-			<trans-unit id="label.confirm_consent_dismissed"><source>Confirm consent dismissal</source></trans-unit>
+			<trans-unit id="label.consent_email_link"><source>Confirm now</source></trans-unit>
+			<trans-unit id="label.consent_approve"><source>Confirm</source></trans-unit>
+			<trans-unit id="label.consent_dismiss"><source>Decline</source></trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -2,3 +2,4 @@
 /.vscode/
 /.nova/
 /.claude/
+.DS_Store

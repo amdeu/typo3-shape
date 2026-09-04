@@ -588,12 +588,12 @@ return [
 							'js_display_condition' => [
 								'config' => [
 									'valuePicker' => [
-										'items' => [
-											['Field value true/not empty', 'value("field-id")'],
-											['Field value equal to', 'value("field-id") == "some-value"'],
-											['Current group field value true/not empty', 'value("repeatable-field-name")[__INDEX]["field-id"]'],
-											['Current group field value equal to', 'value("repeatable-field-name")[__INDEX]["field-id"] == "some-value"'],
-										]
+										'items' => Util::valuePickerItems([
+											['label' => 'Field value true/not empty', 'value' => 'value("field-id")'],
+											['label' => 'Field value equal to', 'value' => 'value("field-id") == "some-value"'],
+											['label' => 'Current group field value true/not empty', 'value' => 'value("repeatable-field-name")[__INDEX]["field-id"]'],
+											['label' => 'Current group field value equal to', 'value' => 'value("repeatable-field-name")[__INDEX]["field-id"] == "some-value"'],
+										])
 									]
 								]
 							],

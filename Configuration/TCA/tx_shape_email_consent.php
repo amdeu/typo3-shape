@@ -107,7 +107,7 @@ $columns = [
 			'readOnly' => true,
 		],
 	],
-	'approve_link' => [
+	'confirmation_link' => [
 		'config' => [
 			'type' => 'text',
 			'size' => 2,
@@ -129,7 +129,7 @@ $palettes = [
 		--linebreak--,
 		validation_hash, session,
 		--linebreak--,
-		module_settings, approve_link',
+		module_settings, confirmation_link',
 	],
 ];
 $showItem = '

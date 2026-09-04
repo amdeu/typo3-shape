@@ -81,14 +81,14 @@ return [
 				'type' => 'input',
 				'size' => 100,
 				'valuePicker' => [
-					'items' => [
-						['Field value is true / not empty', 'value("field-id")'],
-						['Field value is equal to', 'value("field-id") == "some-value"'],
-						['URL Parameter is equal to', 'traverse(request.getQueryParams(), "parameter/path") == "some-value"'],
-						['Consent was approved', 'isConsentApproved()'],
-						['Consent was dismissed', 'isConsentDismissed()'],
-						['Before Consent Confirmation', 'isBeforeConsent()'],
-					],
+					'items' => Util::valuePickerItems([
+						['label' => 'Field value is true / not empty', 'value' => 'value("field-id")'],
+						['label' => 'Field value is equal to', 'value' => 'value("field-id") == "some-value"'],
+						['label' => 'URL Parameter is equal to', 'value' => 'traverse(request.getQueryParams(), "parameter/path") == "some-value"'],
+						['label' => 'Consent was approved', 'value' => 'isConsentApproved()'],
+						['label' => 'Consent was dismissed', 'value' => 'isConsentDismissed()'],
+						['label' => 'Before Consent Confirmation', 'value' => 'isBeforeConsent()'],
+					]),
 				],
 			],
 		],
@@ -98,6 +98,7 @@ return [
 			'config' => [
 				'fieldWizard' => ['otherLanguageContent' => ['disabled' => false]],
 				'type' => 'flex',
+				'ds_pointerField' => 'type'
 			],
 		],
 	],

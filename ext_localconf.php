@@ -14,8 +14,8 @@ PluginUtility::configure(
 
 PluginUtility::configure(
 	'Consent',
-	[Controller\ConsentController::class => 'consentVerification'],
-	[Controller\ConsentController::class => 'consentVerification'],
+	[Controller\ConsentController::class => 'consentForm, consentConfirmation'],
+	[Controller\ConsentController::class => 'consentForm, consentConfirmation'],
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['shape'] = ['Amdeu\Shape\ViewHelpers'];

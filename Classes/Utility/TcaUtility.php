@@ -129,6 +129,24 @@ class TcaUtility
 		return static::$typo3Version;
 	}
 
+	/**
+	 * Normalizes a valuePicker item list across TYPO3 versions.
+	 *
+	 * Define items in the v14 associative form ([['label' => ..., 'value' => ...], ...]); on v13 the
+	 * FormEngine still expects the legacy numeric tuples, and core's TCA migration doesn't reach items
+	 * nested in overrideChildTca / columnsOverrides, so they are downgraded here.
+	 *
+	 * @param array<int, array{label: string, value: string}> $items
+	 * @return array<int, array>
+	 */
+	public static function valuePickerItems(array $items): array
+	{
+		if (static::getTypo3Version()->getMajorVersion() >= 14) {
+			return $items;
+		}
+		return array_map(static fn(array $item): array => [$item['label'], $item['value']], $items);
+	}
+
 	public static function setFlexForm(
 		string $table,
 		string $field,
@@ -138,7 +156,7 @@ class TcaUtility
 	{
 		if (!$type) {
 			if (static::getTypo3Version()->getMajorVersion() < 14) {
-				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][0] = $flexForm;
+				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds']['default'] = $flexForm;
 			} else {
 				$GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'] = $flexForm;
 			}

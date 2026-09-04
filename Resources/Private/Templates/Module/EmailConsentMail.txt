@@ -1,0 +1,4 @@
+{parsed.body -> f:format.stripTags()}
+
+
+{f:translate(key: 'label.consent_email_link')}: {confirmationUri}

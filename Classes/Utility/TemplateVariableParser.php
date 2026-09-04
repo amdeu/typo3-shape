@@ -77,7 +77,7 @@ class TemplateVariableParser
 			$propertyPath = ltrim($parts[1], '.');
 			$values = [];
 			foreach ($array as $item) {
-				$value = self::getValue([$item], explode('.', $propertyPath));
+				$value = self::getValue($item, explode('.', $propertyPath));
 				if ($value !== null && !is_array($value)) {
 					$values[] = $value;
 				}
@@ -94,43 +94,33 @@ class TemplateVariableParser
 	}
 
 	/**
-	 * Gets a value from a nested array/object structure using a path array.
-	 * For objects, tries getter method first, then property access.
+	 * Follows a dotted path through nested arrays/objects.
+	 * For objects, tries a getter method first, then a public property.
 	 *
-	 * @param array $data The data structure to traverse
-	 * @param array $path The path segments to follow
-	 * @return mixed The value found at the path, or null if not found
+	 * @param mixed $value The data structure to traverse
+	 * @param string[] $path The path segments to follow
+	 * @return mixed The value found at the path, or null if any segment is missing.
 	 */
-	private static function getValue(array $data, array $path): mixed
+	private static function getValue(mixed $value, array $path): mixed
 	{
-		$value = $data;
-
 		foreach ($path as $key) {
-			$current = is_array($value) ? ($value[0] ?? $value) : $value;
-
-			// Try array access first
-			if (is_array($current) && isset($current[$key])) {
-				$value = $current[$key];
+			if (is_array($value) && isset($value[$key])) {
+				$value = $value[$key];
 				continue;
 			}
 
-			// Try object access (getter first, then property)
-			if (is_object($current)) {
-				// Try getter method
+			if (is_object($value)) {
 				$getterMethod = 'get' . ucfirst($key);
-				if (method_exists($current, $getterMethod)) {
-					$value = $current->$getterMethod();
+				if (method_exists($value, $getterMethod)) {
+					$value = $value->$getterMethod();
 					continue;
 				}
-
-				// Fall back to property access
-				if (property_exists($current, $key)) {
-					$value = $current->$key;
+				if (property_exists($value, $key)) {
+					$value = $value->$key;
 					continue;
 				}
 			}
 
-			// If we get here, we couldn't find the value
 			return null;
 		}
 

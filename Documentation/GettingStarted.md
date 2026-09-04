@@ -25,6 +25,21 @@ composer require amdeu/typo3-shape
 vendor/bin/typo3 database:updateschema
 ```
 
+### Add the Site Set
+
+Shape ships its frontend configuration (template paths, plugin settings, the lazy-load fragment
+page) as a **Site Set** - the plugin will not render without it.
+
+1. **Site Management → Sites → (your site) → Sets** tab
+2. Enable **Shape**
+
+Or add it to the site's `config.yaml`:
+
+```yaml
+dependencies:
+  - amdeu/shape
+```
+
 ## 🚀 Your First Form
 
 > **💡 Tip:** Create a new sysfolder for each form to make sure the list view gives you a clean overview of one form and its related records (pages, fields, modules).

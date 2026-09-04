@@ -197,15 +197,15 @@ $columns = [
 				'upper' => 100
 			],
 			'valuePicker' => [
-				'items' => [
-					['20', 20],
-					['25', 25],
-					['33.33', 33.33],
-					['50', 50],
-					['66', 66],
-					['75', 75],
-					['100', 100],
-				],
+				'items' => Util::valuePickerItems([
+					['label' => '20', 'value' => '20'],
+					['label' => '25', 'value' => '25'],
+					['label' => '33.33', 'value' => '33.33'],
+					['label' => '50', 'value' => '50'],
+					['label' => '66', 'value' => '66'],
+					['label' => '75', 'value' => '75'],
+					['label' => '100', 'value' => '100'],
+				]),
 			],
 		],
 	],
@@ -253,13 +253,13 @@ $columns = [
 			'type' => 'input',
 			'size' => 100,
 			'valuePicker' => [
-				'items' => [
-					['5 digits', '[0-9]{5}'],
-					['Alphabetic (Latin)', '[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ]+'],
-					['Alphanumeric (Latin)', '[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ0-9]+'],
-					['Phone (International)', '[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}'],
-					['Password (Strong)', '(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}']
-				],
+				'items' => Util::valuePickerItems([
+					['label' => '5 digits', 'value' => '[0-9]{5}'],
+					['label' => 'Alphabetic (Latin)', 'value' => '[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ]+'],
+					['label' => 'Alphanumeric (Latin)', 'value' => '[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ0-9]+'],
+					['label' => 'Phone (International)', 'value' => '[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}'],
+					['label' => 'Password (Strong)', 'value' => '(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}'],
+				]),
 			],
 		],
 	],
@@ -429,12 +429,12 @@ $columns = [
 			'type' => 'input',
 			'size' => 100,
 			'valuePicker' => [
-				'items' => [
-					['Field value is true / not empty', 'value("field-id")'],
-					['Field value is equal to', 'value("field-id") == "some-value"'],
-					['URL Parameter is equal to', 'traverse(request.getQueryParams(), "parameter/path")'],
-					['Step is not summary', 'stepType != "summary"'],
-				],
+				'items' => Util::valuePickerItems([
+					['label' => 'Field value is true / not empty', 'value' => 'value("field-id")'],
+					['label' => 'Field value is equal to', 'value' => 'value("field-id") == "some-value"'],
+					['label' => 'URL Parameter is equal to', 'value' => 'traverse(request.getQueryParams(), "parameter/path")'],
+					['label' => 'Step is not summary', 'value' => 'stepType != "summary"'],
+				]),
 			],
 		],
 	],
@@ -444,10 +444,10 @@ $columns = [
 			'type' => 'input',
 			'size' => 100,
 			'valuePicker' => [
-				'items' => [
-					['Field value true/not empty', 'value("field-id")'],
-					['Field value equal to', 'value("field-id") == "some-value"'],
-				],
+				'items' => Util::valuePickerItems([
+					['label' => 'Field value true/not empty', 'value' => 'value("field-id")'],
+					['label' => 'Field value equal to', 'value' => 'value("field-id") == "some-value"'],
+				]),
 			],
 		],
 	],

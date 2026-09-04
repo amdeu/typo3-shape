@@ -87,10 +87,10 @@ Resources/Private/
 │   ├── Form.html                                  # Main form template
 │   ├── FormLazyLoader.html                        # Lazy loading container
 │   ├── Finished.html                              # Success page
-│   ├── ConsentVerification.html                   # Double opt-in confirmation page
+│   ├── ConsentForm.html                           # Double opt-in confirm/decline page (email link target)
 │   └── Module/
 │       ├── SendEmail/Default.html                 # Default email template
-│       ├── EmailConsent.html                      # Double opt-in verification email
+│       ├── EmailConsentMail.html                  # Double opt-in confirmation email
 │       ├── ShowContentElements.html               # Content elements display
 │       └── ShowText.html                          # Show text finish page
 └── Partials/
@@ -172,14 +172,6 @@ Each `<shape-field>` manages its own display condition, validation message, and 
 - **`data-*` stays only on native elements** (`<input>`, `<select>`, `<textarea>`, `<button>`, `<p>`) - an arbitrary non-namespaced attribute on a standard element risks colliding with a future HTML spec attribute. Everything on the custom elements above is a plain, real attribute instead - we own that tag vocabulary, so there's no collision risk.
 - **No class-name lookups from JS.** CSS classes (built from `{blockClass}`) are a styling concern only; JS never uses them to find elements. Marker attributes (`data-shape-error`, `data-shape-repeatable-add`, `data-shape-repeatable-remove`, `data-shape-control`) are used instead, even where the value itself is unused.
 
-### Example: Reacting to a Custom Element
-
-```js
-document.querySelectorAll('shape-field').forEach(field => {
-    console.log(field.name, field.condition)
-})
-```
-
 ---
 
 ## Template Variables
@@ -207,8 +199,6 @@ The following variables are assigned by `FormRuntime::renderPage()` and availabl
 | `{forwardStepPageIndex}`  | `int\|null`                 | Next page index for forward button, null if on last page         |
 
 > **💡 Note:** Additional variables can be added via `BeforeFormRenderEvent`.
-
-Each entry in `{messages}` is a [`FormMessage`](../Classes/Form/FormMessage.php): `key`/`arguments` (an LLL key + `f:translate` arguments) or `text` (an already-resolved literal string) - exactly one of `key`/`text` is set - plus `type` (`TYPO3\CMS\Core\Type\ContextualFeedbackSeverity`) and a `cssModifier` getter (lowercase severity name, e.g. `"error"`, used as the `-{message.cssModifier}` class in `Messages.html`).
 
 ### Field Partials
 

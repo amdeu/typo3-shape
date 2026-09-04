@@ -39,8 +39,6 @@ Field types represent standard HTML form controls and their attributes. Configur
 - **🔁 Repeatable field groups** - Dynamically add/remove fieldsets (e.g., multiple addresses, contacts)
 - **🎨 Appearance options** - Rich-text labels, layouts, field widths, CSS classes, stylable HTML5 validation, custom error messages
 
-[//]: # (- **📦 Form Presets** - Reusable form blueprints for quick setup of common scenarios &#40;contact forms, signup forms, etc.&#41; &#40;WIP&#41;)
-
 ### 🔍 Validation & Conditions
 - **📋 Field-level validation** - Define dual client- and server-side validation with field properties 
 - **✅ HTML5 validation** - Server validators automatically replicate browser behavior
@@ -81,7 +79,7 @@ Beyond TCA customization, Shape provides standard extension points:
 
 ## 📦 Installation
 
-> **⚠️ Beta Status:** This extension is in beta and does not have a testing suite yet. While it is being used in production, please test thoroughly in your specific environment before deploying to production sites.
+> **⚠️ Beta Status:** This extension is in beta and does not have a testing suite yet. While it is being used in production, please test thoroughly before deploying to production sites.
 
 ```bash
 composer require amdeu/typo3-shape
@@ -92,6 +90,9 @@ Update database schema via **Admin Tools → Maintenance → Analyze Database St
 ```bash
 vendor/bin/typo3 database:updateschema
 ```
+
+Then enable the **Shape** Site Set (Site Management → Sites → your site → *Sets*, or add
+`amdeu/shape` to the site's `dependencies`).
 
 See [Getting Started](Documentation/GettingStarted.md) for details.
 
@@ -114,4 +115,4 @@ See [Getting Started](Documentation/GettingStarted.md) for details.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE)
+Copyright © amdeu. Licensed under GPL-2.0-or-later - see [LICENSE](LICENSE).

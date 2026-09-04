@@ -5,11 +5,18 @@
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": "^8.2",
+		"ext-sodium": "*",
 		"typo3/cms-core": "^13.4 || ^14.3",
+		"typo3/cms-backend": "^13.4 || ^14.3",
 		"typo3/cms-extbase": "^13.4 || ^14.3",
 		"typo3/cms-fluid": "^13.4 || ^14.3",
+		"typo3/cms-fluid-styled-content": "^13.4 || ^14.3",
 		"typo3/cms-frontend": "^13.4 || ^14.3",
-		"typo3/cms-form": "^13.4 || ^14.3"
+		"typo3/cms-install": "^13.4 || ^14.3",
+		"typo3/cms-rte-ckeditor": "^13.4 || ^14.3"
+	},
+	"suggest": {
+		"typo3/cms-scheduler": "Garbage-collect expired double-opt-in consent records via the Table Garbage Collection task"
 	},
 	"replace": {
 		"typo3-ter/shape": "self.version"

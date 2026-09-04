@@ -49,28 +49,14 @@
                             <default>1</default>
                         </config>
                     </splitModuleExecution>
-<!--                    <showDismissLink>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissLink</label>-->
-<!--                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissLink.description</description>-->
-<!--                        <config>-->
-<!--                            <type>check</type>-->
-<!--                            <default>0</default>-->
-<!--                        </config>-->
-<!--                    </showDismissLink>-->
-<!--                    <requireApproveVerification>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.requireApproveVerification</label>-->
-<!--                        <config>-->
-<!--                            <type>check</type>-->
-<!--                            <default>1</default>-->
-<!--                        </config>-->
-<!--                    </requireApproveVerification>-->
-<!--                    <requireDismissVerification>-->
-<!--                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.requireDismissVerification</label>-->
-<!--                        <config>-->
-<!--                            <type>check</type>-->
-<!--                            <default>1</default>-->
-<!--                        </config>-->
-<!--                    </requireDismissVerification>-->
+                    <showDismissButton>
+                        <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissButton</label>
+                        <description>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.showDismissButton.description</description>
+                        <config>
+                            <type>check</type>
+                            <default>0</default>
+                        </config>
+                    </showDismissButton>
                     <deleteAfterConfirmation>
                         <label>LLL:EXT:shape/Resources/Private/Language/locallang_db.xlf:flexform.module.emailConsent.deleteAfterConfirmation</label>
                         <config>

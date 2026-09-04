@@ -14,7 +14,7 @@ class EmailConsentModule extends AbstractModule
 	protected array $settings = [
 		'subject' => '',
 		'body' => '',
-		'template' => 'Module/EmailConsent',
+		'template' => 'Module/EmailConsentMail',
 		'consentPage' => '',
 		'senderAddress' => '',
 		'senderName' => '',
@@ -23,6 +23,8 @@ class EmailConsentModule extends AbstractModule
 		'expirationPeriod' => 86400,
 		'storagePage' => 0,
 		'splitModuleExecution' => true,
+		'showDismissButton' => false,
+		'deleteAfterConfirmation' => true,
 	];
 
 	public function __construct(
@@ -36,8 +38,11 @@ class EmailConsentModule extends AbstractModule
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
-		$recipientAddress = trim($this->parseWithValues($this->settings['recipientAddress']));
+		if ($this->settings['splitModuleExecution']) {
+			$event->stopPropagation();
+		}
 
+		$recipientAddress = trim($this->parseWithValues($this->settings['recipientAddress']));
 		if (!$recipientAddress) {
 			$this->logger->warning('Recipient address is empty', $this->getLogContext());
 			return;
@@ -110,31 +115,18 @@ class EmailConsentModule extends AbstractModule
 			}
 		}
 
-		$approveLink = $this->uriBuilder
+		// Single link to the GET consent-form page; approve/dismiss happens there via a POST, so
+		// prefetchers and mail scanners that fetch the link can't confirm for the recipient.
+		$confirmationUri = $this->uriBuilder
 			->reset()
 			->setTargetPageUid($this->settings['consentPage'])
 			->setRequest($this->getRequest())
 			->setCreateAbsoluteUri(true)
 			->uriFor(
-				'consentVerification',
+				'consentForm',
 				[
-					'status' => Enum\ConsentStatus::Approved->value,
-					'verify' => (bool)($this->settings['requireApproveVerification'] ?? false),
 					'uid' => $consentUid,
-					'hash' => $consentData['validation_hash']
-				],
-				'Consent',
-				'shape',
-				'Consent'
-			);
-		$dismissLink = $this->uriBuilder
-			->uriFor(
-				'consentVerification',
-				[
-					'status' => Enum\ConsentStatus::Dismissed->value,
-					'verify' => (bool)($this->settings['requireDismissVerification'] ?? false),
-					'uid' => $consentUid,
-					'hash' => $consentData['validation_hash']
+					'hash' => $consentData['validation_hash'],
 				],
 				'Consent',
 				'shape',
@@ -142,15 +134,14 @@ class EmailConsentModule extends AbstractModule
 			);
 
 		$this->consentRepository->update($consentUid, [
-			'approve_link' => $approveLink,
+			'confirmation_link' => $confirmationUri,
 		]);
 
 		$variables = [
 			'formValues' => $formValues,
 			'settings' => $this->settings,
 			'runtime' => $this->runtime,
-			'approveLink' => $approveLink,
-			'dismissLink' => $dismissLink,
+			'confirmationUri' => $confirmationUri,
 			'parsed' => [
 				'body' => $this->parseWithValues($this->settings['body'], true)
 			]
@@ -180,10 +171,6 @@ class EmailConsentModule extends AbstractModule
 				'error' => $e->getMessage(),
 			]));
 			return;
-		}
-
-		if ($this->settings['splitModuleExecution']) {
-			$event->stopPropagation();
 		}
 	}
 }

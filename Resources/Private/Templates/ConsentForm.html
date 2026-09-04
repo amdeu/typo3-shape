@@ -1,0 +1,27 @@
+<f:variable name="blockClass" value="shape"/>
+<f:variable name="buttonClass" value="shape__button"/>
+
+<f:render partial="Assets"/>
+
+<section id="c{plugin.uid}" class="{blockClass}__section">
+    <f:if condition="{messages}">
+        <f:render partial="Messages" arguments="{_all}"/>
+    </f:if>
+
+    <f:if condition="{approveUri}">
+        <div class="{blockClass}__consent-actions">
+            <form method="post" action="{approveUri}" class="{blockClass}__consent-form -approve">
+                <button type="submit" class="{buttonClass} -approve">
+                    {f:translate(key: 'label.consent_approve')}
+                </button>
+            </form>
+            <f:if condition="{showDismissButton}">
+                <form method="post" action="{dismissUri}" class="{blockClass}__consent-form -dismiss">
+                    <button type="submit" class="{buttonClass} -dismiss">
+                        {f:translate(key: 'label.consent_dismiss')}
+                    </button>
+                </form>
+            </f:if>
+        </div>
+    </f:if>
+</section>

@@ -13,6 +13,10 @@ class RedirectModule extends AbstractModule
 		'statusCode' => 303,
 	];
 
+	public function __construct(
+		protected readonly ContentObjectRenderer $contentObject,
+	) {}
+
 	#[AsModuleEventListener]
 	public function onFormFinish(Form\FormFinishEvent $event): void
 	{
@@ -21,12 +25,11 @@ class RedirectModule extends AbstractModule
 			return;
 		}
 
-		/** @var ContentObjectRenderer $contentObject */
-		$contentObject = Core\Utility\GeneralUtility::makeInstance(
-			ContentObjectRenderer::class,
-			$this->getRequest()->getAttribute('frontend.controller')
-		);
-		$url = $contentObject->createUrl(['parameter' => $this->settings['uri'], 'forceAbsoluteUrl' => true]);
+		$this->contentObject->setRequest($this->getRequest());
+		$url = $this->contentObject->createUrl([
+			'parameter' => $this->settings['uri'],
+			'forceAbsoluteUrl' => true,
+		]);
 
 		if (!$url) {
 			$this->logger->warning('Could not create URL', $this->getLogContext([

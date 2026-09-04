@@ -17,7 +17,7 @@ final class RepeatableContainerHandler
 		protected readonly Form\Condition\FieldConditionResolver   $fieldConditionResolver,
 	) {}
 
-	#[AsEventListener(before: 'Amdeu\Shape\EventListener\RecordCreator')]
+	#[AsEventListener(before: Form\Model\RecordCreator::class)]
 	public function createRecord(RecordCreationEvent $event): void
 	{
 		if ($event->isPropagationStopped()) {
@@ -55,7 +55,7 @@ final class RepeatableContainerHandler
 		}
 	}
 
-	#[AsEventListener(after: 'Amdeu\Shape\EventListener\ValueValidationConfigurator')]
+	#[AsEventListener(after: Form\Validation\ValueValidationConfigurator::class)]
 	public function validateValue(Form\Validation\ValueValidationEvent $event): void
 	{
 		$field = $event->field;
@@ -79,7 +79,7 @@ final class RepeatableContainerHandler
 		$event->result = $result;
 	}
 
-	#[AsEventListener(before: 'Amdeu\Shape\EventListener\ValueSerializationHandler')]
+	#[AsEventListener(before: Form\Serialization\ValueSerializationHandler::class)]
 	public function serializeValue(Form\Serialization\ValueSerializationEvent $event): void
 	{
 		$field = $event->field;
@@ -107,7 +107,7 @@ final class RepeatableContainerHandler
 		$event->serializedValue = $serializedValue;
 	}
 
-	#[AsEventListener(before: 'Amdeu\Shape\EventListener\ValueProcessingHandler')]
+	#[AsEventListener(before: Form\Processing\ValueProcessingHandler::class)]
 	public function processValue(Form\Processing\ValueProcessingEvent $event): void
 	{
 		$field = $event->field;
