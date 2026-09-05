@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Amdeu\Shape\Form;
-use Amdeu\Shape\Enum;
+use Amdeu\Shape\Form\Consent;
 use Amdeu\Shape\Repository;
 
 /**
@@ -49,8 +49,8 @@ class ConsentController extends ActionController
 		$this->view->assignMultiple([
 			'plugin' => $this->request->getAttribute('currentContentObject')?->data,
 			'showDismissButton' => (bool)($consentSettings['showDismissButton'] ?? false),
-			'approveUri' => $this->confirmationUri(Enum\ConsentStatus::Approved, $uid, $hash),
-			'dismissUri' => $this->confirmationUri(Enum\ConsentStatus::Dismissed, $uid, $hash),
+			'approveUri' => $this->confirmationUri(Consent\ConsentStatus::Approved, $uid, $hash),
+			'dismissUri' => $this->confirmationUri(Consent\ConsentStatus::Dismissed, $uid, $hash),
 		]);
 		return $this->htmlResponse();
 	}
@@ -61,7 +61,7 @@ class ConsentController extends ActionController
 	 * invalid token is bounced back to consentFormAction() instead of acting.
 	 */
 	public function consentConfirmationAction(
-		?Enum\ConsentStatus $status = null,
+		?Consent\ConsentStatus $status = null,
 		int $uid = 0,
 		string $hash = ''
 	): ResponseInterface
@@ -73,7 +73,7 @@ class ConsentController extends ActionController
 		if (
 			$this->request->getMethod() !== 'POST'
 			|| $status === null
-			|| $status === Enum\ConsentStatus::Pending
+			|| $status === Consent\ConsentStatus::Pending
 		) {
 			return $backToForm();
 		}
@@ -147,7 +147,7 @@ class ConsentController extends ActionController
 		if (!hash_equals((string)$consent['validation_hash'], $hash)) {
 			return Form\FormMessage::fromKey('label.invalid_consent_hash', ContextualFeedbackSeverity::ERROR);
 		}
-		if ((int)$consent['status'] !== Enum\ConsentStatus::Pending->value) {
+		if ((int)$consent['status'] !== Consent\ConsentStatus::Pending->value) {
 			return Form\FormMessage::fromKey('label.consent_not_pending', ContextualFeedbackSeverity::INFO);
 		}
 		if (time() > (int)$consent['valid_until']) {
@@ -168,7 +168,7 @@ class ConsentController extends ActionController
 		return $consent;
 	}
 
-	protected function confirmationUri(Enum\ConsentStatus $status, int $uid, string $hash): string
+	protected function confirmationUri(Consent\ConsentStatus $status, int $uid, string $hash): string
 	{
 		return $this->uriBuilder->reset()->uriFor('consentConfirmation', [
 			'status' => $status->value,

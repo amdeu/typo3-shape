@@ -1,6 +1,6 @@
 <?php
 
-namespace Amdeu\Shape\Enum;
+namespace Amdeu\Shape\Form\Consent;
 
 enum ConsentStatus: int
 {

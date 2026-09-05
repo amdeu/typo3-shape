@@ -6,7 +6,7 @@ namespace Amdeu\Shape\Form\Condition;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use Amdeu\Shape\Enum;
+use Amdeu\Shape\Form\Consent;
 
 class ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 {
@@ -38,7 +38,7 @@ class ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 			'isConsentApproved',
 			static fn() => null, // Not implemented, we only use the evaluator
 			static function ($arguments, $default = '') {
-				return ($arguments['consentStatus'] ?? '') === Enum\ConsentStatus::Approved->value;
+				return ($arguments['consentStatus'] ?? '') === Consent\ConsentStatus::Approved->value;
 			}
 		);
 	}
@@ -49,7 +49,7 @@ class ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 			'isConsentDismissed',
 			static fn() => null, // Not implemented, we only use the evaluator
 			static function ($arguments, $default = '') {
-				return ($arguments['consentStatus'] ?? '') === Enum\ConsentStatus::Dismissed->value;
+				return ($arguments['consentStatus'] ?? '') === Consent\ConsentStatus::Dismissed->value;
 			}
 		);
 	}
@@ -60,7 +60,7 @@ class ConditionFunctionsProvider implements ExpressionFunctionProviderInterface
 			'isBeforeConsent',
 			static fn() => null, // Not implemented, we only use the evaluator
 			static function ($arguments, $default = '') {
-				return ($arguments['consentStatus'] ?? Enum\ConsentStatus::Pending->value) === Enum\ConsentStatus::Pending->value;
+				return ($arguments['consentStatus'] ?? Consent\ConsentStatus::Pending->value) === Consent\ConsentStatus::Pending->value;
 			}
 		);
 	}

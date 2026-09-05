@@ -6,7 +6,7 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
 use Amdeu\Shape\Form;
-use Amdeu\Shape\Enum;
+use Amdeu\Shape\Form\Consent;
 use Amdeu\Shape\Repository;
 
 class EmailConsentModule extends AbstractModule
@@ -81,7 +81,7 @@ class EmailConsentModule extends AbstractModule
 			'crdate' => $timestamp,
 			'tstamp' => $timestamp,
 			'pid' => $storagePage,
-			'status' => Enum\ConsentStatus::Pending->value,
+			'status' => Consent\ConsentStatus::Pending->value,
 			'email' => $recipientAddress,
 			'form' => $this->getForm()->getIdentifier(),
 			'plugin' => $this->getPlugin()->getUid(),
