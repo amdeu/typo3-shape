@@ -340,8 +340,8 @@ $columns = [
 				['given-name', 'given-name', '', 'name'],
 				['additional-name', 'additional-name', '', 'name'],
 				['nickname', 'nickname', '', 'name'],
-				['honoric-prefix', 'honoric-prefix', '', 'name'],
-				['honoric-suffix', 'honoric-suffix', '', 'name'],
+				['honorific-prefix', 'honorific-prefix', '', 'name'],
+				['honorific-suffix', 'honorific-suffix', '', 'name'],
 				['username', 'username', '', 'name'],
 
 				['street-address', 'street-address', '', 'address'],
